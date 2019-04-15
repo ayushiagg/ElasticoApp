@@ -1,0 +1,664 @@
+2019-04-10 09:49:39.739 UTC [orderer.consensus.kafka] 0 -> INFO 001 KAFKA: file is logger.go , func is  first-init()
+2019-04-10 09:49:39.739 UTC [orderer.consensus.kafka] 1 -> INFO 002 KAFKA: file is logger.go , func is  second-init()
+2019-04-10 09:49:39.740 UTC [orderer.consensus.kafka] NewListener -> INFO 003 KAFKA: file is logger.go , func is  NewListener()
+2019-04-10 09:49:39.740 UTC [orderer.consensus.kafka] addListener -> INFO 004 KAFKA: file is logger.go , func is  addListener()
+2019-04-10 09:49:39.766 UTC [localconfig] completeInitialization -> INFO 005 Kafka.Version unset, setting to 0.10.2.0
+2019-04-10 09:49:39.788 UTC [orderer.common.server] prettyPrintStruct -> INFO 006 Orderer config values:
+        General.LedgerType = "ram"
+        General.ListenAddress = "0.0.0.0"
+        General.ListenPort = 7050
+        General.TLS.Enabled = false
+        General.TLS.PrivateKey = "/var/hyperledger/tls/server.key"
+        General.TLS.Certificate = "/var/hyperledger/tls/server.crt"
+        General.TLS.RootCAs = [/var/hyperledger/tls/ca.crt]
+        General.TLS.ClientAuthRequired = false
+        General.TLS.ClientRootCAs = []
+        General.Cluster.ListenAddress = ""
+        General.Cluster.ListenPort = 0
+        General.Cluster.ServerCertificate = ""
+        General.Cluster.ServerPrivateKey = ""
+        General.Cluster.ClientCertificate = ""
+        General.Cluster.ClientPrivateKey = ""
+        General.Cluster.RootCAs = []
+        General.Cluster.DialTimeout = 5s
+        General.Cluster.RPCTimeout = 7s
+        General.Cluster.ReplicationBufferSize = 20971520
+        General.Cluster.ReplicationPullTimeout = 5s
+        General.Cluster.ReplicationRetryTimeout = 5s
+        General.Cluster.ReplicationBackgroundRefreshInterval = 5m0s
+        General.Cluster.ReplicationMaxRetries = 12
+        General.Cluster.SendBufferSize = 10
+        General.Cluster.CertExpirationWarningThreshold = 168h0m0s
+        General.Keepalive.ServerMinInterval = 1m0s
+        General.Keepalive.ServerInterval = 2h0m0s
+        General.Keepalive.ServerTimeout = 20s
+        General.GenesisMethod = "file"
+        General.GenesisProfile = "SampleInsecureKafka"
+        General.SystemChannel = "test-system-channel-name"
+        General.GenesisFile = "/var/hyperledger/configs/orderer.block"
+        General.Profile.Enabled = false
+        General.Profile.Address = "0.0.0.0:6060"
+        General.LocalMSPDir = "/var/hyperledger/msp"
+        General.LocalMSPID = "OrdererMSP"
+        General.BCCSP.ProviderName = "SW"
+        General.BCCSP.SwOpts.SecLevel = 256
+        General.BCCSP.SwOpts.HashFamily = "SHA2"
+        General.BCCSP.SwOpts.Ephemeral = false
+        General.BCCSP.SwOpts.FileKeystore.KeyStorePath = "/var/hyperledger/msp/keystore"
+        General.BCCSP.SwOpts.DummyKeystore =
+        General.BCCSP.SwOpts.InmemKeystore =
+        General.BCCSP.PluginOpts =
+        General.Authentication.TimeWindow = 15m0s
+        FileLedger.Location = "/var/hyperledger/production/orderer"
+        FileLedger.Prefix = "hyperledger-fabric-ordererledger"
+        RAMLedger.HistorySize = 1000
+        Kafka.Retry.ShortInterval = 1s
+        Kafka.Retry.ShortTotal = 30s
+        Kafka.Retry.LongInterval = 5m0s
+        Kafka.Retry.LongTotal = 12h0m0s
+        Kafka.Retry.NetworkTimeouts.DialTimeout = 10s
+        Kafka.Retry.NetworkTimeouts.ReadTimeout = 10s
+        Kafka.Retry.NetworkTimeouts.WriteTimeout = 10s
+        Kafka.Retry.Metadata.RetryMax = 3
+        Kafka.Retry.Metadata.RetryBackoff = 250ms
+        Kafka.Retry.Producer.RetryMax = 3
+        Kafka.Retry.Producer.RetryBackoff = 100ms
+        Kafka.Retry.Consumer.RetryBackoff = 2s
+        Kafka.Verbose = true
+        Kafka.Version = 0.10.2.0
+        Kafka.TLS.Enabled = false
+        Kafka.TLS.PrivateKey = ""
+        Kafka.TLS.Certificate = ""
+        Kafka.TLS.RootCAs = []
+        Kafka.TLS.ClientAuthRequired = false
+        Kafka.TLS.ClientRootCAs = []
+        Kafka.SASLPlain.Enabled = false
+        Kafka.SASLPlain.User = ""
+        Kafka.SASLPlain.Password = ""
+        Kafka.Topic.ReplicationFactor = 3
+        Debug.BroadcastTraceDir = ""
+        Debug.DeliverTraceDir = ""
+        Consensus = map[SnapDir:/var/hyperledger/production/orderer/etcdraft/snapshot WALDir:/var/hyperledger/production/orderer/etcdraft/wal]
+        Operations.ListenAddress = "127.0.0.1:8443"
+        Operations.TLS.Enabled = false
+        Operations.TLS.PrivateKey = ""
+        Operations.TLS.Certificate = ""
+        Operations.TLS.RootCAs = []
+        Operations.TLS.ClientAuthRequired = false
+        Operations.TLS.ClientRootCAs = []
+        Metrics.Provider = "disabled"
+        Metrics.Statsd.Network = "udp"
+        Metrics.Statsd.Address = "127.0.0.1:8125"
+        Metrics.Statsd.WriteInterval = 30s
+        Metrics.Statsd.Prefix = ""
+2019-04-10 09:49:39.798 UTC [orderer.consensus.kafka] New -> INFO 007 KAFKA: file is consenter.go , func is  New()
+2019-04-10 09:49:39.798 UTC [orderer.consensus.kafka] newBrokerConfig -> INFO 008 KAFKA: file is config.go , func is  newBrokerConfig()
+2019-04-10 09:49:39.798 UTC [orderer.consensus.kafka] newStaticPartitioner -> INFO 009 KAFKA: file is partitioner.go , func is  newStaticPartitioner()
+2019-04-10 09:49:39.798 UTC [orderer.consensus.kafka] NewMetrics -> INFO 00a KAFKA: file is metrics.go , func is  NewMetrics()
+2019-04-10 09:49:39.798 UTC [orderer.consensus.kafka] PollGoMetricsUntilStop -> INFO 00b KAFKA: file is metrics.go , func is  PollGoMetricsUntilStop()
+2019-04-10 09:49:39.813 UTC [orderer.commmon.multichannel] newChainSupport -> INFO 00c start
+2019-04-10 09:49:39.813 UTC [orderer.commmon.multichannel] newChainSupport -> INFO 00d consenters key kafka
+2019-04-10 09:49:39.813 UTC [orderer.commmon.multichannel] newChainSupport -> INFO 00e start
+2019-04-10 09:49:39.813 UTC [orderer.commmon.multichannel] newChainSupport -> INFO 00f consenters key solo
+2019-04-10 09:49:39.813 UTC [orderer.commmon.multichannel] newChainSupport -> INFO 010 start
+2019-04-10 09:49:39.813 UTC [orderer.commmon.multichannel] newChainSupport -> INFO 011 consenters key elastico
+2019-04-10 09:49:39.813 UTC [orderer.consensus.kafka] HandleChain -> INFO 012 KAFKA: file is consenter.go , func is  HandleChain()
+2019-04-10 09:49:39.813 UTC [orderer.consensus.kafka] getOffsets -> INFO 013 KAFKA: file is chain.go , func is  getOffsets()
+2019-04-10 09:49:39.813 UTC [orderer.consensus.kafka] newChain -> INFO 014 KAFKA: file is chain.go , func is newChain()
+2019-04-10 09:49:39.813 UTC [orderer.consensus.kafka] getLastCutBlockNumber -> INFO 015 KAFKA: file is chain.go , func is  getLastCutBlockNumber()
+2019-04-10 09:49:39.813 UTC [orderer.consensus.kafka] newChain -> INFO 016 [channel: testchainid] Starting chain with last persisted offset -3 and last recorded block [0]
+2019-04-10 09:49:39.813 UTC [orderer.consensus.kafka] newChannel -> INFO 017 KAFKA: file is channel.go , func is  newChannel()
+2019-04-10 09:49:39.813 UTC [orderer.consensus.kafka] String -> INFO 018 KAFKA: file is channel.go , func is  String()
+2019-04-10 09:49:39.813 UTC [orderer.commmon.multichannel] Initialize -> INFO 019 Starting system channel 'testchainid' with genesis block hash aa3d9b3dd3030051fc7b004fde01af5dfdf87b574385460acf9e724c50a4deca and orderer type kafka
+2019-04-10 09:49:39.813 UTC [orderer.consensus.kafka] Start -> INFO 01a KAFKA: file is chain.go , func is  Start()
+2019-04-10 09:49:39.813 UTC [orderer.common.server] Start -> INFO 01b Starting orderer:
+ Version: 1.4.1
+ Commit SHA: 3f86ddf07
+ Go version: go1.11.5
+ OS/Arch: linux/amd64
+2019-04-10 09:49:39.813 UTC [orderer.common.server] Start -> INFO 01c Beginning to serve requests
+2019-04-10 09:49:39.813 UTC [orderer.consensus.kafka] startThread -> INFO 01d KAFKA: file is chain.go , func is  startThread()
+2019-04-10 09:49:39.813 UTC [orderer.consensus.kafka] retryOptions -> INFO 01e KAFKA: file is consenter.go , func is  retryOptions()
+2019-04-10 09:49:39.813 UTC [orderer.consensus.kafka] brokerConfig -> INFO 01f KAFKA: file is consenter.go , func is  brokerConfig()
+2019-04-10 09:49:39.813 UTC [orderer.consensus.kafka] topicDetail -> INFO 020 KAFKA: file is consenter.go , func is  topicDetail()
+2019-04-10 09:49:39.813 UTC [orderer.consensus.kafka] setupTopicForChannel -> INFO 021 KAFKA: file is chain.go , func is  setupTopicForChannel()
+2019-04-10 09:49:39.813 UTC [orderer.consensus.kafka] topic -> INFO 022 KAFKA: file is channel.go , func is  topic()
+2019-04-10 09:49:39.813 UTC [orderer.consensus.kafka] setupTopicForChannel -> INFO 023 [channel: testchainid] Setting up the topic for this channel...
+2019-04-10 09:49:39.813 UTC [orderer.consensus.kafka] topic -> INFO 024 KAFKA: file is channel.go , func is  topic()
+2019-04-10 09:49:39.813 UTC [orderer.consensus.kafka] String -> INFO 025 KAFKA: file is channel.go , func is  String()
+2019-04-10 09:49:39.813 UTC [orderer.consensus.kafka] newRetryProcess -> INFO 026 KAFKA: file is retry.go , func is  newRetryProcess()
+2019-04-10 09:49:39.813 UTC [orderer.consensus.kafka] retry -> INFO 027 KAFKA: file is retry.go , func is  retry()
+2019-04-10 09:49:39.813 UTC [orderer.consensus.kafka] try -> INFO 028 KAFKA: file is retry.go , func is try()
+2019-04-10 09:49:39.813 UTC [orderer.consensus.kafka] topic -> INFO 029 KAFKA: file is channel.go , func is  topic()
+2019-04-10 09:49:39.813 UTC [orderer.consensus.kafka] Println -> INFO 02a KAFKA: file is logger.go , func is  Println()
+2019-04-10 09:49:39.813 UTC [orderer.consensus.kafka] print -> INFO 02b KAFKA: file is logger.go , func is  print()
+2019-04-10 09:49:39.813 UTC [orderer.consensus.kafka] fire -> INFO 02c KAFKA: file is logger.go , func is  fire()
+2019-04-10 09:49:39.814 UTC [orderer.consensus.kafka] Printf -> INFO 02d KAFKA: file is logger.go , func is  Printf()
+2019-04-10 09:49:39.814 UTC [orderer.consensus.kafka] print -> INFO 02e KAFKA: file is logger.go , func is  print()
+2019-04-10 09:49:39.814 UTC [orderer.consensus.kafka] fire -> INFO 02f KAFKA: file is logger.go , func is  fire()
+2019-04-10 09:49:39.814 UTC [orderer.consensus.kafka] topic -> INFO 030 KAFKA: file is channel.go , func is  topic()
+2019-04-10 09:49:39.933 UTC [orderer.consensus.kafka] topic -> INFO 031 KAFKA: file is channel.go , func is  topic()
+2019-04-10 09:49:39.934 UTC [orderer.consensus.kafka] Printf -> INFO 032 KAFKA: file is logger.go , func is  Printf()
+2019-04-10 09:49:39.934 UTC [orderer.consensus.kafka] print -> INFO 033 KAFKA: file is logger.go , func is  print()
+2019-04-10 09:49:39.934 UTC [orderer.consensus.kafka] fire -> INFO 034 KAFKA: file is logger.go , func is  fire()
+2019-04-10 09:49:39.934 UTC [orderer.consensus.kafka] topic -> INFO 035 KAFKA: file is channel.go , func is  topic()
+2019-04-10 09:49:39.934 UTC [orderer.consensus.kafka] retryOptions -> INFO 036 KAFKA: file is consenter.go , func is  retryOptions()
+2019-04-10 09:49:39.934 UTC [orderer.consensus.kafka] brokerConfig -> INFO 037 KAFKA: file is consenter.go , func is  brokerConfig()
+2019-04-10 09:49:39.934 UTC [orderer.consensus.kafka] setupProducerForChannel -> INFO 038 KAFKA: file is chain.go , func is  setupProducerForChannel()
+2019-04-10 09:49:39.934 UTC [orderer.consensus.kafka] topic -> INFO 039 KAFKA: file is channel.go , func is  topic()
+2019-04-10 09:49:39.934 UTC [orderer.consensus.kafka] setupProducerForChannel -> INFO 03a [channel: testchainid] Setting up the producer for this channel...
+2019-04-10 09:49:39.934 UTC [orderer.consensus.kafka] newRetryProcess -> INFO 03b KAFKA: file is retry.go , func is  newRetryProcess()
+2019-04-10 09:49:39.934 UTC [orderer.consensus.kafka] retry -> INFO 03c KAFKA: file is retry.go , func is  retry()
+2019-04-10 09:49:39.934 UTC [orderer.consensus.kafka] try -> INFO 03d KAFKA: file is retry.go , func is try()
+2019-04-10 09:49:39.934 UTC [orderer.consensus.kafka] topic -> INFO 03e KAFKA: file is channel.go , func is  topic()
+2019-04-10 09:49:39.934 UTC [orderer.consensus.kafka] Println -> INFO 03f KAFKA: file is logger.go , func is  Println()
+2019-04-10 09:49:39.934 UTC [orderer.consensus.kafka] print -> INFO 040 KAFKA: file is logger.go , func is  print()
+2019-04-10 09:49:39.934 UTC [orderer.consensus.kafka] fire -> INFO 041 KAFKA: file is logger.go , func is  fire()
+2019-04-10 09:49:39.934 UTC [orderer.consensus.kafka] Println -> INFO 042 KAFKA: file is logger.go , func is  Println()
+2019-04-10 09:49:39.934 UTC [orderer.consensus.kafka] print -> INFO 043 KAFKA: file is logger.go , func is  print()
+2019-04-10 09:49:39.934 UTC [orderer.consensus.kafka] fire -> INFO 044 KAFKA: file is logger.go , func is  fire()
+2019-04-10 09:49:39.934 UTC [orderer.consensus.kafka] Println -> INFO 045 KAFKA: file is logger.go , func is  Println()
+2019-04-10 09:49:39.934 UTC [orderer.consensus.kafka] print -> INFO 046 KAFKA: file is logger.go , func is  print()
+2019-04-10 09:49:39.934 UTC [orderer.consensus.kafka] fire -> INFO 047 KAFKA: file is logger.go , func is  fire()
+2019-04-10 09:49:39.934 UTC [orderer.consensus.kafka] Printf -> INFO 048 KAFKA: file is logger.go , func is  Printf()
+2019-04-10 09:49:39.934 UTC [orderer.consensus.kafka] print -> INFO 049 KAFKA: file is logger.go , func is  print()
+2019-04-10 09:49:39.934 UTC [orderer.consensus.kafka] fire -> INFO 04a KAFKA: file is logger.go , func is  fire()
+2019-04-10 09:49:39.935 UTC [orderer.consensus.kafka] Printf -> INFO 04b KAFKA: file is logger.go , func is  Printf()
+2019-04-10 09:49:39.935 UTC [orderer.consensus.kafka] print -> INFO 04c KAFKA: file is logger.go , func is  print()
+2019-04-10 09:49:39.935 UTC [orderer.consensus.kafka] fire -> INFO 04d KAFKA: file is logger.go , func is  fire()
+2019-04-10 09:49:39.938 UTC [orderer.consensus.kafka] Printf -> INFO 04e KAFKA: file is logger.go , func is  Printf()
+2019-04-10 09:49:39.938 UTC [orderer.consensus.kafka] print -> INFO 04f KAFKA: file is logger.go , func is  print()
+2019-04-10 09:49:39.938 UTC [orderer.consensus.kafka] fire -> INFO 050 KAFKA: file is logger.go , func is  fire()
+2019-04-10 09:49:39.938 UTC [orderer.consensus.kafka] Printf -> INFO 051 KAFKA: file is logger.go , func is  Printf()
+2019-04-10 09:49:39.938 UTC [orderer.consensus.kafka] print -> INFO 052 KAFKA: file is logger.go , func is  print()
+2019-04-10 09:49:39.938 UTC [orderer.consensus.kafka] fire -> INFO 053 KAFKA: file is logger.go , func is  fire()
+2019-04-10 09:49:39.938 UTC [orderer.consensus.kafka] Printf -> INFO 054 KAFKA: file is logger.go , func is  Printf()
+2019-04-10 09:49:39.938 UTC [orderer.consensus.kafka] print -> INFO 055 KAFKA: file is logger.go , func is  print()
+2019-04-10 09:49:39.938 UTC [orderer.consensus.kafka] fire -> INFO 056 KAFKA: file is logger.go , func is  fire()
+2019-04-10 09:49:39.938 UTC [orderer.consensus.kafka] Printf -> INFO 057 KAFKA: file is logger.go , func is  Printf()
+2019-04-10 09:49:39.938 UTC [orderer.consensus.kafka] print -> INFO 058 KAFKA: file is logger.go , func is  print()
+2019-04-10 09:49:39.938 UTC [orderer.consensus.kafka] fire -> INFO 059 KAFKA: file is logger.go , func is  fire()
+2019-04-10 09:49:39.938 UTC [orderer.consensus.kafka] Println -> INFO 05a KAFKA: file is logger.go , func is  Println()
+2019-04-10 09:49:39.938 UTC [orderer.consensus.kafka] print -> INFO 05b KAFKA: file is logger.go , func is  print()
+2019-04-10 09:49:39.938 UTC [orderer.consensus.kafka] fire -> INFO 05c KAFKA: file is logger.go , func is  fire()
+2019-04-10 09:49:39.938 UTC [orderer.consensus.kafka] topic -> INFO 05d KAFKA: file is channel.go , func is  topic()
+2019-04-10 09:49:39.938 UTC [orderer.consensus.kafka] startThread -> INFO 05e [channel: testchainid] Producer set up successfully
+2019-04-10 09:49:39.938 UTC [orderer.consensus.kafka] retryOptions -> INFO 05f KAFKA: file is consenter.go , func is  retryOptions()
+2019-04-10 09:49:39.938 UTC [orderer.consensus.kafka] sendConnectMessage -> INFO 060 KAFKA: file is chain.go , func is  sendConnectMessage()
+2019-04-10 09:49:39.938 UTC [orderer.consensus.kafka] topic -> INFO 061 KAFKA: file is channel.go , func is  topic()
+2019-04-10 09:49:39.938 UTC [orderer.consensus.kafka] sendConnectMessage -> INFO 062 [channel: testchainid] About to post the CONNECT message...
+2019-04-10 09:49:39.938 UTC [orderer.consensus.kafka] newConnectMessage -> INFO 063 KAFKA: file is chain.go , func is  newConnectMessage()
+2019-04-10 09:49:39.938 UTC [orderer.consensus.kafka] newProducerMessage -> INFO 064 KAFKA: file is chain.go , func is  newProducerMessage()
+2019-04-10 09:49:39.938 UTC [orderer.consensus.kafka] topic -> INFO 065 KAFKA: file is channel.go , func is  topic()
+2019-04-10 09:49:39.938 UTC [orderer.consensus.kafka] partition -> INFO 066 KAFKA: file is channel.go , func is  partition()
+2019-04-10 09:49:39.938 UTC [orderer.consensus.kafka] newRetryProcess -> INFO 067 KAFKA: file is retry.go , func is  newRetryProcess()
+2019-04-10 09:49:39.938 UTC [orderer.consensus.kafka] retry -> INFO 068 KAFKA: file is retry.go , func is  retry()
+2019-04-10 09:49:39.938 UTC [orderer.consensus.kafka] try -> INFO 069 KAFKA: file is retry.go , func is try()
+2019-04-10 09:49:39.938 UTC [orderer.consensus.kafka] topic -> INFO 06a KAFKA: file is channel.go , func is  topic()
+2019-04-10 09:49:39.938 UTC [orderer.consensus.kafka] RequiresConsistency -> INFO 06b KAFKA: file is partitioner.go , func is  RequiresConsistency()
+2019-04-10 09:49:39.938 UTC [orderer.consensus.kafka] Printf -> INFO 06c KAFKA: file is logger.go , func is  Printf()
+2019-04-10 09:49:39.938 UTC [orderer.consensus.kafka] print -> INFO 06d KAFKA: file is logger.go , func is  print()
+2019-04-10 09:49:39.938 UTC [orderer.consensus.kafka] fire -> INFO 06e KAFKA: file is logger.go , func is  fire()
+2019-04-10 09:49:39.943 UTC [orderer.consensus.kafka] Println -> INFO 06f KAFKA: file is logger.go , func is  Println()
+2019-04-10 09:49:39.943 UTC [orderer.consensus.kafka] print -> INFO 070 KAFKA: file is logger.go , func is  print()
+2019-04-10 09:49:39.943 UTC [orderer.consensus.kafka] fire -> INFO 071 KAFKA: file is logger.go , func is  fire()
+2019-04-10 09:49:39.943 UTC [orderer.consensus.kafka] Printf -> INFO 072 KAFKA: file is logger.go , func is  Printf()
+2019-04-10 09:49:39.943 UTC [orderer.consensus.kafka] print -> INFO 073 KAFKA: file is logger.go , func is  print()
+2019-04-10 09:49:39.943 UTC [orderer.consensus.kafka] fire -> INFO 074 KAFKA: file is logger.go , func is  fire()
+2019-04-10 09:49:40.193 UTC [orderer.consensus.kafka] Printf -> INFO 075 KAFKA: file is logger.go , func is  Printf()
+2019-04-10 09:49:40.193 UTC [orderer.consensus.kafka] print -> INFO 076 KAFKA: file is logger.go , func is  print()
+2019-04-10 09:49:40.193 UTC [orderer.consensus.kafka] fire -> INFO 077 KAFKA: file is logger.go , func is  fire()
+2019-04-10 09:49:40.198 UTC [orderer.consensus.kafka] Partition -> INFO 078 KAFKA: file is partitioner.go , func is  Partition()
+2019-04-10 09:49:40.198 UTC [orderer.consensus.kafka] Println -> INFO 079 KAFKA: file is logger.go , func is  Println()
+2019-04-10 09:49:40.198 UTC [orderer.consensus.kafka] print -> INFO 07a KAFKA: file is logger.go , func is  print()
+2019-04-10 09:49:40.198 UTC [orderer.consensus.kafka] fire -> INFO 07b KAFKA: file is logger.go , func is  fire()
+2019-04-10 09:49:40.198 UTC [orderer.consensus.kafka] Printf -> INFO 07c KAFKA: file is logger.go , func is  Printf()
+2019-04-10 09:49:40.198 UTC [orderer.consensus.kafka] print -> INFO 07d KAFKA: file is logger.go , func is  print()
+2019-04-10 09:49:40.198 UTC [orderer.consensus.kafka] fire -> INFO 07e KAFKA: file is logger.go , func is  fire()
+2019-04-10 09:49:40.198 UTC [orderer.consensus.kafka] Printf -> INFO 07f KAFKA: file is logger.go , func is  Printf()
+2019-04-10 09:49:40.198 UTC [orderer.consensus.kafka] print -> INFO 080 KAFKA: file is logger.go , func is  print()
+2019-04-10 09:49:40.198 UTC [orderer.consensus.kafka] fire -> INFO 081 KAFKA: file is logger.go , func is  fire()
+2019-04-10 09:49:40.199 UTC [orderer.consensus.kafka] Printf -> INFO 082 KAFKA: file is logger.go , func is  Printf()
+2019-04-10 09:49:40.199 UTC [orderer.consensus.kafka] print -> INFO 083 KAFKA: file is logger.go , func is  print()
+2019-04-10 09:49:40.199 UTC [orderer.consensus.kafka] fire -> INFO 084 KAFKA: file is logger.go , func is  fire()
+2019-04-10 09:49:40.395 UTC [orderer.consensus.kafka] topic -> INFO 085 KAFKA: file is channel.go , func is  topic()
+2019-04-10 09:49:40.395 UTC [orderer.consensus.kafka] topic -> INFO 086 KAFKA: file is channel.go , func is  topic()
+2019-04-10 09:49:40.395 UTC [orderer.consensus.kafka] startThread -> INFO 087 [channel: testchainid] CONNECT message posted successfully
+2019-04-10 09:49:40.395 UTC [orderer.consensus.kafka] retryOptions -> INFO 088 KAFKA: file is consenter.go , func is  retryOptions()
+2019-04-10 09:49:40.395 UTC [orderer.consensus.kafka] brokerConfig -> INFO 089 KAFKA: file is consenter.go , func is  brokerConfig()
+2019-04-10 09:49:40.395 UTC [orderer.consensus.kafka] setupParentConsumerForChannel -> INFO 08a KAFKA: file is chain.go , func is  setupParentConsumerForChannel()
+2019-04-10 09:49:40.395 UTC [orderer.consensus.kafka] topic -> INFO 08b KAFKA: file is channel.go , func is  topic()
+2019-04-10 09:49:40.395 UTC [orderer.consensus.kafka] setupParentConsumerForChannel -> INFO 08c [channel: testchainid] Setting up the parent consumer for this channel...
+2019-04-10 09:49:40.395 UTC [orderer.consensus.kafka] newRetryProcess -> INFO 08d KAFKA: file is retry.go , func is  newRetryProcess()
+2019-04-10 09:49:40.395 UTC [orderer.consensus.kafka] retry -> INFO 08e KAFKA: file is retry.go , func is  retry()
+2019-04-10 09:49:40.395 UTC [orderer.consensus.kafka] try -> INFO 08f KAFKA: file is retry.go , func is try()
+2019-04-10 09:49:40.395 UTC [orderer.consensus.kafka] topic -> INFO 090 KAFKA: file is channel.go , func is  topic()
+2019-04-10 09:49:40.395 UTC [orderer.consensus.kafka] Println -> INFO 091 KAFKA: file is logger.go , func is  Println()
+2019-04-10 09:49:40.395 UTC [orderer.consensus.kafka] print -> INFO 092 KAFKA: file is logger.go , func is  print()
+2019-04-10 09:49:40.395 UTC [orderer.consensus.kafka] fire -> INFO 093 KAFKA: file is logger.go , func is  fire()
+2019-04-10 09:49:40.395 UTC [orderer.consensus.kafka] Println -> INFO 094 KAFKA: file is logger.go , func is  Println()
+2019-04-10 09:49:40.395 UTC [orderer.consensus.kafka] print -> INFO 095 KAFKA: file is logger.go , func is  print()
+2019-04-10 09:49:40.395 UTC [orderer.consensus.kafka] fire -> INFO 096 KAFKA: file is logger.go , func is  fire()
+2019-04-10 09:49:40.395 UTC [orderer.consensus.kafka] Println -> INFO 097 KAFKA: file is logger.go , func is  Println()
+2019-04-10 09:49:40.395 UTC [orderer.consensus.kafka] print -> INFO 098 KAFKA: file is logger.go , func is  print()
+2019-04-10 09:49:40.395 UTC [orderer.consensus.kafka] fire -> INFO 099 KAFKA: file is logger.go , func is  fire()
+2019-04-10 09:49:40.395 UTC [orderer.consensus.kafka] Printf -> INFO 09a KAFKA: file is logger.go , func is  Printf()
+2019-04-10 09:49:40.395 UTC [orderer.consensus.kafka] print -> INFO 09b KAFKA: file is logger.go , func is  print()
+2019-04-10 09:49:40.395 UTC [orderer.consensus.kafka] fire -> INFO 09c KAFKA: file is logger.go , func is  fire()
+2019-04-10 09:49:40.395 UTC [orderer.consensus.kafka] Printf -> INFO 09d KAFKA: file is logger.go , func is  Printf()
+2019-04-10 09:49:40.395 UTC [orderer.consensus.kafka] print -> INFO 09e KAFKA: file is logger.go , func is  print()
+2019-04-10 09:49:40.395 UTC [orderer.consensus.kafka] fire -> INFO 09f KAFKA: file is logger.go , func is  fire()
+2019-04-10 09:49:40.406 UTC [orderer.consensus.kafka] Printf -> INFO 0a0 KAFKA: file is logger.go , func is  Printf()
+2019-04-10 09:49:40.406 UTC [orderer.consensus.kafka] print -> INFO 0a1 KAFKA: file is logger.go , func is  print()
+2019-04-10 09:49:40.406 UTC [orderer.consensus.kafka] fire -> INFO 0a2 KAFKA: file is logger.go , func is  fire()
+2019-04-10 09:49:40.406 UTC [orderer.consensus.kafka] Printf -> INFO 0a3 KAFKA: file is logger.go , func is  Printf()
+2019-04-10 09:49:40.406 UTC [orderer.consensus.kafka] print -> INFO 0a4 KAFKA: file is logger.go , func is  print()
+2019-04-10 09:49:40.406 UTC [orderer.consensus.kafka] fire -> INFO 0a5 KAFKA: file is logger.go , func is  fire()
+2019-04-10 09:49:40.406 UTC [orderer.consensus.kafka] Printf -> INFO 0a6 KAFKA: file is logger.go , func is  Printf()
+2019-04-10 09:49:40.406 UTC [orderer.consensus.kafka] print -> INFO 0a7 KAFKA: file is logger.go , func is  print()
+2019-04-10 09:49:40.406 UTC [orderer.consensus.kafka] fire -> INFO 0a8 KAFKA: file is logger.go , func is  fire()
+2019-04-10 09:49:40.406 UTC [orderer.consensus.kafka] Printf -> INFO 0a9 KAFKA: file is logger.go , func is  Printf()
+2019-04-10 09:49:40.406 UTC [orderer.consensus.kafka] print -> INFO 0aa KAFKA: file is logger.go , func is  print()
+2019-04-10 09:49:40.406 UTC [orderer.consensus.kafka] fire -> INFO 0ab KAFKA: file is logger.go , func is  fire()
+2019-04-10 09:49:40.406 UTC [orderer.consensus.kafka] Println -> INFO 0ac KAFKA: file is logger.go , func is  Println()
+2019-04-10 09:49:40.406 UTC [orderer.consensus.kafka] print -> INFO 0ad KAFKA: file is logger.go , func is  print()
+2019-04-10 09:49:40.406 UTC [orderer.consensus.kafka] fire -> INFO 0ae KAFKA: file is logger.go , func is  fire()
+2019-04-10 09:49:40.406 UTC [orderer.consensus.kafka] topic -> INFO 0af KAFKA: file is channel.go , func is  topic()
+2019-04-10 09:49:40.406 UTC [orderer.consensus.kafka] topic -> INFO 0b0 KAFKA: file is channel.go , func is  topic()
+2019-04-10 09:49:40.406 UTC [orderer.consensus.kafka] startThread -> INFO 0b1 [channel: testchainid] Parent consumer set up successfully
+2019-04-10 09:49:40.406 UTC [orderer.consensus.kafka] retryOptions -> INFO 0b2 KAFKA: file is consenter.go , func is  retryOptions()
+2019-04-10 09:49:40.406 UTC [orderer.consensus.kafka] setupChannelConsumerForChannel -> INFO 0b3 KAFKA: file is chain.go , func is  setupChannelConsumerForChannel()
+2019-04-10 09:49:40.406 UTC [orderer.consensus.kafka] topic -> INFO 0b4 KAFKA: file is channel.go , func is  topic()
+2019-04-10 09:49:40.406 UTC [orderer.consensus.kafka] setupChannelConsumerForChannel -> INFO 0b5 [channel: testchainid] Setting up the channel consumer for this channel (start offset: -2)...
+2019-04-10 09:49:40.406 UTC [orderer.consensus.kafka] newRetryProcess -> INFO 0b6 KAFKA: file is retry.go , func is  newRetryProcess()
+2019-04-10 09:49:40.406 UTC [orderer.consensus.kafka] retry -> INFO 0b7 KAFKA: file is retry.go , func is  retry()
+2019-04-10 09:49:40.406 UTC [orderer.consensus.kafka] try -> INFO 0b8 KAFKA: file is retry.go , func is try()
+2019-04-10 09:49:40.406 UTC [orderer.consensus.kafka] topic -> INFO 0b9 KAFKA: file is channel.go , func is  topic()
+2019-04-10 09:49:40.406 UTC [orderer.consensus.kafka] topic -> INFO 0ba KAFKA: file is channel.go , func is  topic()
+2019-04-10 09:49:40.406 UTC [orderer.consensus.kafka] partition -> INFO 0bb KAFKA: file is channel.go , func is  partition()
+2019-04-10 09:49:40.406 UTC [orderer.consensus.kafka] Println -> INFO 0bc KAFKA: file is logger.go , func is  Println()
+2019-04-10 09:49:40.406 UTC [orderer.consensus.kafka] print -> INFO 0bd KAFKA: file is logger.go , func is  print()
+2019-04-10 09:49:40.406 UTC [orderer.consensus.kafka] fire -> INFO 0be KAFKA: file is logger.go , func is  fire()
+2019-04-10 09:49:40.407 UTC [orderer.consensus.kafka] Printf -> INFO 0bf KAFKA: file is logger.go , func is  Printf()
+2019-04-10 09:49:40.407 UTC [orderer.consensus.kafka] print -> INFO 0c0 KAFKA: file is logger.go , func is  print()
+2019-04-10 09:49:40.407 UTC [orderer.consensus.kafka] fire -> INFO 0c1 KAFKA: file is logger.go , func is  fire()
+2019-04-10 09:49:40.413 UTC [orderer.consensus.kafka] topic -> INFO 0c2 KAFKA: file is channel.go , func is  topic()
+2019-04-10 09:49:40.413 UTC [orderer.consensus.kafka] topic -> INFO 0c3 KAFKA: file is channel.go , func is  topic()
+2019-04-10 09:49:40.413 UTC [orderer.consensus.kafka] startThread -> INFO 0c4 [channel: testchainid] Channel consumer set up successfully
+2019-04-10 09:49:40.413 UTC [orderer.consensus.kafka] retryOptions -> INFO 0c5 KAFKA: file is consenter.go , func is  retryOptions()
+2019-04-10 09:49:40.413 UTC [orderer.consensus.kafka] Printf -> INFO 0c6 KAFKA: file is logger.go , func is  Printf()
+2019-04-10 09:49:40.413 UTC [orderer.consensus.kafka] getHealthyClusterReplicaInfo -> INFO 0c7 KAFKA: file is chain.go , func is  getHealthyClusterReplicaInfo()
+2019-04-10 09:49:40.413 UTC [orderer.consensus.kafka] print -> INFO 0c8 KAFKA: file is logger.go , func is  print()
+2019-04-10 09:49:40.413 UTC [orderer.consensus.kafka] fire -> INFO 0ca KAFKA: file is logger.go , func is  fire()
+2019-04-10 09:49:40.413 UTC [orderer.consensus.kafka] newRetryProcess -> INFO 0c9 KAFKA: file is retry.go , func is  newRetryProcess()
+2019-04-10 09:49:40.413 UTC [orderer.consensus.kafka] retry -> INFO 0cb KAFKA: file is retry.go , func is  retry()
+2019-04-10 09:49:40.413 UTC [orderer.consensus.kafka] try -> INFO 0cc KAFKA: file is retry.go , func is try()
+2019-04-10 09:49:40.413 UTC [orderer.consensus.kafka] topic -> INFO 0cd KAFKA: file is channel.go , func is  topic()
+2019-04-10 09:49:40.413 UTC [orderer.consensus.kafka] Println -> INFO 0ce KAFKA: file is logger.go , func is  Println()
+2019-04-10 09:49:40.413 UTC [orderer.consensus.kafka] print -> INFO 0cf KAFKA: file is logger.go , func is  print()
+2019-04-10 09:49:40.413 UTC [orderer.consensus.kafka] fire -> INFO 0d0 KAFKA: file is logger.go , func is  fire()
+2019-04-10 09:49:40.413 UTC [orderer.consensus.kafka] Println -> INFO 0d1 KAFKA: file is logger.go , func is  Println()
+2019-04-10 09:49:40.413 UTC [orderer.consensus.kafka] print -> INFO 0d2 KAFKA: file is logger.go , func is  print()
+2019-04-10 09:49:40.413 UTC [orderer.consensus.kafka] fire -> INFO 0d3 KAFKA: file is logger.go , func is  fire()
+2019-04-10 09:49:40.413 UTC [orderer.consensus.kafka] Println -> INFO 0d4 KAFKA: file is logger.go , func is  Println()
+2019-04-10 09:49:40.413 UTC [orderer.consensus.kafka] print -> INFO 0d5 KAFKA: file is logger.go , func is  print()
+2019-04-10 09:49:40.413 UTC [orderer.consensus.kafka] fire -> INFO 0d6 KAFKA: file is logger.go , func is  fire()
+2019-04-10 09:49:40.413 UTC [orderer.consensus.kafka] Printf -> INFO 0d7 KAFKA: file is logger.go , func is  Printf()
+2019-04-10 09:49:40.413 UTC [orderer.consensus.kafka] print -> INFO 0d8 KAFKA: file is logger.go , func is  print()
+2019-04-10 09:49:40.413 UTC [orderer.consensus.kafka] fire -> INFO 0d9 KAFKA: file is logger.go , func is  fire()
+2019-04-10 09:49:40.414 UTC [orderer.consensus.kafka] Printf -> INFO 0da KAFKA: file is logger.go , func is  Printf()
+2019-04-10 09:49:40.414 UTC [orderer.consensus.kafka] print -> INFO 0db KAFKA: file is logger.go , func is  print()
+2019-04-10 09:49:40.414 UTC [orderer.consensus.kafka] fire -> INFO 0dc KAFKA: file is logger.go , func is  fire()
+2019-04-10 09:49:40.415 UTC [orderer.consensus.kafka] Printf -> INFO 0dd KAFKA: file is logger.go , func is  Printf()
+2019-04-10 09:49:40.415 UTC [orderer.consensus.kafka] print -> INFO 0de KAFKA: file is logger.go , func is  print()
+2019-04-10 09:49:40.415 UTC [orderer.consensus.kafka] fire -> INFO 0df KAFKA: file is logger.go , func is  fire()
+2019-04-10 09:49:40.415 UTC [orderer.consensus.kafka] Printf -> INFO 0e0 KAFKA: file is logger.go , func is  Printf()
+2019-04-10 09:49:40.415 UTC [orderer.consensus.kafka] print -> INFO 0e1 KAFKA: file is logger.go , func is  print()
+2019-04-10 09:49:40.415 UTC [orderer.consensus.kafka] fire -> INFO 0e2 KAFKA: file is logger.go , func is  fire()
+2019-04-10 09:49:40.415 UTC [orderer.consensus.kafka] Printf -> INFO 0e3 KAFKA: file is logger.go , func is  Printf()
+2019-04-10 09:49:40.415 UTC [orderer.consensus.kafka] print -> INFO 0e4 KAFKA: file is logger.go , func is  print()
+2019-04-10 09:49:40.415 UTC [orderer.consensus.kafka] fire -> INFO 0e5 KAFKA: file is logger.go , func is  fire()
+2019-04-10 09:49:40.415 UTC [orderer.consensus.kafka] Printf -> INFO 0e6 KAFKA: file is logger.go , func is  Printf()
+2019-04-10 09:49:40.415 UTC [orderer.consensus.kafka] print -> INFO 0e7 KAFKA: file is logger.go , func is  print()
+2019-04-10 09:49:40.415 UTC [orderer.consensus.kafka] fire -> INFO 0e8 KAFKA: file is logger.go , func is  fire()
+2019-04-10 09:49:40.415 UTC [orderer.consensus.kafka] Println -> INFO 0e9 KAFKA: file is logger.go , func is  Println()
+2019-04-10 09:49:40.416 UTC [orderer.consensus.kafka] print -> INFO 0ea KAFKA: file is logger.go , func is  print()
+2019-04-10 09:49:40.416 UTC [orderer.consensus.kafka] fire -> INFO 0eb KAFKA: file is logger.go , func is  fire()
+2019-04-10 09:49:40.416 UTC [orderer.consensus.kafka] topic -> INFO 0ec KAFKA: file is channel.go , func is  topic()
+2019-04-10 09:49:40.416 UTC [orderer.consensus.kafka] partition -> INFO 0ed KAFKA: file is channel.go , func is  partition()
+2019-04-10 09:49:40.416 UTC [orderer.consensus.kafka] Println -> INFO 0ee KAFKA: file is logger.go , func is  Println()
+2019-04-10 09:49:40.416 UTC [orderer.consensus.kafka] print -> INFO 0ef KAFKA: file is logger.go , func is  print()
+2019-04-10 09:49:40.416 UTC [orderer.consensus.kafka] fire -> INFO 0f0 KAFKA: file is logger.go , func is  fire()
+2019-04-10 09:49:40.416 UTC [orderer.consensus.kafka] topic -> INFO 0f1 KAFKA: file is channel.go , func is  topic()
+2019-04-10 09:49:40.416 UTC [orderer.consensus.kafka] topic -> INFO 0f2 KAFKA: file is channel.go , func is  topic()
+2019-04-10 09:49:40.416 UTC [orderer.consensus.kafka] startThread -> INFO 0f3 [channel: testchainid] Start phase completed successfully
+2019-04-10 09:49:40.416 UTC [orderer.consensus.kafka] processMessagesToBlocks -> INFO 0f4 KAFKA: file is chain.go , func is  processMessagesToBlocks()
+2019-04-10 09:49:40.416 UTC [orderer.consensus.kafka] topic -> INFO 0f5 KAFKA: file is channel.go , func is  topic()
+2019-04-10 09:49:40.416 UTC [orderer.consensus.kafka] partition -> INFO 0f6 KAFKA: file is channel.go , func is  partition()
+2019-04-10 09:49:40.416 UTC [orderer.consensus.kafka] Printf -> INFO 0f7 KAFKA: file is logger.go , func is  Printf()
+2019-04-10 09:49:40.416 UTC [orderer.consensus.kafka] print -> INFO 0f8 KAFKA: file is logger.go , func is  print()
+2019-04-10 09:49:40.416 UTC [orderer.consensus.kafka] fire -> INFO 0f9 KAFKA: file is logger.go , func is  fire()
+2019-04-10 09:49:40.418 UTC [orderer.consensus.kafka] processConnect -> INFO 0fa KAFKA: file is chain.go , func is  processConnect()
+2019-04-10 09:49:40.895 UTC [orderer.consensus.kafka] processConnect -> INFO 0fb KAFKA: file is chain.go , func is  processConnect()
+2019-04-10 09:49:41.814 UTC [orderer.consensus.kafka] processConnect -> INFO 0fc KAFKA: file is chain.go , func is  processConnect()
+2019-04-10 09:50:02.001 UTC [orderer.consensus.kafka] MigrationStatus -> INFO 0fd KAFKA: file is chain.go , func is  MigrationStatus()
+2019-04-10 09:50:02.032 UTC [orderer.consensus.kafka] WaitReady -> INFO 0fe KAFKA: file is chain.go , func is  WaitReady()
+2019-04-10 09:50:02.033 UTC [orderer.consensus.kafka] doneReprocessing -> INFO 0ff KAFKA: file is chain.go , func is  doneReprocessing()
+2019-04-10 09:50:02.033 UTC [orderer.consensus.kafka] Configure -> INFO 100 KAFKA: file is chain.go , func is  Configure()
+2019-04-10 09:50:02.033 UTC [orderer.consensus.kafka] configure -> INFO 101 KAFKA: file is chain.go , func is  configure()
+2019-04-10 09:50:02.033 UTC [orderer.consensus.kafka] newConfigMessage -> INFO 102 KAFKA: file is chain.go , func is  newConfigMessage()
+2019-04-10 09:50:02.033 UTC [orderer.consensus.kafka] enqueue -> INFO 103 KAFKA: file is chain.go , func is  enqueue()
+2019-04-10 09:50:02.033 UTC [orderer.consensus.kafka] newProducerMessage -> INFO 104 KAFKA: file is chain.go , func is  newProducerMessage()
+2019-04-10 09:50:02.033 UTC [orderer.consensus.kafka] topic -> INFO 105 KAFKA: file is channel.go , func is  topic()
+2019-04-10 09:50:02.033 UTC [orderer.consensus.kafka] partition -> INFO 106 KAFKA: file is channel.go , func is  partition()
+2019-04-10 09:50:02.033 UTC [orderer.consensus.kafka] RequiresConsistency -> INFO 107 KAFKA: file is partitioner.go , func is  RequiresConsistency()
+2019-04-10 09:50:02.033 UTC [orderer.consensus.kafka] Partition -> INFO 108 KAFKA: file is partitioner.go , func is  Partition()
+2019-04-10 09:50:02.041 UTC [orderer.consensus.kafka] processRegular -> INFO 109 KAFKA: file is chain.go , func is  processRegular()
+2019-04-10 09:50:02.041 UTC [orderer.consensus.kafka] processRegular -> WARN 10a [channel: testchainid] This orderer is running in compatibility mode
+2019-04-10 09:50:02.042 UTC [comm.grpc.server] 1 -> INFO 10b streaming call completed grpc.service=orderer.AtomicBroadcast grpc.method=Broadcast grpc.peer_address=192.168.240.12:51594 grpc.code=OK grpc.call_duration=41.974357ms
+2019-04-10 09:50:02.043 UTC [comm.grpc.server] 1 -> INFO 10c streaming call completed grpc.service=orderer.AtomicBroadcast grpc.method=Deliver grpc.peer_address=192.168.240.12:51592 grpc.code=OK grpc.call_duration=44.493861ms
+2019-04-10 09:50:02.066 UTC [orderer.commmon.multichannel] newChainSupport -> INFO 10d start
+2019-04-10 09:50:02.066 UTC [orderer.commmon.multichannel] newChainSupport -> INFO 10e consenters key solo
+2019-04-10 09:50:02.066 UTC [orderer.commmon.multichannel] newChainSupport -> INFO 10f start
+2019-04-10 09:50:02.066 UTC [orderer.commmon.multichannel] newChainSupport -> INFO 110 consenters key elastico
+2019-04-10 09:50:02.066 UTC [orderer.commmon.multichannel] newChainSupport -> INFO 111 start
+2019-04-10 09:50:02.066 UTC [orderer.commmon.multichannel] newChainSupport -> INFO 112 consenters key kafka
+2019-04-10 09:50:02.066 UTC [orderer.consensus.kafka] HandleChain -> INFO 113 KAFKA: file is consenter.go , func is  HandleChain()
+2019-04-10 09:50:02.066 UTC [orderer.consensus.kafka] getOffsets -> INFO 114 KAFKA: file is chain.go , func is  getOffsets()
+2019-04-10 09:50:02.066 UTC [orderer.consensus.kafka] newChain -> INFO 115 KAFKA: file is chain.go , func is newChain()
+2019-04-10 09:50:02.066 UTC [orderer.consensus.kafka] getLastCutBlockNumber -> INFO 116 KAFKA: file is chain.go , func is  getLastCutBlockNumber()
+2019-04-10 09:50:02.066 UTC [orderer.consensus.kafka] newChain -> INFO 117 [channel: mychannel] Starting chain with last persisted offset -3 and last recorded block [0]
+2019-04-10 09:50:02.066 UTC [orderer.consensus.kafka] newChannel -> INFO 118 KAFKA: file is channel.go , func is  newChannel()
+2019-04-10 09:50:02.066 UTC [orderer.consensus.kafka] String -> INFO 119 KAFKA: file is channel.go , func is  String()
+2019-04-10 09:50:02.066 UTC [orderer.commmon.multichannel] newChain -> INFO 11a Created and starting new chain mychannel
+2019-04-10 09:50:02.066 UTC [orderer.consensus.kafka] Start -> INFO 11b KAFKA: file is chain.go , func is  Start()
+2019-04-10 09:50:02.066 UTC [orderer.consensus.kafka] startThread -> INFO 11c KAFKA: file is chain.go , func is  startThread()
+2019-04-10 09:50:02.066 UTC [orderer.consensus.kafka] retryOptions -> INFO 11d KAFKA: file is consenter.go , func is  retryOptions()
+2019-04-10 09:50:02.066 UTC [orderer.consensus.kafka] brokerConfig -> INFO 11e KAFKA: file is consenter.go , func is  brokerConfig()
+2019-04-10 09:50:02.066 UTC [orderer.consensus.kafka] topicDetail -> INFO 11f KAFKA: file is consenter.go , func is  topicDetail()
+2019-04-10 09:50:02.066 UTC [orderer.consensus.kafka] setupTopicForChannel -> INFO 120 KAFKA: file is chain.go , func is  setupTopicForChannel()
+2019-04-10 09:50:02.066 UTC [orderer.consensus.kafka] topic -> INFO 121 KAFKA: file is channel.go , func is  topic()
+2019-04-10 09:50:02.066 UTC [orderer.consensus.kafka] setupTopicForChannel -> INFO 122 [channel: mychannel] Setting up the topic for this channel...
+2019-04-10 09:50:02.066 UTC [orderer.consensus.kafka] topic -> INFO 123 KAFKA: file is channel.go , func is  topic()
+2019-04-10 09:50:02.066 UTC [orderer.consensus.kafka] String -> INFO 124 KAFKA: file is channel.go , func is  String()
+2019-04-10 09:50:02.066 UTC [orderer.consensus.kafka] newRetryProcess -> INFO 125 KAFKA: file is retry.go , func is  newRetryProcess()
+2019-04-10 09:50:02.066 UTC [orderer.consensus.kafka] retry -> INFO 126 KAFKA: file is retry.go , func is  retry()
+2019-04-10 09:50:02.066 UTC [orderer.consensus.kafka] try -> INFO 127 KAFKA: file is retry.go , func is try()
+2019-04-10 09:50:02.066 UTC [orderer.consensus.kafka] topic -> INFO 128 KAFKA: file is channel.go , func is  topic()
+2019-04-10 09:50:02.066 UTC [orderer.consensus.kafka] Println -> INFO 129 KAFKA: file is logger.go , func is  Println()
+2019-04-10 09:50:02.066 UTC [orderer.consensus.kafka] print -> INFO 12a KAFKA: file is logger.go , func is  print()
+2019-04-10 09:50:02.066 UTC [orderer.consensus.kafka] fire -> INFO 12b KAFKA: file is logger.go , func is  fire()
+2019-04-10 09:50:02.067 UTC [orderer.consensus.kafka] Printf -> INFO 12c KAFKA: file is logger.go , func is  Printf()
+2019-04-10 09:50:02.067 UTC [orderer.consensus.kafka] print -> INFO 12d KAFKA: file is logger.go , func is  print()
+2019-04-10 09:50:02.067 UTC [orderer.consensus.kafka] fire -> INFO 12e KAFKA: file is logger.go , func is  fire()
+2019-04-10 09:50:02.067 UTC [orderer.consensus.kafka] topic -> INFO 12f KAFKA: file is channel.go , func is  topic()
+2019-04-10 09:50:02.244 UTC [orderer.consensus.kafka] Errored -> INFO 130 KAFKA: file is chain.go , func is Errored()
+2019-04-10 09:50:02.244 UTC [common.deliver] deliverBlocks -> WARN 131 [channel: mychannel] Rejecting deliver request for 192.168.240.12:51596 because of consenter error
+2019-04-10 09:50:02.244 UTC [comm.grpc.server] 1 -> INFO 132 streaming call completed grpc.service=orderer.AtomicBroadcast grpc.method=Deliver grpc.peer_address=192.168.240.12:51596 grpc.code=OK grpc.call_duration=200.326981ms
+2019-04-10 09:50:02.250 UTC [orderer.consensus.kafka] topic -> INFO 133 KAFKA: file is channel.go , func is  topic()
+2019-04-10 09:50:02.250 UTC [orderer.consensus.kafka] Printf -> INFO 134 KAFKA: file is logger.go , func is  Printf()
+2019-04-10 09:50:02.250 UTC [orderer.consensus.kafka] print -> INFO 135 KAFKA: file is logger.go , func is  print()
+2019-04-10 09:50:02.250 UTC [orderer.consensus.kafka] fire -> INFO 136 KAFKA: file is logger.go , func is  fire()
+2019-04-10 09:50:02.250 UTC [orderer.consensus.kafka] topic -> INFO 137 KAFKA: file is channel.go , func is  topic()
+2019-04-10 09:50:02.250 UTC [orderer.consensus.kafka] retryOptions -> INFO 138 KAFKA: file is consenter.go , func is  retryOptions()
+2019-04-10 09:50:02.250 UTC [orderer.consensus.kafka] brokerConfig -> INFO 139 KAFKA: file is consenter.go , func is  brokerConfig()
+2019-04-10 09:50:02.250 UTC [orderer.consensus.kafka] setupProducerForChannel -> INFO 13a KAFKA: file is chain.go , func is  setupProducerForChannel()
+2019-04-10 09:50:02.250 UTC [orderer.consensus.kafka] topic -> INFO 13b KAFKA: file is channel.go , func is  topic()
+2019-04-10 09:50:02.250 UTC [orderer.consensus.kafka] setupProducerForChannel -> INFO 13c [channel: mychannel] Setting up the producer for this channel...
+2019-04-10 09:50:02.250 UTC [orderer.consensus.kafka] newRetryProcess -> INFO 13d KAFKA: file is retry.go , func is  newRetryProcess()
+2019-04-10 09:50:02.250 UTC [orderer.consensus.kafka] retry -> INFO 13e KAFKA: file is retry.go , func is  retry()
+2019-04-10 09:50:02.250 UTC [orderer.consensus.kafka] try -> INFO 13f KAFKA: file is retry.go , func is try()
+2019-04-10 09:50:02.250 UTC [orderer.consensus.kafka] topic -> INFO 140 KAFKA: file is channel.go , func is  topic()
+2019-04-10 09:50:02.250 UTC [orderer.consensus.kafka] Println -> INFO 141 KAFKA: file is logger.go , func is  Println()
+2019-04-10 09:50:02.250 UTC [orderer.consensus.kafka] print -> INFO 142 KAFKA: file is logger.go , func is  print()
+2019-04-10 09:50:02.250 UTC [orderer.consensus.kafka] fire -> INFO 143 KAFKA: file is logger.go , func is  fire()
+2019-04-10 09:50:02.250 UTC [orderer.consensus.kafka] Println -> INFO 144 KAFKA: file is logger.go , func is  Println()
+2019-04-10 09:50:02.250 UTC [orderer.consensus.kafka] print -> INFO 145 KAFKA: file is logger.go , func is  print()
+2019-04-10 09:50:02.250 UTC [orderer.consensus.kafka] fire -> INFO 146 KAFKA: file is logger.go , func is  fire()
+2019-04-10 09:50:02.250 UTC [orderer.consensus.kafka] Println -> INFO 147 KAFKA: file is logger.go , func is  Println()
+2019-04-10 09:50:02.250 UTC [orderer.consensus.kafka] print -> INFO 148 KAFKA: file is logger.go , func is  print()
+2019-04-10 09:50:02.251 UTC [orderer.consensus.kafka] fire -> INFO 149 KAFKA: file is logger.go , func is  fire()
+2019-04-10 09:50:02.251 UTC [orderer.consensus.kafka] Printf -> INFO 14a KAFKA: file is logger.go , func is  Printf()
+2019-04-10 09:50:02.251 UTC [orderer.consensus.kafka] print -> INFO 14b KAFKA: file is logger.go , func is  print()
+2019-04-10 09:50:02.251 UTC [orderer.consensus.kafka] fire -> INFO 14c KAFKA: file is logger.go , func is  fire()
+2019-04-10 09:50:02.251 UTC [orderer.consensus.kafka] Printf -> INFO 14d KAFKA: file is logger.go , func is  Printf()
+2019-04-10 09:50:02.251 UTC [orderer.consensus.kafka] print -> INFO 14e KAFKA: file is logger.go , func is  print()
+2019-04-10 09:50:02.251 UTC [orderer.consensus.kafka] fire -> INFO 14f KAFKA: file is logger.go , func is  fire()
+2019-04-10 09:50:02.259 UTC [orderer.consensus.kafka] Printf -> INFO 150 KAFKA: file is logger.go , func is  Printf()
+2019-04-10 09:50:02.260 UTC [orderer.consensus.kafka] print -> INFO 151 KAFKA: file is logger.go , func is  print()
+2019-04-10 09:50:02.260 UTC [orderer.consensus.kafka] fire -> INFO 152 KAFKA: file is logger.go , func is  fire()
+2019-04-10 09:50:02.260 UTC [orderer.consensus.kafka] Printf -> INFO 153 KAFKA: file is logger.go , func is  Printf()
+2019-04-10 09:50:02.260 UTC [orderer.consensus.kafka] print -> INFO 154 KAFKA: file is logger.go , func is  print()
+2019-04-10 09:50:02.260 UTC [orderer.consensus.kafka] fire -> INFO 155 KAFKA: file is logger.go , func is  fire()
+2019-04-10 09:50:02.260 UTC [orderer.consensus.kafka] Printf -> INFO 156 KAFKA: file is logger.go , func is  Printf()
+2019-04-10 09:50:02.260 UTC [orderer.consensus.kafka] print -> INFO 157 KAFKA: file is logger.go , func is  print()
+2019-04-10 09:50:02.260 UTC [orderer.consensus.kafka] fire -> INFO 158 KAFKA: file is logger.go , func is  fire()
+2019-04-10 09:50:02.260 UTC [orderer.consensus.kafka] Printf -> INFO 159 KAFKA: file is logger.go , func is  Printf()
+2019-04-10 09:50:02.260 UTC [orderer.consensus.kafka] print -> INFO 15a KAFKA: file is logger.go , func is  print()
+2019-04-10 09:50:02.260 UTC [orderer.consensus.kafka] fire -> INFO 15b KAFKA: file is logger.go , func is  fire()
+2019-04-10 09:50:02.260 UTC [orderer.consensus.kafka] Println -> INFO 15c KAFKA: file is logger.go , func is  Println()
+2019-04-10 09:50:02.260 UTC [orderer.consensus.kafka] print -> INFO 15d KAFKA: file is logger.go , func is  print()
+2019-04-10 09:50:02.260 UTC [orderer.consensus.kafka] fire -> INFO 15e KAFKA: file is logger.go , func is  fire()
+2019-04-10 09:50:02.260 UTC [orderer.consensus.kafka] topic -> INFO 15f KAFKA: file is channel.go , func is  topic()
+2019-04-10 09:50:02.260 UTC [orderer.consensus.kafka] startThread -> INFO 160 [channel: mychannel] Producer set up successfully
+2019-04-10 09:50:02.260 UTC [orderer.consensus.kafka] retryOptions -> INFO 161 KAFKA: file is consenter.go , func is  retryOptions()
+2019-04-10 09:50:02.260 UTC [orderer.consensus.kafka] sendConnectMessage -> INFO 162 KAFKA: file is chain.go , func is  sendConnectMessage()
+2019-04-10 09:50:02.260 UTC [orderer.consensus.kafka] topic -> INFO 163 KAFKA: file is channel.go , func is  topic()
+2019-04-10 09:50:02.260 UTC [orderer.consensus.kafka] sendConnectMessage -> INFO 164 [channel: mychannel] About to post the CONNECT message...
+2019-04-10 09:50:02.260 UTC [orderer.consensus.kafka] newConnectMessage -> INFO 165 KAFKA: file is chain.go , func is  newConnectMessage()
+2019-04-10 09:50:02.260 UTC [orderer.consensus.kafka] newProducerMessage -> INFO 166 KAFKA: file is chain.go , func is  newProducerMessage()
+2019-04-10 09:50:02.260 UTC [orderer.consensus.kafka] topic -> INFO 167 KAFKA: file is channel.go , func is  topic()
+2019-04-10 09:50:02.260 UTC [orderer.consensus.kafka] partition -> INFO 168 KAFKA: file is channel.go , func is  partition()
+2019-04-10 09:50:02.260 UTC [orderer.consensus.kafka] newRetryProcess -> INFO 169 KAFKA: file is retry.go , func is  newRetryProcess()
+2019-04-10 09:50:02.260 UTC [orderer.consensus.kafka] retry -> INFO 16a KAFKA: file is retry.go , func is  retry()
+2019-04-10 09:50:02.260 UTC [orderer.consensus.kafka] try -> INFO 16b KAFKA: file is retry.go , func is try()
+2019-04-10 09:50:02.260 UTC [orderer.consensus.kafka] topic -> INFO 16c KAFKA: file is channel.go , func is  topic()
+2019-04-10 09:50:02.260 UTC [orderer.consensus.kafka] RequiresConsistency -> INFO 16d KAFKA: file is partitioner.go , func is  RequiresConsistency()
+2019-04-10 09:50:02.260 UTC [orderer.consensus.kafka] Printf -> INFO 16e KAFKA: file is logger.go , func is  Printf()
+2019-04-10 09:50:02.260 UTC [orderer.consensus.kafka] print -> INFO 16f KAFKA: file is logger.go , func is  print()
+2019-04-10 09:50:02.260 UTC [orderer.consensus.kafka] fire -> INFO 170 KAFKA: file is logger.go , func is  fire()
+2019-04-10 09:50:02.388 UTC [orderer.consensus.kafka] Println -> INFO 171 KAFKA: file is logger.go , func is  Println()
+2019-04-10 09:50:02.388 UTC [orderer.consensus.kafka] print -> INFO 172 KAFKA: file is logger.go , func is  print()
+2019-04-10 09:50:02.388 UTC [orderer.consensus.kafka] fire -> INFO 173 KAFKA: file is logger.go , func is  fire()
+2019-04-10 09:50:02.388 UTC [orderer.consensus.kafka] Printf -> INFO 174 KAFKA: file is logger.go , func is  Printf()
+2019-04-10 09:50:02.388 UTC [orderer.consensus.kafka] print -> INFO 175 KAFKA: file is logger.go , func is  print()
+2019-04-10 09:50:02.388 UTC [orderer.consensus.kafka] fire -> INFO 176 KAFKA: file is logger.go , func is  fire()
+2019-04-10 09:50:02.445 UTC [orderer.consensus.kafka] Errored -> INFO 177 KAFKA: file is chain.go , func is Errored()
+2019-04-10 09:50:02.446 UTC [common.deliver] deliverBlocks -> WARN 178 [channel: mychannel] Rejecting deliver request for 192.168.240.12:51606 because of consenter error
+2019-04-10 09:50:02.446 UTC [comm.grpc.server] 1 -> INFO 179 streaming call completed grpc.service=orderer.AtomicBroadcast grpc.method=Deliver grpc.peer_address=192.168.240.12:51606 grpc.code=OK grpc.call_duration=200.528862ms
+2019-04-10 09:50:02.638 UTC [orderer.consensus.kafka] Printf -> INFO 17a KAFKA: file is logger.go , func is  Printf()
+2019-04-10 09:50:02.638 UTC [orderer.consensus.kafka] print -> INFO 17b KAFKA: file is logger.go , func is  print()
+2019-04-10 09:50:02.638 UTC [orderer.consensus.kafka] fire -> INFO 17c KAFKA: file is logger.go , func is  fire()
+2019-04-10 09:50:02.639 UTC [orderer.consensus.kafka] Partition -> INFO 17d KAFKA: file is partitioner.go , func is  Partition()
+2019-04-10 09:50:02.639 UTC [orderer.consensus.kafka] Println -> INFO 17e KAFKA: file is logger.go , func is  Println()
+2019-04-10 09:50:02.639 UTC [orderer.consensus.kafka] print -> INFO 17f KAFKA: file is logger.go , func is  print()
+2019-04-10 09:50:02.640 UTC [orderer.consensus.kafka] fire -> INFO 180 KAFKA: file is logger.go , func is  fire()
+2019-04-10 09:50:02.640 UTC [orderer.consensus.kafka] Printf -> INFO 181 KAFKA: file is logger.go , func is  Printf()
+2019-04-10 09:50:02.640 UTC [orderer.consensus.kafka] print -> INFO 182 KAFKA: file is logger.go , func is  print()
+2019-04-10 09:50:02.640 UTC [orderer.consensus.kafka] fire -> INFO 183 KAFKA: file is logger.go , func is  fire()
+2019-04-10 09:50:02.640 UTC [orderer.consensus.kafka] Printf -> INFO 184 KAFKA: file is logger.go , func is  Printf()
+2019-04-10 09:50:02.640 UTC [orderer.consensus.kafka] print -> INFO 185 KAFKA: file is logger.go , func is  print()
+2019-04-10 09:50:02.640 UTC [orderer.consensus.kafka] fire -> INFO 186 KAFKA: file is logger.go , func is  fire()
+2019-04-10 09:50:02.640 UTC [orderer.consensus.kafka] Printf -> INFO 187 KAFKA: file is logger.go , func is  Printf()
+2019-04-10 09:50:02.640 UTC [orderer.consensus.kafka] print -> INFO 188 KAFKA: file is logger.go , func is  print()
+2019-04-10 09:50:02.640 UTC [orderer.consensus.kafka] fire -> INFO 189 KAFKA: file is logger.go , func is  fire()
+2019-04-10 09:50:02.648 UTC [orderer.consensus.kafka] Errored -> INFO 18a KAFKA: file is chain.go , func is Errored()
+2019-04-10 09:50:02.648 UTC [common.deliver] deliverBlocks -> WARN 18b [channel: mychannel] Rejecting deliver request for 192.168.240.12:51614 because of consenter error
+2019-04-10 09:50:02.648 UTC [comm.grpc.server] 1 -> INFO 18c streaming call completed grpc.service=orderer.AtomicBroadcast grpc.method=Deliver grpc.peer_address=192.168.240.12:51614 grpc.code=OK grpc.call_duration=199.749029ms
+2019-04-10 09:50:02.849 UTC [orderer.consensus.kafka] Errored -> INFO 18d KAFKA: file is chain.go , func is Errored()
+2019-04-10 09:50:02.849 UTC [common.deliver] deliverBlocks -> WARN 18e [channel: mychannel] Rejecting deliver request for 192.168.240.12:51622 because of consenter error
+2019-04-10 09:50:02.849 UTC [comm.grpc.server] 1 -> INFO 18f streaming call completed grpc.service=orderer.AtomicBroadcast grpc.method=Deliver grpc.peer_address=192.168.240.12:51622 grpc.code=OK grpc.call_duration=200.476917ms
+2019-04-10 09:50:03.052 UTC [orderer.consensus.kafka] Errored -> INFO 190 KAFKA: file is chain.go , func is Errored()
+2019-04-10 09:50:03.052 UTC [common.deliver] deliverBlocks -> WARN 191 [channel: mychannel] Rejecting deliver request for 192.168.240.12:51624 because of consenter error
+2019-04-10 09:50:03.052 UTC [comm.grpc.server] 1 -> INFO 192 streaming call completed grpc.service=orderer.AtomicBroadcast grpc.method=Deliver grpc.peer_address=192.168.240.12:51624 grpc.code=OK grpc.call_duration=200.530134ms
+2019-04-10 09:50:03.254 UTC [orderer.consensus.kafka] Errored -> INFO 193 KAFKA: file is chain.go , func is Errored()
+2019-04-10 09:50:03.254 UTC [common.deliver] deliverBlocks -> WARN 194 [channel: mychannel] Rejecting deliver request for 192.168.240.12:51626 because of consenter error
+2019-04-10 09:50:03.254 UTC [comm.grpc.server] 1 -> INFO 195 streaming call completed grpc.service=orderer.AtomicBroadcast grpc.method=Deliver grpc.peer_address=192.168.240.12:51626 grpc.code=OK grpc.call_duration=200.610192ms
+2019-04-10 09:50:03.455 UTC [orderer.consensus.kafka] Errored -> INFO 196 KAFKA: file is chain.go , func is Errored()
+2019-04-10 09:50:03.455 UTC [common.deliver] deliverBlocks -> WARN 197 [channel: mychannel] Rejecting deliver request for 192.168.240.12:51628 because of consenter error
+2019-04-10 09:50:03.456 UTC [comm.grpc.server] 1 -> INFO 198 streaming call completed grpc.service=orderer.AtomicBroadcast grpc.method=Deliver grpc.peer_address=192.168.240.12:51628 grpc.code=OK grpc.call_duration=200.358773ms
+2019-04-10 09:50:03.530 UTC [orderer.consensus.kafka] topic -> INFO 199 KAFKA: file is channel.go , func is  topic()
+2019-04-10 09:50:03.530 UTC [orderer.consensus.kafka] topic -> INFO 19a KAFKA: file is channel.go , func is  topic()
+2019-04-10 09:50:03.530 UTC [orderer.consensus.kafka] startThread -> INFO 19b [channel: mychannel] CONNECT message posted successfully
+2019-04-10 09:50:03.530 UTC [orderer.consensus.kafka] retryOptions -> INFO 19c KAFKA: file is consenter.go , func is  retryOptions()
+2019-04-10 09:50:03.530 UTC [orderer.consensus.kafka] brokerConfig -> INFO 19d KAFKA: file is consenter.go , func is  brokerConfig()
+2019-04-10 09:50:03.530 UTC [orderer.consensus.kafka] setupParentConsumerForChannel -> INFO 19e KAFKA: file is chain.go , func is  setupParentConsumerForChannel()
+2019-04-10 09:50:03.530 UTC [orderer.consensus.kafka] topic -> INFO 19f KAFKA: file is channel.go , func is  topic()
+2019-04-10 09:50:03.530 UTC [orderer.consensus.kafka] setupParentConsumerForChannel -> INFO 1a0 [channel: mychannel] Setting up the parent consumer for this channel...
+2019-04-10 09:50:03.530 UTC [orderer.consensus.kafka] newRetryProcess -> INFO 1a1 KAFKA: file is retry.go , func is  newRetryProcess()
+2019-04-10 09:50:03.530 UTC [orderer.consensus.kafka] retry -> INFO 1a2 KAFKA: file is retry.go , func is  retry()
+2019-04-10 09:50:03.530 UTC [orderer.consensus.kafka] try -> INFO 1a3 KAFKA: file is retry.go , func is try()
+2019-04-10 09:50:03.530 UTC [orderer.consensus.kafka] topic -> INFO 1a4 KAFKA: file is channel.go , func is  topic()
+2019-04-10 09:50:03.530 UTC [orderer.consensus.kafka] Println -> INFO 1a5 KAFKA: file is logger.go , func is  Println()
+2019-04-10 09:50:03.530 UTC [orderer.consensus.kafka] print -> INFO 1a6 KAFKA: file is logger.go , func is  print()
+2019-04-10 09:50:03.530 UTC [orderer.consensus.kafka] fire -> INFO 1a7 KAFKA: file is logger.go , func is  fire()
+2019-04-10 09:50:03.530 UTC [orderer.consensus.kafka] Println -> INFO 1a8 KAFKA: file is logger.go , func is  Println()
+2019-04-10 09:50:03.530 UTC [orderer.consensus.kafka] print -> INFO 1a9 KAFKA: file is logger.go , func is  print()
+2019-04-10 09:50:03.530 UTC [orderer.consensus.kafka] fire -> INFO 1aa KAFKA: file is logger.go , func is  fire()
+2019-04-10 09:50:03.530 UTC [orderer.consensus.kafka] Println -> INFO 1ab KAFKA: file is logger.go , func is  Println()
+2019-04-10 09:50:03.530 UTC [orderer.consensus.kafka] print -> INFO 1ac KAFKA: file is logger.go , func is  print()
+2019-04-10 09:50:03.530 UTC [orderer.consensus.kafka] fire -> INFO 1ad KAFKA: file is logger.go , func is  fire()
+2019-04-10 09:50:03.530 UTC [orderer.consensus.kafka] Printf -> INFO 1ae KAFKA: file is logger.go , func is  Printf()
+2019-04-10 09:50:03.530 UTC [orderer.consensus.kafka] print -> INFO 1af KAFKA: file is logger.go , func is  print()
+2019-04-10 09:50:03.530 UTC [orderer.consensus.kafka] fire -> INFO 1b0 KAFKA: file is logger.go , func is  fire()
+2019-04-10 09:50:03.531 UTC [orderer.consensus.kafka] Printf -> INFO 1b1 KAFKA: file is logger.go , func is  Printf()
+2019-04-10 09:50:03.531 UTC [orderer.consensus.kafka] print -> INFO 1b2 KAFKA: file is logger.go , func is  print()
+2019-04-10 09:50:03.531 UTC [orderer.consensus.kafka] fire -> INFO 1b3 KAFKA: file is logger.go , func is  fire()
+2019-04-10 09:50:03.534 UTC [orderer.consensus.kafka] Printf -> INFO 1b4 KAFKA: file is logger.go , func is  Printf()
+2019-04-10 09:50:03.535 UTC [orderer.consensus.kafka] print -> INFO 1b5 KAFKA: file is logger.go , func is  print()
+2019-04-10 09:50:03.535 UTC [orderer.consensus.kafka] fire -> INFO 1b6 KAFKA: file is logger.go , func is  fire()
+2019-04-10 09:50:03.535 UTC [orderer.consensus.kafka] Printf -> INFO 1b7 KAFKA: file is logger.go , func is  Printf()
+2019-04-10 09:50:03.535 UTC [orderer.consensus.kafka] print -> INFO 1b8 KAFKA: file is logger.go , func is  print()
+2019-04-10 09:50:03.535 UTC [orderer.consensus.kafka] fire -> INFO 1b9 KAFKA: file is logger.go , func is  fire()
+2019-04-10 09:50:03.535 UTC [orderer.consensus.kafka] Printf -> INFO 1ba KAFKA: file is logger.go , func is  Printf()
+2019-04-10 09:50:03.535 UTC [orderer.consensus.kafka] print -> INFO 1bb KAFKA: file is logger.go , func is  print()
+2019-04-10 09:50:03.535 UTC [orderer.consensus.kafka] fire -> INFO 1bc KAFKA: file is logger.go , func is  fire()
+2019-04-10 09:50:03.535 UTC [orderer.consensus.kafka] Printf -> INFO 1bd KAFKA: file is logger.go , func is  Printf()
+2019-04-10 09:50:03.535 UTC [orderer.consensus.kafka] print -> INFO 1be KAFKA: file is logger.go , func is  print()
+2019-04-10 09:50:03.535 UTC [orderer.consensus.kafka] fire -> INFO 1bf KAFKA: file is logger.go , func is  fire()
+2019-04-10 09:50:03.535 UTC [orderer.consensus.kafka] Println -> INFO 1c0 KAFKA: file is logger.go , func is  Println()
+2019-04-10 09:50:03.535 UTC [orderer.consensus.kafka] print -> INFO 1c1 KAFKA: file is logger.go , func is  print()
+2019-04-10 09:50:03.535 UTC [orderer.consensus.kafka] fire -> INFO 1c2 KAFKA: file is logger.go , func is  fire()
+2019-04-10 09:50:03.535 UTC [orderer.consensus.kafka] topic -> INFO 1c3 KAFKA: file is channel.go , func is  topic()
+2019-04-10 09:50:03.535 UTC [orderer.consensus.kafka] topic -> INFO 1c4 KAFKA: file is channel.go , func is  topic()
+2019-04-10 09:50:03.535 UTC [orderer.consensus.kafka] startThread -> INFO 1c5 [channel: mychannel] Parent consumer set up successfully
+2019-04-10 09:50:03.535 UTC [orderer.consensus.kafka] retryOptions -> INFO 1c6 KAFKA: file is consenter.go , func is  retryOptions()
+2019-04-10 09:50:03.535 UTC [orderer.consensus.kafka] setupChannelConsumerForChannel -> INFO 1c7 KAFKA: file is chain.go , func is  setupChannelConsumerForChannel()
+2019-04-10 09:50:03.535 UTC [orderer.consensus.kafka] topic -> INFO 1c8 KAFKA: file is channel.go , func is  topic()
+2019-04-10 09:50:03.535 UTC [orderer.consensus.kafka] setupChannelConsumerForChannel -> INFO 1c9 [channel: mychannel] Setting up the channel consumer for this channel (start offset: -2)...
+2019-04-10 09:50:03.535 UTC [orderer.consensus.kafka] newRetryProcess -> INFO 1ca KAFKA: file is retry.go , func is  newRetryProcess()
+2019-04-10 09:50:03.535 UTC [orderer.consensus.kafka] retry -> INFO 1cb KAFKA: file is retry.go , func is  retry()
+2019-04-10 09:50:03.535 UTC [orderer.consensus.kafka] try -> INFO 1cc KAFKA: file is retry.go , func is try()
+2019-04-10 09:50:03.535 UTC [orderer.consensus.kafka] topic -> INFO 1cd KAFKA: file is channel.go , func is  topic()
+2019-04-10 09:50:03.535 UTC [orderer.consensus.kafka] topic -> INFO 1ce KAFKA: file is channel.go , func is  topic()
+2019-04-10 09:50:03.535 UTC [orderer.consensus.kafka] partition -> INFO 1cf KAFKA: file is channel.go , func is  partition()
+2019-04-10 09:50:03.535 UTC [orderer.consensus.kafka] Println -> INFO 1d0 KAFKA: file is logger.go , func is  Println()
+2019-04-10 09:50:03.535 UTC [orderer.consensus.kafka] print -> INFO 1d1 KAFKA: file is logger.go , func is  print()
+2019-04-10 09:50:03.535 UTC [orderer.consensus.kafka] fire -> INFO 1d2 KAFKA: file is logger.go , func is  fire()
+2019-04-10 09:50:03.535 UTC [orderer.consensus.kafka] Printf -> INFO 1d3 KAFKA: file is logger.go , func is  Printf()
+2019-04-10 09:50:03.535 UTC [orderer.consensus.kafka] print -> INFO 1d4 KAFKA: file is logger.go , func is  print()
+2019-04-10 09:50:03.535 UTC [orderer.consensus.kafka] fire -> INFO 1d5 KAFKA: file is logger.go , func is  fire()
+2019-04-10 09:50:03.544 UTC [orderer.consensus.kafka] Printf -> INFO 1d6 KAFKA: file is logger.go , func is  Printf()
+2019-04-10 09:50:03.544 UTC [orderer.consensus.kafka] print -> INFO 1d7 KAFKA: file is logger.go , func is  print()
+2019-04-10 09:50:03.544 UTC [orderer.consensus.kafka] fire -> INFO 1d8 KAFKA: file is logger.go , func is  fire()
+2019-04-10 09:50:03.544 UTC [orderer.consensus.kafka] topic -> INFO 1d9 KAFKA: file is channel.go , func is  topic()
+2019-04-10 09:50:03.544 UTC [orderer.consensus.kafka] topic -> INFO 1da KAFKA: file is channel.go , func is  topic()
+2019-04-10 09:50:03.544 UTC [orderer.consensus.kafka] startThread -> INFO 1db [channel: mychannel] Channel consumer set up successfully
+2019-04-10 09:50:03.544 UTC [orderer.consensus.kafka] retryOptions -> INFO 1dc KAFKA: file is consenter.go , func is  retryOptions()
+2019-04-10 09:50:03.544 UTC [orderer.consensus.kafka] getHealthyClusterReplicaInfo -> INFO 1dd KAFKA: file is chain.go , func is  getHealthyClusterReplicaInfo()
+2019-04-10 09:50:03.544 UTC [orderer.consensus.kafka] newRetryProcess -> INFO 1de KAFKA: file is retry.go , func is  newRetryProcess()
+2019-04-10 09:50:03.544 UTC [orderer.consensus.kafka] retry -> INFO 1df KAFKA: file is retry.go , func is  retry()
+2019-04-10 09:50:03.544 UTC [orderer.consensus.kafka] try -> INFO 1e0 KAFKA: file is retry.go , func is try()
+2019-04-10 09:50:03.544 UTC [orderer.consensus.kafka] topic -> INFO 1e1 KAFKA: file is channel.go , func is  topic()
+2019-04-10 09:50:03.544 UTC [orderer.consensus.kafka] Println -> INFO 1e2 KAFKA: file is logger.go , func is  Println()
+2019-04-10 09:50:03.544 UTC [orderer.consensus.kafka] print -> INFO 1e3 KAFKA: file is logger.go , func is  print()
+2019-04-10 09:50:03.544 UTC [orderer.consensus.kafka] fire -> INFO 1e4 KAFKA: file is logger.go , func is  fire()
+2019-04-10 09:50:03.544 UTC [orderer.consensus.kafka] Println -> INFO 1e5 KAFKA: file is logger.go , func is  Println()
+2019-04-10 09:50:03.544 UTC [orderer.consensus.kafka] print -> INFO 1e6 KAFKA: file is logger.go , func is  print()
+2019-04-10 09:50:03.544 UTC [orderer.consensus.kafka] fire -> INFO 1e7 KAFKA: file is logger.go , func is  fire()
+2019-04-10 09:50:03.544 UTC [orderer.consensus.kafka] Println -> INFO 1e8 KAFKA: file is logger.go , func is  Println()
+2019-04-10 09:50:03.544 UTC [orderer.consensus.kafka] print -> INFO 1e9 KAFKA: file is logger.go , func is  print()
+2019-04-10 09:50:03.544 UTC [orderer.consensus.kafka] fire -> INFO 1ea KAFKA: file is logger.go , func is  fire()
+2019-04-10 09:50:03.544 UTC [orderer.consensus.kafka] Printf -> INFO 1eb KAFKA: file is logger.go , func is  Printf()
+2019-04-10 09:50:03.544 UTC [orderer.consensus.kafka] print -> INFO 1ec KAFKA: file is logger.go , func is  print()
+2019-04-10 09:50:03.544 UTC [orderer.consensus.kafka] fire -> INFO 1ed KAFKA: file is logger.go , func is  fire()
+2019-04-10 09:50:03.545 UTC [orderer.consensus.kafka] Printf -> INFO 1ee KAFKA: file is logger.go , func is  Printf()
+2019-04-10 09:50:03.546 UTC [orderer.consensus.kafka] print -> INFO 1ef KAFKA: file is logger.go , func is  print()
+2019-04-10 09:50:03.546 UTC [orderer.consensus.kafka] fire -> INFO 1f0 KAFKA: file is logger.go , func is  fire()
+2019-04-10 09:50:03.548 UTC [orderer.consensus.kafka] Printf -> INFO 1f1 KAFKA: file is logger.go , func is  Printf()
+2019-04-10 09:50:03.548 UTC [orderer.consensus.kafka] print -> INFO 1f2 KAFKA: file is logger.go , func is  print()
+2019-04-10 09:50:03.548 UTC [orderer.consensus.kafka] fire -> INFO 1f3 KAFKA: file is logger.go , func is  fire()
+2019-04-10 09:50:03.548 UTC [orderer.consensus.kafka] Printf -> INFO 1f4 KAFKA: file is logger.go , func is  Printf()
+2019-04-10 09:50:03.548 UTC [orderer.consensus.kafka] print -> INFO 1f5 KAFKA: file is logger.go , func is  print()
+2019-04-10 09:50:03.548 UTC [orderer.consensus.kafka] fire -> INFO 1f6 KAFKA: file is logger.go , func is  fire()
+2019-04-10 09:50:03.548 UTC [orderer.consensus.kafka] Printf -> INFO 1f7 KAFKA: file is logger.go , func is  Printf()
+2019-04-10 09:50:03.548 UTC [orderer.consensus.kafka] print -> INFO 1f8 KAFKA: file is logger.go , func is  print()
+2019-04-10 09:50:03.548 UTC [orderer.consensus.kafka] fire -> INFO 1f9 KAFKA: file is logger.go , func is  fire()
+2019-04-10 09:50:03.548 UTC [orderer.consensus.kafka] Printf -> INFO 1fa KAFKA: file is logger.go , func is  Printf()
+2019-04-10 09:50:03.548 UTC [orderer.consensus.kafka] print -> INFO 1fb KAFKA: file is logger.go , func is  print()
+2019-04-10 09:50:03.548 UTC [orderer.consensus.kafka] fire -> INFO 1fc KAFKA: file is logger.go , func is  fire()
+2019-04-10 09:50:03.548 UTC [orderer.consensus.kafka] Println -> INFO 1fd KAFKA: file is logger.go , func is  Println()
+2019-04-10 09:50:03.548 UTC [orderer.consensus.kafka] print -> INFO 1fe KAFKA: file is logger.go , func is  print()
+2019-04-10 09:50:03.548 UTC [orderer.consensus.kafka] fire -> INFO 1ff KAFKA: file is logger.go , func is  fire()
+2019-04-10 09:50:03.548 UTC [orderer.consensus.kafka] topic -> INFO 200 KAFKA: file is channel.go , func is  topic()
+2019-04-10 09:50:03.548 UTC [orderer.consensus.kafka] partition -> INFO 201 KAFKA: file is channel.go , func is  partition()
+2019-04-10 09:50:03.548 UTC [orderer.consensus.kafka] Println -> INFO 202 KAFKA: file is logger.go , func is  Println()
+2019-04-10 09:50:03.548 UTC [orderer.consensus.kafka] print -> INFO 203 KAFKA: file is logger.go , func is  print()
+2019-04-10 09:50:03.548 UTC [orderer.consensus.kafka] fire -> INFO 204 KAFKA: file is logger.go , func is  fire()
+2019-04-10 09:50:03.548 UTC [orderer.consensus.kafka] topic -> INFO 205 KAFKA: file is channel.go , func is  topic()
+2019-04-10 09:50:03.548 UTC [orderer.consensus.kafka] topic -> INFO 206 KAFKA: file is channel.go , func is  topic()
+2019-04-10 09:50:03.548 UTC [orderer.consensus.kafka] startThread -> INFO 207 [channel: mychannel] Start phase completed successfully
+2019-04-10 09:50:03.548 UTC [orderer.consensus.kafka] processMessagesToBlocks -> INFO 208 KAFKA: file is chain.go , func is  processMessagesToBlocks()
+2019-04-10 09:50:03.548 UTC [orderer.consensus.kafka] topic -> INFO 209 KAFKA: file is channel.go , func is  topic()
+2019-04-10 09:50:03.549 UTC [orderer.consensus.kafka] partition -> INFO 20a KAFKA: file is channel.go , func is  partition()
+2019-04-10 09:50:03.549 UTC [orderer.consensus.kafka] Printf -> INFO 20b KAFKA: file is logger.go , func is  Printf()
+2019-04-10 09:50:03.549 UTC [orderer.consensus.kafka] print -> INFO 20c KAFKA: file is logger.go , func is  print()
+2019-04-10 09:50:03.549 UTC [orderer.consensus.kafka] fire -> INFO 20d KAFKA: file is logger.go , func is  fire()
+2019-04-10 09:50:03.552 UTC [orderer.consensus.kafka] processConnect -> INFO 20e KAFKA: file is chain.go , func is  processConnect()
+2019-04-10 09:50:03.552 UTC [orderer.consensus.kafka] processConnect -> INFO 20f KAFKA: file is chain.go , func is  processConnect()
+2019-04-10 09:50:03.552 UTC [orderer.consensus.kafka] processConnect -> INFO 210 KAFKA: file is chain.go , func is  processConnect()
+2019-04-10 09:50:03.657 UTC [orderer.consensus.kafka] Errored -> INFO 211 KAFKA: file is chain.go , func is Errored()
+2019-04-10 09:50:03.659 UTC [comm.grpc.server] 1 -> INFO 212 streaming call completed grpc.service=orderer.AtomicBroadcast grpc.method=Deliver grpc.peer_address=192.168.240.12:51630 grpc.code=OK grpc.call_duration=202.506814ms
+2019-04-10 09:50:10.177 UTC [orderer.consensus.kafka] Errored -> INFO 213 KAFKA: file is chain.go , func is Errored()
+2019-04-10 09:50:39.799 UTC [orderer.consensus.kafka] PollGoMetrics -> INFO 214 KAFKA: file is metrics.go , func is  PollGoMetrics()
+2019-04-10 09:50:49.826 UTC [orderer.consensus.kafka] WaitReady -> INFO 215 KAFKA: file is chain.go , func is  WaitReady()
+2019-04-10 09:50:49.826 UTC [orderer.consensus.kafka] doneReprocessing -> INFO 216 KAFKA: file is chain.go , func is  doneReprocessing()
+2019-04-10 09:50:49.826 UTC [orderer.consensus.kafka] Order -> INFO 217 KAFKA: file is chain.go , func is  Order()
+2019-04-10 09:50:49.826 UTC [orderer.consensus.kafka] order -> INFO 218 KAFKA: file is chain.go , func is  order()
+2019-04-10 09:50:49.826 UTC [orderer.consensus.kafka] newNormalMessage -> INFO 219 KAFKA: file is chain.go , func is  newNormalMessage()
+2019-04-10 09:50:49.826 UTC [orderer.consensus.kafka] enqueue -> INFO 21a KAFKA: file is chain.go , func is  enqueue()
+2019-04-10 09:50:49.826 UTC [orderer.consensus.kafka] newProducerMessage -> INFO 21b KAFKA: file is chain.go , func is  newProducerMessage()
+2019-04-10 09:50:49.826 UTC [orderer.consensus.kafka] topic -> INFO 21c KAFKA: file is channel.go , func is  topic()
+2019-04-10 09:50:49.826 UTC [orderer.consensus.kafka] partition -> INFO 21d KAFKA: file is channel.go , func is  partition()
+2019-04-10 09:50:49.826 UTC [orderer.consensus.kafka] RequiresConsistency -> INFO 21e KAFKA: file is partitioner.go , func is  RequiresConsistency()
+2019-04-10 09:50:49.826 UTC [orderer.consensus.kafka] Partition -> INFO 21f KAFKA: file is partitioner.go , func is  Partition()
+2019-04-10 09:50:49.831 UTC [orderer.consensus.kafka] processRegular -> INFO 220 KAFKA: file is chain.go , func is  processRegular()
+2019-04-10 09:50:49.831 UTC [orderer.consensus.kafka] processRegular -> WARN 221 [channel: mychannel] This orderer is running in compatibility mode
+2019-04-10 09:50:49.850 UTC [orderer.common.broadcast] Handle -> WARN 222 Error reading from 192.168.240.16:38740: rpc error: code = Canceled desc = context canceled
+2019-04-10 09:50:49.850 UTC [comm.grpc.server] 1 -> INFO 223 streaming call completed grpc.service=orderer.AtomicBroadcast grpc.method=Broadcast grpc.peer_address=192.168.240.16:38740 error="rpc error: code = Canceled desc = context canceled" grpc.code=Canceled grpc.call_duration=1.743945353s
+2019-04-10 09:50:51.831 UTC [orderer.consensus.kafka] sendTimeToCut -> INFO 224 KAFKA: file is chain.go , func is  sendTimeToCut()
+2019-04-10 09:50:51.832 UTC [orderer.consensus.kafka] topic -> INFO 225 KAFKA: file is channel.go , func is  topic()
+2019-04-10 09:50:51.832 UTC [orderer.consensus.kafka] newTimeToCutMessage -> INFO 226 KAFKA: file is chain.go , func is  newTimeToCutMessage()
+2019-04-10 09:50:51.832 UTC [orderer.consensus.kafka] newProducerMessage -> INFO 227 KAFKA: file is chain.go , func is  newProducerMessage()
+2019-04-10 09:50:51.832 UTC [orderer.consensus.kafka] topic -> INFO 228 KAFKA: file is channel.go , func is  topic()
+2019-04-10 09:50:51.832 UTC [orderer.consensus.kafka] partition -> INFO 229 KAFKA: file is channel.go , func is  partition()
+2019-04-10 09:50:51.832 UTC [orderer.consensus.kafka] RequiresConsistency -> INFO 22a KAFKA: file is partitioner.go , func is  RequiresConsistency()
+2019-04-10 09:50:51.832 UTC [orderer.consensus.kafka] Partition -> INFO 22b KAFKA: file is partitioner.go , func is  Partition()
+2019-04-10 09:50:51.840 UTC [orderer.consensus.kafka] processTimeToCut -> INFO 22c KAFKA: file is chain.go , func is  processTimeToCut()
+2019-04-10 09:50:51.844 UTC [orderer.consensus.kafka] processTimeToCut -> INFO 22d KAFKA: file is chain.go , func is  processTimeToCut()
+2019-04-10 09:50:51.845 UTC [orderer.consensus.kafka] processTimeToCut -> INFO 22e KAFKA: file is chain.go , func is  processTimeToCut()
+2019-04-10 09:51:04.605 UTC [orderer.consensus.kafka] processRegular -> INFO 22f KAFKA: file is chain.go , func is  processRegular()
+2019-04-10 09:51:04.605 UTC [orderer.consensus.kafka] processRegular -> WARN 230 [channel: mychannel] This orderer is running in compatibility mode
+2019-04-10 09:51:06.606 UTC [orderer.consensus.kafka] sendTimeToCut -> INFO 231 KAFKA: file is chain.go , func is  sendTimeToCut()
+2019-04-10 09:51:06.606 UTC [orderer.consensus.kafka] topic -> INFO 232 KAFKA: file is channel.go , func is  topic()
+2019-04-10 09:51:06.606 UTC [orderer.consensus.kafka] newTimeToCutMessage -> INFO 233 KAFKA: file is chain.go , func is  newTimeToCutMessage()
+2019-04-10 09:51:06.606 UTC [orderer.consensus.kafka] newProducerMessage -> INFO 234 KAFKA: file is chain.go , func is  newProducerMessage()
+2019-04-10 09:51:06.606 UTC [orderer.consensus.kafka] topic -> INFO 235 KAFKA: file is channel.go , func is  topic()
+2019-04-10 09:51:06.606 UTC [orderer.consensus.kafka] partition -> INFO 236 KAFKA: file is channel.go , func is  partition()
+2019-04-10 09:51:06.606 UTC [orderer.consensus.kafka] RequiresConsistency -> INFO 237 KAFKA: file is partitioner.go , func is  RequiresConsistency()
+2019-04-10 09:51:06.606 UTC [orderer.consensus.kafka] Partition -> INFO 238 KAFKA: file is partitioner.go , func is  Partition()
+2019-04-10 09:51:06.621 UTC [orderer.consensus.kafka] processTimeToCut -> INFO 239 KAFKA: file is chain.go , func is  processTimeToCut()
+2019-04-10 09:51:06.621 UTC [orderer.consensus.kafka] processTimeToCut -> INFO 23a KAFKA: file is chain.go , func is  processTimeToCut()
+2019-04-10 09:51:06.621 UTC [orderer.consensus.kafka] processTimeToCut -> INFO 23b KAFKA: file is chain.go , func is  processTimeToCut()
+2019-04-10 09:51:39.799 UTC [orderer.consensus.kafka] PollGoMetrics -> INFO 23c KAFKA: file is metrics.go , func is  PollGoMetrics()
+2019-04-10 09:52:39.800 UTC [orderer.consensus.kafka] PollGoMetrics -> INFO 23d KAFKA: file is metrics.go , func is  PollGoMetrics()
