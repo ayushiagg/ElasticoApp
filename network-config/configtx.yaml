@@ -25,7 +25,7 @@ Organizations:
 
 Orderer: &OrdererDefaults
 
-    OrdererType: elastico
+    OrdererType: kafka
     Addresses:
         - orderer0.example.com:7050
         - orderer1.example.com:7050
