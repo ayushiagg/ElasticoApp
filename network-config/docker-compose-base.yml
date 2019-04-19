@@ -3,11 +3,6 @@ version: '2'
 
 services:
 
-    rabbitmq:
-        image: rabbitmq
-        ports:
-            - 5672
-
     zookeeper:
         image: hyperledger/fabric-zookeeper
         ports:
