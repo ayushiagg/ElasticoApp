@@ -1,6 +1,6 @@
-# Kafka Fabric Network
+# Elastico Fabric Network
 
-This repository holds the configuration and the sample chaincode for testing a kafka enabled network.
+This repository holds the configuration and the sample chaincode for testing a Elastico enabled network.
 
 ## Introduction
 
