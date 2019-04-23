@@ -1,0 +1,1926 @@
+
+version: '2'
+
+networks:
+    behave:
+
+services:
+
+    rabbitmq0:
+        extends:
+            file: docker-compose-base.yml
+            service: rabbitmq
+        container_name: rabbitmq0
+        environment:
+            - RMQ_ID=1
+            - RMQ_SERVERS=server.1=rabbitmq0:5672 
+        networks:
+          behave:
+             aliases:
+               - ${CORE_PEER_NETWORKID}
+
+    zookeeper0:
+        extends:
+            file: docker-compose-base.yml
+            service: zookeeper
+        container_name: zookeeper0
+        environment:
+            - ZOO_MY_ID=1
+            - ZOO_SERVERS=server.1=zookeeper0:2888:3888 server.2=zookeeper1:2888:3888 server.3=zookeeper2:2888:3888
+        networks:
+          behave:
+             aliases:
+               - ${CORE_PEER_NETWORKID}
+
+    zookeeper1:
+        extends:
+            file: docker-compose-base.yml
+            service: zookeeper
+        container_name: zookeeper1
+        environment:
+            - ZOO_MY_ID=2
+            - ZOO_SERVERS=server.1=zookeeper0:2888:3888 server.2=zookeeper1:2888:3888 server.3=zookeeper2:2888:3888
+        networks:
+          behave:
+             aliases:
+               - ${CORE_PEER_NETWORKID}
+
+    zookeeper2:
+        extends:
+            file: docker-compose-base.yml
+            service: zookeeper
+        container_name: zookeeper2
+        environment:
+            - ZOO_MY_ID=3
+            - ZOO_SERVERS=server.1=zookeeper0:2888:3888 server.2=zookeeper1:2888:3888 server.3=zookeeper2:2888:3888
+        networks:
+          behave:
+             aliases:
+               - ${CORE_PEER_NETWORKID}
+
+    kafka0:
+        extends:
+            file: docker-compose-base.yml
+            service: kafka
+        container_name: kafka0
+        environment:
+            - KAFKA_BROKER_ID=0
+            - KAFKA_ZOOKEEPER_CONNECT=zookeeper0:2181,zookeeper1:2181,zookeeper2:2181
+            - KAFKA_MESSAGE_MAX_BYTES=${KAFKA_MESSAGE_MAX_BYTES}
+            - KAFKA_REPLICA_FETCH_MAX_BYTES=${KAFKA_REPLICA_FETCH_MAX_BYTES}
+            - KAFKA_REPLICA_FETCH_RESPONSE_MAX_BYTES=${KAFKA_REPLICA_FETCH_RESPONSE_MAX_BYTES}
+        depends_on:
+            - zookeeper0
+            - zookeeper1
+            - zookeeper2
+        networks:
+          behave:
+             aliases:
+               - ${CORE_PEER_NETWORKID}
+
+    kafka1:
+        extends:
+            file: docker-compose-base.yml
+            service: kafka
+        container_name: kafka1
+        environment:
+            - KAFKA_BROKER_ID=1
+            - KAFKA_ZOOKEEPER_CONNECT=zookeeper0:2181,zookeeper1:2181,zookeeper2:2181
+            - KAFKA_MESSAGE_MAX_BYTES=${KAFKA_MESSAGE_MAX_BYTES}
+            - KAFKA_REPLICA_FETCH_MAX_BYTES=${KAFKA_REPLICA_FETCH_MAX_BYTES}
+            - KAFKA_REPLICA_FETCH_RESPONSE_MAX_BYTES=${KAFKA_REPLICA_FETCH_RESPONSE_MAX_BYTES}
+        depends_on:
+            - zookeeper0
+            - zookeeper1
+            - zookeeper2
+        networks:
+          behave:
+             aliases:
+               - ${CORE_PEER_NETWORKID}
+
+    kafka2:
+        extends:
+            file: docker-compose-base.yml
+            service: kafka
+        container_name: kafka2
+        environment:
+            - KAFKA_BROKER_ID=2
+            - KAFKA_ZOOKEEPER_CONNECT=zookeeper0:2181,zookeeper1:2181,zookeeper2:2181
+            - KAFKA_MESSAGE_MAX_BYTES=${KAFKA_MESSAGE_MAX_BYTES}
+            - KAFKA_REPLICA_FETCH_MAX_BYTES=${KAFKA_REPLICA_FETCH_MAX_BYTES}
+            - KAFKA_REPLICA_FETCH_RESPONSE_MAX_BYTES=${KAFKA_REPLICA_FETCH_RESPONSE_MAX_BYTES}
+        depends_on:
+            - zookeeper0
+            - zookeeper1
+            - zookeeper2
+        networks:
+          behave:
+             aliases:
+               - ${CORE_PEER_NETWORKID}
+
+    kafka3:
+        extends:
+            file: docker-compose-base.yml
+            service: kafka
+        container_name: kafka3
+        environment:
+            - KAFKA_BROKER_ID=3
+            - KAFKA_ZOOKEEPER_CONNECT=zookeeper0:2181,zookeeper1:2181,zookeeper2:2181
+            - KAFKA_MESSAGE_MAX_BYTES=${KAFKA_MESSAGE_MAX_BYTES}
+            - KAFKA_REPLICA_FETCH_MAX_BYTES=${KAFKA_REPLICA_FETCH_MAX_BYTES}
+            - KAFKA_REPLICA_FETCH_RESPONSE_MAX_BYTES=${KAFKA_REPLICA_FETCH_RESPONSE_MAX_BYTES}
+        depends_on:
+            - zookeeper0
+            - zookeeper1
+            - zookeeper2
+        networks:
+          behave:
+             aliases:
+               - ${CORE_PEER_NETWORKID}
+
+    orderer0.example.com:
+        extends:
+            file: docker-compose-base.yml
+            service: orderer
+        container_name: orderer0.example.com
+        environment:
+            - ORDERER_HOST=orderer0.example.com
+            - CONFIGTX_ORDERER_ORDERERTYPE=kafka
+            - RABBITMQ_CONNECT=rabbitmq0:5672
+            - CONFIGTX_ORDERER_KAFKA_BROKERS=[kafka0:9092,kafka1:9092,kafka2:9092,kafka3:9092]
+            - ORDERER_KAFKA_RETRY_SHORTINTERVAL=1s
+            - ORDERER_KAFKA_RETRY_SHORTTOTAL=30s
+            - ORDERER_KAFKA_VERBOSE=true
+            - ORDERER_GENERAL_GENESISPROFILE=SampleInsecureKafka
+            - ORDERER_ABSOLUTEMAXBYTES=${ORDERER_ABSOLUTEMAXBYTES}
+            - ORDERER_PREFERREDMAXBYTES=${ORDERER_PREFERREDMAXBYTES}
+        volumes:
+            - ../crypto-config/ordererOrganizations/example.com/orderers/orderer0.example.com/msp:/var/hyperledger/msp
+            - ../crypto-config/ordererOrganizations/example.com/orderers/orderer0.example.com/tls:/var/hyperledger/tls
+            - ../config/:/var/hyperledger/configs
+        depends_on:
+            - rabbitmq0
+            - kafka0
+            - kafka1
+            - kafka2
+            - kafka3
+        networks:
+          behave:
+             aliases:
+               - ${CORE_PEER_NETWORKID}
+        ports:
+          - 7050:7050
+
+    orderer1.example.com:
+        extends:
+            file: docker-compose-base.yml
+            service: orderer
+        container_name: orderer1.example.com
+        environment:
+            - ORDERER_HOST=orderer1.example.com
+            - CONFIGTX_ORDERER_ORDERERTYPE=kafka
+            - RABBITMQ_CONNECT=rabbitmq0:5672
+            - CONFIGTX_ORDERER_KAFKA_BROKERS=[kafka0:9092,kafka1:9092,kafka2:9092,kafka3:9092]
+            - ORDERER_KAFKA_RETRY_SHORTINTERVAL=1s
+            - ORDERER_KAFKA_RETRY_SHORTTOTAL=30s
+            - ORDERER_KAFKA_VERBOSE=true
+            - ORDERER_GENERAL_GENESISPROFILE=SampleInsecureKafka
+            - ORDERER_ABSOLUTEMAXBYTES=${ORDERER_ABSOLUTEMAXBYTES}
+            - ORDERER_PREFERREDMAXBYTES=${ORDERER_PREFERREDMAXBYTES}
+        volumes:
+            - ../crypto-config/ordererOrganizations/example.com/orderers/orderer0.example.com/msp:/var/hyperledger/msp
+            - ../crypto-config/ordererOrganizations/example.com/orderers/orderer0.example.com/tls:/var/hyperledger/tls
+            - ../config/:/var/hyperledger/configs
+        depends_on:
+            - rabbitmq0
+            - kafka0
+            - kafka1
+            - kafka2
+            - kafka3
+        networks:
+          behave:
+             aliases:
+               - ${CORE_PEER_NETWORKID}
+        ports:
+          - 7550:7050
+
+    orderer2.example.com:
+        extends:
+            file: docker-compose-base.yml
+            service: orderer
+        container_name: orderer2.example.com
+        environment:
+            - ORDERER_HOST=orderer2.example.com
+            - CONFIGTX_ORDERER_ORDERERTYPE=kafka
+            - RABBITMQ_CONNECT=rabbitmq0:5672
+            - CONFIGTX_ORDERER_KAFKA_BROKERS=[kafka0:9092,kafka1:9092,kafka2:9092,kafka3:9092]
+            - ORDERER_KAFKA_RETRY_SHORTINTERVAL=1s
+            - ORDERER_KAFKA_RETRY_SHORTTOTAL=30s
+            - ORDERER_KAFKA_VERBOSE=true
+            - ORDERER_GENERAL_GENESISPROFILE=SampleInsecureKafka
+            - ORDERER_ABSOLUTEMAXBYTES=${ORDERER_ABSOLUTEMAXBYTES}
+            - ORDERER_PREFERREDMAXBYTES=${ORDERER_PREFERREDMAXBYTES}
+        volumes:
+            - ../crypto-config/ordererOrganizations/example.com/orderers/orderer0.example.com/msp:/var/hyperledger/msp
+            - ../crypto-config/ordererOrganizations/example.com/orderers/orderer0.example.com/tls:/var/hyperledger/tls
+            - ../config/:/var/hyperledger/configs
+        depends_on:
+            - rabbitmq0
+            - kafka0
+            - kafka1
+            - kafka2
+            - kafka3
+        networks:
+          behave:
+             aliases:
+               - ${CORE_PEER_NETWORKID}
+        ports:
+          - 8050:7050
+
+    orderer3.example.com:
+        extends:
+            file: docker-compose-base.yml
+            service: orderer
+        container_name: orderer3.example.com
+        environment:
+            - ORDERER_HOST=orderer3.example.com
+            - CONFIGTX_ORDERER_ORDERERTYPE=kafka
+            - RABBITMQ_CONNECT=rabbitmq0:5672
+            - CONFIGTX_ORDERER_KAFKA_BROKERS=[kafka0:9092,kafka1:9092,kafka2:9092,kafka3:9092]
+            - ORDERER_KAFKA_RETRY_SHORTINTERVAL=1s
+            - ORDERER_KAFKA_RETRY_SHORTTOTAL=30s
+            - ORDERER_KAFKA_VERBOSE=true
+            - ORDERER_GENERAL_GENESISPROFILE=SampleInsecureKafka
+            - ORDERER_ABSOLUTEMAXBYTES=${ORDERER_ABSOLUTEMAXBYTES}
+            - ORDERER_PREFERREDMAXBYTES=${ORDERER_PREFERREDMAXBYTES}
+        volumes:
+            - ../crypto-config/ordererOrganizations/example.com/orderers/orderer0.example.com/msp:/var/hyperledger/msp
+            - ../crypto-config/ordererOrganizations/example.com/orderers/orderer0.example.com/tls:/var/hyperledger/tls
+            - ../config/:/var/hyperledger/configs
+        depends_on:
+            - rabbitmq0
+            - kafka0
+            - kafka1
+            - kafka2
+            - kafka3
+        networks:
+          behave:
+             aliases:
+               - ${CORE_PEER_NETWORKID}
+        ports:
+          - 8550:7050
+
+    orderer4.example.com:
+        extends:
+            file: docker-compose-base.yml
+            service: orderer
+        container_name: orderer4.example.com
+        environment:
+            - ORDERER_HOST=orderer4.example.com
+            - CONFIGTX_ORDERER_ORDERERTYPE=kafka
+            - RABBITMQ_CONNECT=rabbitmq0:5672
+            - CONFIGTX_ORDERER_KAFKA_BROKERS=[kafka0:9092,kafka1:9092,kafka2:9092,kafka3:9092]
+            - ORDERER_KAFKA_RETRY_SHORTINTERVAL=1s
+            - ORDERER_KAFKA_RETRY_SHORTTOTAL=30s
+            - ORDERER_KAFKA_VERBOSE=true
+            - ORDERER_GENERAL_GENESISPROFILE=SampleInsecureKafka
+            - ORDERER_ABSOLUTEMAXBYTES=${ORDERER_ABSOLUTEMAXBYTES}
+            - ORDERER_PREFERREDMAXBYTES=${ORDERER_PREFERREDMAXBYTES}
+        volumes:
+            - ../crypto-config/ordererOrganizations/example.com/orderers/orderer0.example.com/msp:/var/hyperledger/msp
+            - ../crypto-config/ordererOrganizations/example.com/orderers/orderer0.example.com/tls:/var/hyperledger/tls
+            - ../config/:/var/hyperledger/configs
+        depends_on:
+            - rabbitmq0
+            - kafka0
+            - kafka1
+            - kafka2
+            - kafka3
+        networks:
+          behave:
+             aliases:
+               - ${CORE_PEER_NETWORKID}
+        ports:
+          - 9050:7050
+
+    orderer5.example.com:
+        extends:
+            file: docker-compose-base.yml
+            service: orderer
+        container_name: orderer5.example.com
+        environment:
+            - ORDERER_HOST=orderer5.example.com
+            - CONFIGTX_ORDERER_ORDERERTYPE=kafka
+            - RABBITMQ_CONNECT=rabbitmq0:5672
+            - CONFIGTX_ORDERER_KAFKA_BROKERS=[kafka0:9092,kafka1:9092,kafka2:9092,kafka3:9092]
+            - ORDERER_KAFKA_RETRY_SHORTINTERVAL=1s
+            - ORDERER_KAFKA_RETRY_SHORTTOTAL=30s
+            - ORDERER_KAFKA_VERBOSE=true
+            - ORDERER_GENERAL_GENESISPROFILE=SampleInsecureKafka
+            - ORDERER_ABSOLUTEMAXBYTES=${ORDERER_ABSOLUTEMAXBYTES}
+            - ORDERER_PREFERREDMAXBYTES=${ORDERER_PREFERREDMAXBYTES}
+        volumes:
+            - ../crypto-config/ordererOrganizations/example.com/orderers/orderer0.example.com/msp:/var/hyperledger/msp
+            - ../crypto-config/ordererOrganizations/example.com/orderers/orderer0.example.com/tls:/var/hyperledger/tls
+            - ../config/:/var/hyperledger/configs
+        depends_on:
+            - rabbitmq0
+            - kafka0
+            - kafka1
+            - kafka2
+            - kafka3
+        networks:
+          behave:
+             aliases:
+               - ${CORE_PEER_NETWORKID}
+        ports:
+          - 9550:7050
+
+    orderer6.example.com:
+        extends:
+            file: docker-compose-base.yml
+            service: orderer
+        container_name: orderer6.example.com
+        environment:
+            - ORDERER_HOST=orderer6.example.com
+            - CONFIGTX_ORDERER_ORDERERTYPE=kafka
+            - RABBITMQ_CONNECT=rabbitmq0:5672
+            - CONFIGTX_ORDERER_KAFKA_BROKERS=[kafka0:9092,kafka1:9092,kafka2:9092,kafka3:9092]
+            - ORDERER_KAFKA_RETRY_SHORTINTERVAL=1s
+            - ORDERER_KAFKA_RETRY_SHORTTOTAL=30s
+            - ORDERER_KAFKA_VERBOSE=true
+            - ORDERER_GENERAL_GENESISPROFILE=SampleInsecureKafka
+            - ORDERER_ABSOLUTEMAXBYTES=${ORDERER_ABSOLUTEMAXBYTES}
+            - ORDERER_PREFERREDMAXBYTES=${ORDERER_PREFERREDMAXBYTES}
+        volumes:
+            - ../crypto-config/ordererOrganizations/example.com/orderers/orderer0.example.com/msp:/var/hyperledger/msp
+            - ../crypto-config/ordererOrganizations/example.com/orderers/orderer0.example.com/tls:/var/hyperledger/tls
+            - ../config/:/var/hyperledger/configs
+        depends_on:
+            - rabbitmq0
+            - kafka0
+            - kafka1
+            - kafka2
+            - kafka3
+        networks:
+          behave:
+             aliases:
+               - ${CORE_PEER_NETWORKID}
+        ports:
+          - 10050:7050
+
+    orderer7.example.com:
+        extends:
+            file: docker-compose-base.yml
+            service: orderer
+        container_name: orderer7.example.com
+        environment:
+            - ORDERER_HOST=orderer7.example.com
+            - CONFIGTX_ORDERER_ORDERERTYPE=kafka
+            - RABBITMQ_CONNECT=rabbitmq0:5672
+            - CONFIGTX_ORDERER_KAFKA_BROKERS=[kafka0:9092,kafka1:9092,kafka2:9092,kafka3:9092]
+            - ORDERER_KAFKA_RETRY_SHORTINTERVAL=1s
+            - ORDERER_KAFKA_RETRY_SHORTTOTAL=30s
+            - ORDERER_KAFKA_VERBOSE=true
+            - ORDERER_GENERAL_GENESISPROFILE=SampleInsecureKafka
+            - ORDERER_ABSOLUTEMAXBYTES=${ORDERER_ABSOLUTEMAXBYTES}
+            - ORDERER_PREFERREDMAXBYTES=${ORDERER_PREFERREDMAXBYTES}
+        volumes:
+            - ../crypto-config/ordererOrganizations/example.com/orderers/orderer0.example.com/msp:/var/hyperledger/msp
+            - ../crypto-config/ordererOrganizations/example.com/orderers/orderer0.example.com/tls:/var/hyperledger/tls
+            - ../config/:/var/hyperledger/configs
+        depends_on:
+            - rabbitmq0
+            - kafka0
+            - kafka1
+            - kafka2
+            - kafka3
+        networks:
+          behave:
+             aliases:
+               - ${CORE_PEER_NETWORKID}
+        ports:
+          - 10550:7050
+
+    orderer8.example.com:
+        extends:
+            file: docker-compose-base.yml
+            service: orderer
+        container_name: orderer8.example.com
+        environment:
+            - ORDERER_HOST=orderer8.example.com
+            - CONFIGTX_ORDERER_ORDERERTYPE=kafka
+            - RABBITMQ_CONNECT=rabbitmq0:5672
+            - CONFIGTX_ORDERER_KAFKA_BROKERS=[kafka0:9092,kafka1:9092,kafka2:9092,kafka3:9092]
+            - ORDERER_KAFKA_RETRY_SHORTINTERVAL=1s
+            - ORDERER_KAFKA_RETRY_SHORTTOTAL=30s
+            - ORDERER_KAFKA_VERBOSE=true
+            - ORDERER_GENERAL_GENESISPROFILE=SampleInsecureKafka
+            - ORDERER_ABSOLUTEMAXBYTES=${ORDERER_ABSOLUTEMAXBYTES}
+            - ORDERER_PREFERREDMAXBYTES=${ORDERER_PREFERREDMAXBYTES}
+        volumes:
+            - ../crypto-config/ordererOrganizations/example.com/orderers/orderer0.example.com/msp:/var/hyperledger/msp
+            - ../crypto-config/ordererOrganizations/example.com/orderers/orderer0.example.com/tls:/var/hyperledger/tls
+            - ../config/:/var/hyperledger/configs
+        depends_on:
+            - rabbitmq0
+            - kafka0
+            - kafka1
+            - kafka2
+            - kafka3
+        networks:
+          behave:
+             aliases:
+               - ${CORE_PEER_NETWORKID}
+        ports:
+          - 11050:7050
+
+    orderer9.example.com:
+        extends:
+            file: docker-compose-base.yml
+            service: orderer
+        container_name: orderer9.example.com
+        environment:
+            - ORDERER_HOST=orderer9.example.com
+            - CONFIGTX_ORDERER_ORDERERTYPE=kafka
+            - RABBITMQ_CONNECT=rabbitmq0:5672
+            - CONFIGTX_ORDERER_KAFKA_BROKERS=[kafka0:9092,kafka1:9092,kafka2:9092,kafka3:9092]
+            - ORDERER_KAFKA_RETRY_SHORTINTERVAL=1s
+            - ORDERER_KAFKA_RETRY_SHORTTOTAL=30s
+            - ORDERER_KAFKA_VERBOSE=true
+            - ORDERER_GENERAL_GENESISPROFILE=SampleInsecureKafka
+            - ORDERER_ABSOLUTEMAXBYTES=${ORDERER_ABSOLUTEMAXBYTES}
+            - ORDERER_PREFERREDMAXBYTES=${ORDERER_PREFERREDMAXBYTES}
+        volumes:
+            - ../crypto-config/ordererOrganizations/example.com/orderers/orderer0.example.com/msp:/var/hyperledger/msp
+            - ../crypto-config/ordererOrganizations/example.com/orderers/orderer0.example.com/tls:/var/hyperledger/tls
+            - ../config/:/var/hyperledger/configs
+        depends_on:
+            - rabbitmq0
+            - kafka0
+            - kafka1
+            - kafka2
+            - kafka3
+        networks:
+          behave:
+             aliases:
+               - ${CORE_PEER_NETWORKID}
+        ports:
+          - 11550:7050
+
+    orderer10.example.com:
+        extends:
+            file: docker-compose-base.yml
+            service: orderer
+        container_name: orderer10.example.com
+        environment:
+            - ORDERER_HOST=orderer10.example.com
+            - CONFIGTX_ORDERER_ORDERERTYPE=kafka
+            - RABBITMQ_CONNECT=rabbitmq0:5672
+            - CONFIGTX_ORDERER_KAFKA_BROKERS=[kafka0:9092,kafka1:9092,kafka2:9092,kafka3:9092]
+            - ORDERER_KAFKA_RETRY_SHORTINTERVAL=1s
+            - ORDERER_KAFKA_RETRY_SHORTTOTAL=30s
+            - ORDERER_KAFKA_VERBOSE=true
+            - ORDERER_GENERAL_GENESISPROFILE=SampleInsecureKafka
+            - ORDERER_ABSOLUTEMAXBYTES=${ORDERER_ABSOLUTEMAXBYTES}
+            - ORDERER_PREFERREDMAXBYTES=${ORDERER_PREFERREDMAXBYTES}
+        volumes:
+            - ../crypto-config/ordererOrganizations/example.com/orderers/orderer0.example.com/msp:/var/hyperledger/msp
+            - ../crypto-config/ordererOrganizations/example.com/orderers/orderer0.example.com/tls:/var/hyperledger/tls
+            - ../config/:/var/hyperledger/configs
+        depends_on:
+            - rabbitmq0
+            - kafka0
+            - kafka1
+            - kafka2
+            - kafka3
+        networks:
+          behave:
+             aliases:
+               - ${CORE_PEER_NETWORKID}
+        ports:
+          - 12050:7050
+
+    orderer11.example.com:
+        extends:
+            file: docker-compose-base.yml
+            service: orderer
+        container_name: orderer11.example.com
+        environment:
+            - ORDERER_HOST=orderer11.example.com
+            - CONFIGTX_ORDERER_ORDERERTYPE=kafka
+            - RABBITMQ_CONNECT=rabbitmq0:5672
+            - CONFIGTX_ORDERER_KAFKA_BROKERS=[kafka0:9092,kafka1:9092,kafka2:9092,kafka3:9092]
+            - ORDERER_KAFKA_RETRY_SHORTINTERVAL=1s
+            - ORDERER_KAFKA_RETRY_SHORTTOTAL=30s
+            - ORDERER_KAFKA_VERBOSE=true
+            - ORDERER_GENERAL_GENESISPROFILE=SampleInsecureKafka
+            - ORDERER_ABSOLUTEMAXBYTES=${ORDERER_ABSOLUTEMAXBYTES}
+            - ORDERER_PREFERREDMAXBYTES=${ORDERER_PREFERREDMAXBYTES}
+        volumes:
+            - ../crypto-config/ordererOrganizations/example.com/orderers/orderer0.example.com/msp:/var/hyperledger/msp
+            - ../crypto-config/ordererOrganizations/example.com/orderers/orderer0.example.com/tls:/var/hyperledger/tls
+            - ../config/:/var/hyperledger/configs
+        depends_on:
+            - rabbitmq0
+            - kafka0
+            - kafka1
+            - kafka2
+            - kafka3
+        networks:
+          behave:
+             aliases:
+               - ${CORE_PEER_NETWORKID}
+        ports:
+          - 12550:7050
+
+    orderer12.example.com:
+        extends:
+            file: docker-compose-base.yml
+            service: orderer
+        container_name: orderer12.example.com
+        environment:
+            - ORDERER_HOST=orderer12.example.com
+            - CONFIGTX_ORDERER_ORDERERTYPE=kafka
+            - RABBITMQ_CONNECT=rabbitmq0:5672
+            - CONFIGTX_ORDERER_KAFKA_BROKERS=[kafka0:9092,kafka1:9092,kafka2:9092,kafka3:9092]
+            - ORDERER_KAFKA_RETRY_SHORTINTERVAL=1s
+            - ORDERER_KAFKA_RETRY_SHORTTOTAL=30s
+            - ORDERER_KAFKA_VERBOSE=true
+            - ORDERER_GENERAL_GENESISPROFILE=SampleInsecureKafka
+            - ORDERER_ABSOLUTEMAXBYTES=${ORDERER_ABSOLUTEMAXBYTES}
+            - ORDERER_PREFERREDMAXBYTES=${ORDERER_PREFERREDMAXBYTES}
+        volumes:
+            - ../crypto-config/ordererOrganizations/example.com/orderers/orderer0.example.com/msp:/var/hyperledger/msp
+            - ../crypto-config/ordererOrganizations/example.com/orderers/orderer0.example.com/tls:/var/hyperledger/tls
+            - ../config/:/var/hyperledger/configs
+        depends_on:
+            - rabbitmq0
+            - kafka0
+            - kafka1
+            - kafka2
+            - kafka3
+        networks:
+          behave:
+             aliases:
+               - ${CORE_PEER_NETWORKID}
+        ports:
+          - 13050:7050
+
+    orderer13.example.com:
+        extends:
+            file: docker-compose-base.yml
+            service: orderer
+        container_name: orderer13.example.com
+        environment:
+            - ORDERER_HOST=orderer13.example.com
+            - CONFIGTX_ORDERER_ORDERERTYPE=kafka
+            - RABBITMQ_CONNECT=rabbitmq0:5672
+            - CONFIGTX_ORDERER_KAFKA_BROKERS=[kafka0:9092,kafka1:9092,kafka2:9092,kafka3:9092]
+            - ORDERER_KAFKA_RETRY_SHORTINTERVAL=1s
+            - ORDERER_KAFKA_RETRY_SHORTTOTAL=30s
+            - ORDERER_KAFKA_VERBOSE=true
+            - ORDERER_GENERAL_GENESISPROFILE=SampleInsecureKafka
+            - ORDERER_ABSOLUTEMAXBYTES=${ORDERER_ABSOLUTEMAXBYTES}
+            - ORDERER_PREFERREDMAXBYTES=${ORDERER_PREFERREDMAXBYTES}
+        volumes:
+            - ../crypto-config/ordererOrganizations/example.com/orderers/orderer0.example.com/msp:/var/hyperledger/msp
+            - ../crypto-config/ordererOrganizations/example.com/orderers/orderer0.example.com/tls:/var/hyperledger/tls
+            - ../config/:/var/hyperledger/configs
+        depends_on:
+            - rabbitmq0
+            - kafka0
+            - kafka1
+            - kafka2
+            - kafka3
+        networks:
+          behave:
+             aliases:
+               - ${CORE_PEER_NETWORKID}
+        ports:
+          - 13550:7050
+
+    orderer14.example.com:
+        extends:
+            file: docker-compose-base.yml
+            service: orderer
+        container_name: orderer14.example.com
+        environment:
+            - ORDERER_HOST=orderer14.example.com
+            - CONFIGTX_ORDERER_ORDERERTYPE=kafka
+            - RABBITMQ_CONNECT=rabbitmq0:5672
+            - CONFIGTX_ORDERER_KAFKA_BROKERS=[kafka0:9092,kafka1:9092,kafka2:9092,kafka3:9092]
+            - ORDERER_KAFKA_RETRY_SHORTINTERVAL=1s
+            - ORDERER_KAFKA_RETRY_SHORTTOTAL=30s
+            - ORDERER_KAFKA_VERBOSE=true
+            - ORDERER_GENERAL_GENESISPROFILE=SampleInsecureKafka
+            - ORDERER_ABSOLUTEMAXBYTES=${ORDERER_ABSOLUTEMAXBYTES}
+            - ORDERER_PREFERREDMAXBYTES=${ORDERER_PREFERREDMAXBYTES}
+        volumes:
+            - ../crypto-config/ordererOrganizations/example.com/orderers/orderer0.example.com/msp:/var/hyperledger/msp
+            - ../crypto-config/ordererOrganizations/example.com/orderers/orderer0.example.com/tls:/var/hyperledger/tls
+            - ../config/:/var/hyperledger/configs
+        depends_on:
+            - rabbitmq0
+            - kafka0
+            - kafka1
+            - kafka2
+            - kafka3
+        networks:
+          behave:
+             aliases:
+               - ${CORE_PEER_NETWORKID}
+        ports:
+          - 14050:7050
+
+    orderer15.example.com:
+        extends:
+            file: docker-compose-base.yml
+            service: orderer
+        container_name: orderer15.example.com
+        environment:
+            - ORDERER_HOST=orderer15.example.com
+            - CONFIGTX_ORDERER_ORDERERTYPE=kafka
+            - RABBITMQ_CONNECT=rabbitmq0:5672
+            - CONFIGTX_ORDERER_KAFKA_BROKERS=[kafka0:9092,kafka1:9092,kafka2:9092,kafka3:9092]
+            - ORDERER_KAFKA_RETRY_SHORTINTERVAL=1s
+            - ORDERER_KAFKA_RETRY_SHORTTOTAL=30s
+            - ORDERER_KAFKA_VERBOSE=true
+            - ORDERER_GENERAL_GENESISPROFILE=SampleInsecureKafka
+            - ORDERER_ABSOLUTEMAXBYTES=${ORDERER_ABSOLUTEMAXBYTES}
+            - ORDERER_PREFERREDMAXBYTES=${ORDERER_PREFERREDMAXBYTES}
+        volumes:
+            - ../crypto-config/ordererOrganizations/example.com/orderers/orderer0.example.com/msp:/var/hyperledger/msp
+            - ../crypto-config/ordererOrganizations/example.com/orderers/orderer0.example.com/tls:/var/hyperledger/tls
+            - ../config/:/var/hyperledger/configs
+        depends_on:
+            - rabbitmq0
+            - kafka0
+            - kafka1
+            - kafka2
+            - kafka3
+        networks:
+          behave:
+             aliases:
+               - ${CORE_PEER_NETWORKID}
+        ports:
+          - 14550:7050
+
+    orderer16.example.com:
+        extends:
+            file: docker-compose-base.yml
+            service: orderer
+        container_name: orderer16.example.com
+        environment:
+            - ORDERER_HOST=orderer16.example.com
+            - CONFIGTX_ORDERER_ORDERERTYPE=kafka
+            - RABBITMQ_CONNECT=rabbitmq0:5672
+            - CONFIGTX_ORDERER_KAFKA_BROKERS=[kafka0:9092,kafka1:9092,kafka2:9092,kafka3:9092]
+            - ORDERER_KAFKA_RETRY_SHORTINTERVAL=1s
+            - ORDERER_KAFKA_RETRY_SHORTTOTAL=30s
+            - ORDERER_KAFKA_VERBOSE=true
+            - ORDERER_GENERAL_GENESISPROFILE=SampleInsecureKafka
+            - ORDERER_ABSOLUTEMAXBYTES=${ORDERER_ABSOLUTEMAXBYTES}
+            - ORDERER_PREFERREDMAXBYTES=${ORDERER_PREFERREDMAXBYTES}
+        volumes:
+            - ../crypto-config/ordererOrganizations/example.com/orderers/orderer0.example.com/msp:/var/hyperledger/msp
+            - ../crypto-config/ordererOrganizations/example.com/orderers/orderer0.example.com/tls:/var/hyperledger/tls
+            - ../config/:/var/hyperledger/configs
+        depends_on:
+            - rabbitmq0
+            - kafka0
+            - kafka1
+            - kafka2
+            - kafka3
+        networks:
+          behave:
+             aliases:
+               - ${CORE_PEER_NETWORKID}
+        ports:
+          - 15050:7050
+
+    orderer17.example.com:
+        extends:
+            file: docker-compose-base.yml
+            service: orderer
+        container_name: orderer17.example.com
+        environment:
+            - ORDERER_HOST=orderer17.example.com
+            - CONFIGTX_ORDERER_ORDERERTYPE=kafka
+            - RABBITMQ_CONNECT=rabbitmq0:5672
+            - CONFIGTX_ORDERER_KAFKA_BROKERS=[kafka0:9092,kafka1:9092,kafka2:9092,kafka3:9092]
+            - ORDERER_KAFKA_RETRY_SHORTINTERVAL=1s
+            - ORDERER_KAFKA_RETRY_SHORTTOTAL=30s
+            - ORDERER_KAFKA_VERBOSE=true
+            - ORDERER_GENERAL_GENESISPROFILE=SampleInsecureKafka
+            - ORDERER_ABSOLUTEMAXBYTES=${ORDERER_ABSOLUTEMAXBYTES}
+            - ORDERER_PREFERREDMAXBYTES=${ORDERER_PREFERREDMAXBYTES}
+        volumes:
+            - ../crypto-config/ordererOrganizations/example.com/orderers/orderer0.example.com/msp:/var/hyperledger/msp
+            - ../crypto-config/ordererOrganizations/example.com/orderers/orderer0.example.com/tls:/var/hyperledger/tls
+            - ../config/:/var/hyperledger/configs
+        depends_on:
+            - rabbitmq0
+            - kafka0
+            - kafka1
+            - kafka2
+            - kafka3
+        networks:
+          behave:
+             aliases:
+               - ${CORE_PEER_NETWORKID}
+        ports:
+          - 15550:7050
+
+    orderer18.example.com:
+        extends:
+            file: docker-compose-base.yml
+            service: orderer
+        container_name: orderer18.example.com
+        environment:
+            - ORDERER_HOST=orderer18.example.com
+            - CONFIGTX_ORDERER_ORDERERTYPE=kafka
+            - RABBITMQ_CONNECT=rabbitmq0:5672
+            - CONFIGTX_ORDERER_KAFKA_BROKERS=[kafka0:9092,kafka1:9092,kafka2:9092,kafka3:9092]
+            - ORDERER_KAFKA_RETRY_SHORTINTERVAL=1s
+            - ORDERER_KAFKA_RETRY_SHORTTOTAL=30s
+            - ORDERER_KAFKA_VERBOSE=true
+            - ORDERER_GENERAL_GENESISPROFILE=SampleInsecureKafka
+            - ORDERER_ABSOLUTEMAXBYTES=${ORDERER_ABSOLUTEMAXBYTES}
+            - ORDERER_PREFERREDMAXBYTES=${ORDERER_PREFERREDMAXBYTES}
+        volumes:
+            - ../crypto-config/ordererOrganizations/example.com/orderers/orderer0.example.com/msp:/var/hyperledger/msp
+            - ../crypto-config/ordererOrganizations/example.com/orderers/orderer0.example.com/tls:/var/hyperledger/tls
+            - ../config/:/var/hyperledger/configs
+        depends_on:
+            - rabbitmq0
+            - kafka0
+            - kafka1
+            - kafka2
+            - kafka3
+        networks:
+          behave:
+             aliases:
+               - ${CORE_PEER_NETWORKID}
+        ports:
+          - 16050:7050
+
+    orderer19.example.com:
+        extends:
+            file: docker-compose-base.yml
+            service: orderer
+        container_name: orderer19.example.com
+        environment:
+            - ORDERER_HOST=orderer19.example.com
+            - CONFIGTX_ORDERER_ORDERERTYPE=kafka
+            - RABBITMQ_CONNECT=rabbitmq0:5672
+            - CONFIGTX_ORDERER_KAFKA_BROKERS=[kafka0:9092,kafka1:9092,kafka2:9092,kafka3:9092]
+            - ORDERER_KAFKA_RETRY_SHORTINTERVAL=1s
+            - ORDERER_KAFKA_RETRY_SHORTTOTAL=30s
+            - ORDERER_KAFKA_VERBOSE=true
+            - ORDERER_GENERAL_GENESISPROFILE=SampleInsecureKafka
+            - ORDERER_ABSOLUTEMAXBYTES=${ORDERER_ABSOLUTEMAXBYTES}
+            - ORDERER_PREFERREDMAXBYTES=${ORDERER_PREFERREDMAXBYTES}
+        volumes:
+            - ../crypto-config/ordererOrganizations/example.com/orderers/orderer0.example.com/msp:/var/hyperledger/msp
+            - ../crypto-config/ordererOrganizations/example.com/orderers/orderer0.example.com/tls:/var/hyperledger/tls
+            - ../config/:/var/hyperledger/configs
+        depends_on:
+            - rabbitmq0
+            - kafka0
+            - kafka1
+            - kafka2
+            - kafka3
+        networks:
+          behave:
+             aliases:
+               - ${CORE_PEER_NETWORKID}
+        ports:
+          - 16550:7050
+
+    orderer20.example.com:
+        extends:
+            file: docker-compose-base.yml
+            service: orderer
+        container_name: orderer20.example.com
+        environment:
+            - ORDERER_HOST=orderer20.example.com
+            - CONFIGTX_ORDERER_ORDERERTYPE=kafka
+            - RABBITMQ_CONNECT=rabbitmq0:5672
+            - CONFIGTX_ORDERER_KAFKA_BROKERS=[kafka0:9092,kafka1:9092,kafka2:9092,kafka3:9092]
+            - ORDERER_KAFKA_RETRY_SHORTINTERVAL=1s
+            - ORDERER_KAFKA_RETRY_SHORTTOTAL=30s
+            - ORDERER_KAFKA_VERBOSE=true
+            - ORDERER_GENERAL_GENESISPROFILE=SampleInsecureKafka
+            - ORDERER_ABSOLUTEMAXBYTES=${ORDERER_ABSOLUTEMAXBYTES}
+            - ORDERER_PREFERREDMAXBYTES=${ORDERER_PREFERREDMAXBYTES}
+        volumes:
+            - ../crypto-config/ordererOrganizations/example.com/orderers/orderer0.example.com/msp:/var/hyperledger/msp
+            - ../crypto-config/ordererOrganizations/example.com/orderers/orderer0.example.com/tls:/var/hyperledger/tls
+            - ../config/:/var/hyperledger/configs
+        depends_on:
+            - rabbitmq0
+            - kafka0
+            - kafka1
+            - kafka2
+            - kafka3
+        networks:
+          behave:
+             aliases:
+               - ${CORE_PEER_NETWORKID}
+        ports:
+          - 17050:7050
+
+    orderer21.example.com:
+        extends:
+            file: docker-compose-base.yml
+            service: orderer
+        container_name: orderer21.example.com
+        environment:
+            - ORDERER_HOST=orderer21.example.com
+            - CONFIGTX_ORDERER_ORDERERTYPE=kafka
+            - RABBITMQ_CONNECT=rabbitmq0:5672
+            - CONFIGTX_ORDERER_KAFKA_BROKERS=[kafka0:9092,kafka1:9092,kafka2:9092,kafka3:9092]
+            - ORDERER_KAFKA_RETRY_SHORTINTERVAL=1s
+            - ORDERER_KAFKA_RETRY_SHORTTOTAL=30s
+            - ORDERER_KAFKA_VERBOSE=true
+            - ORDERER_GENERAL_GENESISPROFILE=SampleInsecureKafka
+            - ORDERER_ABSOLUTEMAXBYTES=${ORDERER_ABSOLUTEMAXBYTES}
+            - ORDERER_PREFERREDMAXBYTES=${ORDERER_PREFERREDMAXBYTES}
+        volumes:
+            - ../crypto-config/ordererOrganizations/example.com/orderers/orderer0.example.com/msp:/var/hyperledger/msp
+            - ../crypto-config/ordererOrganizations/example.com/orderers/orderer0.example.com/tls:/var/hyperledger/tls
+            - ../config/:/var/hyperledger/configs
+        depends_on:
+            - rabbitmq0
+            - kafka0
+            - kafka1
+            - kafka2
+            - kafka3
+        networks:
+          behave:
+             aliases:
+               - ${CORE_PEER_NETWORKID}
+        ports:
+          - 17550:7050
+
+    orderer22.example.com:
+        extends:
+            file: docker-compose-base.yml
+            service: orderer
+        container_name: orderer22.example.com
+        environment:
+            - ORDERER_HOST=orderer22.example.com
+            - CONFIGTX_ORDERER_ORDERERTYPE=kafka
+            - RABBITMQ_CONNECT=rabbitmq0:5672
+            - CONFIGTX_ORDERER_KAFKA_BROKERS=[kafka0:9092,kafka1:9092,kafka2:9092,kafka3:9092]
+            - ORDERER_KAFKA_RETRY_SHORTINTERVAL=1s
+            - ORDERER_KAFKA_RETRY_SHORTTOTAL=30s
+            - ORDERER_KAFKA_VERBOSE=true
+            - ORDERER_GENERAL_GENESISPROFILE=SampleInsecureKafka
+            - ORDERER_ABSOLUTEMAXBYTES=${ORDERER_ABSOLUTEMAXBYTES}
+            - ORDERER_PREFERREDMAXBYTES=${ORDERER_PREFERREDMAXBYTES}
+        volumes:
+            - ../crypto-config/ordererOrganizations/example.com/orderers/orderer0.example.com/msp:/var/hyperledger/msp
+            - ../crypto-config/ordererOrganizations/example.com/orderers/orderer0.example.com/tls:/var/hyperledger/tls
+            - ../config/:/var/hyperledger/configs
+        depends_on:
+            - rabbitmq0
+            - kafka0
+            - kafka1
+            - kafka2
+            - kafka3
+        networks:
+          behave:
+             aliases:
+               - ${CORE_PEER_NETWORKID}
+        ports:
+          - 18050:7050
+
+    orderer23.example.com:
+        extends:
+            file: docker-compose-base.yml
+            service: orderer
+        container_name: orderer23.example.com
+        environment:
+            - ORDERER_HOST=orderer23.example.com
+            - CONFIGTX_ORDERER_ORDERERTYPE=kafka
+            - RABBITMQ_CONNECT=rabbitmq0:5672
+            - CONFIGTX_ORDERER_KAFKA_BROKERS=[kafka0:9092,kafka1:9092,kafka2:9092,kafka3:9092]
+            - ORDERER_KAFKA_RETRY_SHORTINTERVAL=1s
+            - ORDERER_KAFKA_RETRY_SHORTTOTAL=30s
+            - ORDERER_KAFKA_VERBOSE=true
+            - ORDERER_GENERAL_GENESISPROFILE=SampleInsecureKafka
+            - ORDERER_ABSOLUTEMAXBYTES=${ORDERER_ABSOLUTEMAXBYTES}
+            - ORDERER_PREFERREDMAXBYTES=${ORDERER_PREFERREDMAXBYTES}
+        volumes:
+            - ../crypto-config/ordererOrganizations/example.com/orderers/orderer0.example.com/msp:/var/hyperledger/msp
+            - ../crypto-config/ordererOrganizations/example.com/orderers/orderer0.example.com/tls:/var/hyperledger/tls
+            - ../config/:/var/hyperledger/configs
+        depends_on:
+            - rabbitmq0
+            - kafka0
+            - kafka1
+            - kafka2
+            - kafka3
+        networks:
+          behave:
+             aliases:
+               - ${CORE_PEER_NETWORKID}
+        ports:
+          - 18550:7050
+
+    orderer24.example.com:
+        extends:
+            file: docker-compose-base.yml
+            service: orderer
+        container_name: orderer24.example.com
+        environment:
+            - ORDERER_HOST=orderer24.example.com
+            - CONFIGTX_ORDERER_ORDERERTYPE=kafka
+            - RABBITMQ_CONNECT=rabbitmq0:5672
+            - CONFIGTX_ORDERER_KAFKA_BROKERS=[kafka0:9092,kafka1:9092,kafka2:9092,kafka3:9092]
+            - ORDERER_KAFKA_RETRY_SHORTINTERVAL=1s
+            - ORDERER_KAFKA_RETRY_SHORTTOTAL=30s
+            - ORDERER_KAFKA_VERBOSE=true
+            - ORDERER_GENERAL_GENESISPROFILE=SampleInsecureKafka
+            - ORDERER_ABSOLUTEMAXBYTES=${ORDERER_ABSOLUTEMAXBYTES}
+            - ORDERER_PREFERREDMAXBYTES=${ORDERER_PREFERREDMAXBYTES}
+        volumes:
+            - ../crypto-config/ordererOrganizations/example.com/orderers/orderer0.example.com/msp:/var/hyperledger/msp
+            - ../crypto-config/ordererOrganizations/example.com/orderers/orderer0.example.com/tls:/var/hyperledger/tls
+            - ../config/:/var/hyperledger/configs
+        depends_on:
+            - rabbitmq0
+            - kafka0
+            - kafka1
+            - kafka2
+            - kafka3
+        networks:
+          behave:
+             aliases:
+               - ${CORE_PEER_NETWORKID}
+        ports:
+          - 19050:7050
+
+    orderer25.example.com:
+        extends:
+            file: docker-compose-base.yml
+            service: orderer
+        container_name: orderer25.example.com
+        environment:
+            - ORDERER_HOST=orderer25.example.com
+            - CONFIGTX_ORDERER_ORDERERTYPE=kafka
+            - RABBITMQ_CONNECT=rabbitmq0:5672
+            - CONFIGTX_ORDERER_KAFKA_BROKERS=[kafka0:9092,kafka1:9092,kafka2:9092,kafka3:9092]
+            - ORDERER_KAFKA_RETRY_SHORTINTERVAL=1s
+            - ORDERER_KAFKA_RETRY_SHORTTOTAL=30s
+            - ORDERER_KAFKA_VERBOSE=true
+            - ORDERER_GENERAL_GENESISPROFILE=SampleInsecureKafka
+            - ORDERER_ABSOLUTEMAXBYTES=${ORDERER_ABSOLUTEMAXBYTES}
+            - ORDERER_PREFERREDMAXBYTES=${ORDERER_PREFERREDMAXBYTES}
+        volumes:
+            - ../crypto-config/ordererOrganizations/example.com/orderers/orderer0.example.com/msp:/var/hyperledger/msp
+            - ../crypto-config/ordererOrganizations/example.com/orderers/orderer0.example.com/tls:/var/hyperledger/tls
+            - ../config/:/var/hyperledger/configs
+        depends_on:
+            - rabbitmq0
+            - kafka0
+            - kafka1
+            - kafka2
+            - kafka3
+        networks:
+          behave:
+             aliases:
+               - ${CORE_PEER_NETWORKID}
+        ports:
+          - 19550:7050
+
+    orderer26.example.com:
+        extends:
+            file: docker-compose-base.yml
+            service: orderer
+        container_name: orderer26.example.com
+        environment:
+            - ORDERER_HOST=orderer26.example.com
+            - CONFIGTX_ORDERER_ORDERERTYPE=kafka
+            - RABBITMQ_CONNECT=rabbitmq0:5672
+            - CONFIGTX_ORDERER_KAFKA_BROKERS=[kafka0:9092,kafka1:9092,kafka2:9092,kafka3:9092]
+            - ORDERER_KAFKA_RETRY_SHORTINTERVAL=1s
+            - ORDERER_KAFKA_RETRY_SHORTTOTAL=30s
+            - ORDERER_KAFKA_VERBOSE=true
+            - ORDERER_GENERAL_GENESISPROFILE=SampleInsecureKafka
+            - ORDERER_ABSOLUTEMAXBYTES=${ORDERER_ABSOLUTEMAXBYTES}
+            - ORDERER_PREFERREDMAXBYTES=${ORDERER_PREFERREDMAXBYTES}
+        volumes:
+            - ../crypto-config/ordererOrganizations/example.com/orderers/orderer0.example.com/msp:/var/hyperledger/msp
+            - ../crypto-config/ordererOrganizations/example.com/orderers/orderer0.example.com/tls:/var/hyperledger/tls
+            - ../config/:/var/hyperledger/configs
+        depends_on:
+            - rabbitmq0
+            - kafka0
+            - kafka1
+            - kafka2
+            - kafka3
+        networks:
+          behave:
+             aliases:
+               - ${CORE_PEER_NETWORKID}
+        ports:
+          - 20050:7050
+
+    orderer27.example.com:
+        extends:
+            file: docker-compose-base.yml
+            service: orderer
+        container_name: orderer27.example.com
+        environment:
+            - ORDERER_HOST=orderer27.example.com
+            - CONFIGTX_ORDERER_ORDERERTYPE=kafka
+            - RABBITMQ_CONNECT=rabbitmq0:5672
+            - CONFIGTX_ORDERER_KAFKA_BROKERS=[kafka0:9092,kafka1:9092,kafka2:9092,kafka3:9092]
+            - ORDERER_KAFKA_RETRY_SHORTINTERVAL=1s
+            - ORDERER_KAFKA_RETRY_SHORTTOTAL=30s
+            - ORDERER_KAFKA_VERBOSE=true
+            - ORDERER_GENERAL_GENESISPROFILE=SampleInsecureKafka
+            - ORDERER_ABSOLUTEMAXBYTES=${ORDERER_ABSOLUTEMAXBYTES}
+            - ORDERER_PREFERREDMAXBYTES=${ORDERER_PREFERREDMAXBYTES}
+        volumes:
+            - ../crypto-config/ordererOrganizations/example.com/orderers/orderer0.example.com/msp:/var/hyperledger/msp
+            - ../crypto-config/ordererOrganizations/example.com/orderers/orderer0.example.com/tls:/var/hyperledger/tls
+            - ../config/:/var/hyperledger/configs
+        depends_on:
+            - rabbitmq0
+            - kafka0
+            - kafka1
+            - kafka2
+            - kafka3
+        networks:
+          behave:
+             aliases:
+               - ${CORE_PEER_NETWORKID}
+        ports:
+          - 20550:7050
+
+    orderer28.example.com:
+        extends:
+            file: docker-compose-base.yml
+            service: orderer
+        container_name: orderer28.example.com
+        environment:
+            - ORDERER_HOST=orderer28.example.com
+            - CONFIGTX_ORDERER_ORDERERTYPE=kafka
+            - RABBITMQ_CONNECT=rabbitmq0:5672
+            - CONFIGTX_ORDERER_KAFKA_BROKERS=[kafka0:9092,kafka1:9092,kafka2:9092,kafka3:9092]
+            - ORDERER_KAFKA_RETRY_SHORTINTERVAL=1s
+            - ORDERER_KAFKA_RETRY_SHORTTOTAL=30s
+            - ORDERER_KAFKA_VERBOSE=true
+            - ORDERER_GENERAL_GENESISPROFILE=SampleInsecureKafka
+            - ORDERER_ABSOLUTEMAXBYTES=${ORDERER_ABSOLUTEMAXBYTES}
+            - ORDERER_PREFERREDMAXBYTES=${ORDERER_PREFERREDMAXBYTES}
+        volumes:
+            - ../crypto-config/ordererOrganizations/example.com/orderers/orderer0.example.com/msp:/var/hyperledger/msp
+            - ../crypto-config/ordererOrganizations/example.com/orderers/orderer0.example.com/tls:/var/hyperledger/tls
+            - ../config/:/var/hyperledger/configs
+        depends_on:
+            - rabbitmq0
+            - kafka0
+            - kafka1
+            - kafka2
+            - kafka3
+        networks:
+          behave:
+             aliases:
+               - ${CORE_PEER_NETWORKID}
+        ports:
+          - 21050:7050
+
+    orderer29.example.com:
+        extends:
+            file: docker-compose-base.yml
+            service: orderer
+        container_name: orderer29.example.com
+        environment:
+            - ORDERER_HOST=orderer29.example.com
+            - CONFIGTX_ORDERER_ORDERERTYPE=kafka
+            - RABBITMQ_CONNECT=rabbitmq0:5672
+            - CONFIGTX_ORDERER_KAFKA_BROKERS=[kafka0:9092,kafka1:9092,kafka2:9092,kafka3:9092]
+            - ORDERER_KAFKA_RETRY_SHORTINTERVAL=1s
+            - ORDERER_KAFKA_RETRY_SHORTTOTAL=30s
+            - ORDERER_KAFKA_VERBOSE=true
+            - ORDERER_GENERAL_GENESISPROFILE=SampleInsecureKafka
+            - ORDERER_ABSOLUTEMAXBYTES=${ORDERER_ABSOLUTEMAXBYTES}
+            - ORDERER_PREFERREDMAXBYTES=${ORDERER_PREFERREDMAXBYTES}
+        volumes:
+            - ../crypto-config/ordererOrganizations/example.com/orderers/orderer0.example.com/msp:/var/hyperledger/msp
+            - ../crypto-config/ordererOrganizations/example.com/orderers/orderer0.example.com/tls:/var/hyperledger/tls
+            - ../config/:/var/hyperledger/configs
+        depends_on:
+            - rabbitmq0
+            - kafka0
+            - kafka1
+            - kafka2
+            - kafka3
+        networks:
+          behave:
+             aliases:
+               - ${CORE_PEER_NETWORKID}
+        ports:
+          - 21550:7050
+
+    orderer30.example.com:
+        extends:
+            file: docker-compose-base.yml
+            service: orderer
+        container_name: orderer30.example.com
+        environment:
+            - ORDERER_HOST=orderer30.example.com
+            - CONFIGTX_ORDERER_ORDERERTYPE=kafka
+            - RABBITMQ_CONNECT=rabbitmq0:5672
+            - CONFIGTX_ORDERER_KAFKA_BROKERS=[kafka0:9092,kafka1:9092,kafka2:9092,kafka3:9092]
+            - ORDERER_KAFKA_RETRY_SHORTINTERVAL=1s
+            - ORDERER_KAFKA_RETRY_SHORTTOTAL=30s
+            - ORDERER_KAFKA_VERBOSE=true
+            - ORDERER_GENERAL_GENESISPROFILE=SampleInsecureKafka
+            - ORDERER_ABSOLUTEMAXBYTES=${ORDERER_ABSOLUTEMAXBYTES}
+            - ORDERER_PREFERREDMAXBYTES=${ORDERER_PREFERREDMAXBYTES}
+        volumes:
+            - ../crypto-config/ordererOrganizations/example.com/orderers/orderer0.example.com/msp:/var/hyperledger/msp
+            - ../crypto-config/ordererOrganizations/example.com/orderers/orderer0.example.com/tls:/var/hyperledger/tls
+            - ../config/:/var/hyperledger/configs
+        depends_on:
+            - rabbitmq0
+            - kafka0
+            - kafka1
+            - kafka2
+            - kafka3
+        networks:
+          behave:
+             aliases:
+               - ${CORE_PEER_NETWORKID}
+        ports:
+          - 22050:7050
+
+    orderer31.example.com:
+        extends:
+            file: docker-compose-base.yml
+            service: orderer
+        container_name: orderer31.example.com
+        environment:
+            - ORDERER_HOST=orderer31.example.com
+            - CONFIGTX_ORDERER_ORDERERTYPE=kafka
+            - RABBITMQ_CONNECT=rabbitmq0:5672
+            - CONFIGTX_ORDERER_KAFKA_BROKERS=[kafka0:9092,kafka1:9092,kafka2:9092,kafka3:9092]
+            - ORDERER_KAFKA_RETRY_SHORTINTERVAL=1s
+            - ORDERER_KAFKA_RETRY_SHORTTOTAL=30s
+            - ORDERER_KAFKA_VERBOSE=true
+            - ORDERER_GENERAL_GENESISPROFILE=SampleInsecureKafka
+            - ORDERER_ABSOLUTEMAXBYTES=${ORDERER_ABSOLUTEMAXBYTES}
+            - ORDERER_PREFERREDMAXBYTES=${ORDERER_PREFERREDMAXBYTES}
+        volumes:
+            - ../crypto-config/ordererOrganizations/example.com/orderers/orderer0.example.com/msp:/var/hyperledger/msp
+            - ../crypto-config/ordererOrganizations/example.com/orderers/orderer0.example.com/tls:/var/hyperledger/tls
+            - ../config/:/var/hyperledger/configs
+        depends_on:
+            - rabbitmq0
+            - kafka0
+            - kafka1
+            - kafka2
+            - kafka3
+        networks:
+          behave:
+             aliases:
+               - ${CORE_PEER_NETWORKID}
+        ports:
+          - 22550:7050
+
+    orderer32.example.com:
+        extends:
+            file: docker-compose-base.yml
+            service: orderer
+        container_name: orderer32.example.com
+        environment:
+            - ORDERER_HOST=orderer32.example.com
+            - CONFIGTX_ORDERER_ORDERERTYPE=kafka
+            - RABBITMQ_CONNECT=rabbitmq0:5672
+            - CONFIGTX_ORDERER_KAFKA_BROKERS=[kafka0:9092,kafka1:9092,kafka2:9092,kafka3:9092]
+            - ORDERER_KAFKA_RETRY_SHORTINTERVAL=1s
+            - ORDERER_KAFKA_RETRY_SHORTTOTAL=30s
+            - ORDERER_KAFKA_VERBOSE=true
+            - ORDERER_GENERAL_GENESISPROFILE=SampleInsecureKafka
+            - ORDERER_ABSOLUTEMAXBYTES=${ORDERER_ABSOLUTEMAXBYTES}
+            - ORDERER_PREFERREDMAXBYTES=${ORDERER_PREFERREDMAXBYTES}
+        volumes:
+            - ../crypto-config/ordererOrganizations/example.com/orderers/orderer0.example.com/msp:/var/hyperledger/msp
+            - ../crypto-config/ordererOrganizations/example.com/orderers/orderer0.example.com/tls:/var/hyperledger/tls
+            - ../config/:/var/hyperledger/configs
+        depends_on:
+            - rabbitmq0
+            - kafka0
+            - kafka1
+            - kafka2
+            - kafka3
+        networks:
+          behave:
+             aliases:
+               - ${CORE_PEER_NETWORKID}
+        ports:
+          - 23050:7050
+
+    orderer33.example.com:
+        extends:
+            file: docker-compose-base.yml
+            service: orderer
+        container_name: orderer33.example.com
+        environment:
+            - ORDERER_HOST=orderer33.example.com
+            - CONFIGTX_ORDERER_ORDERERTYPE=kafka
+            - RABBITMQ_CONNECT=rabbitmq0:5672
+            - CONFIGTX_ORDERER_KAFKA_BROKERS=[kafka0:9092,kafka1:9092,kafka2:9092,kafka3:9092]
+            - ORDERER_KAFKA_RETRY_SHORTINTERVAL=1s
+            - ORDERER_KAFKA_RETRY_SHORTTOTAL=30s
+            - ORDERER_KAFKA_VERBOSE=true
+            - ORDERER_GENERAL_GENESISPROFILE=SampleInsecureKafka
+            - ORDERER_ABSOLUTEMAXBYTES=${ORDERER_ABSOLUTEMAXBYTES}
+            - ORDERER_PREFERREDMAXBYTES=${ORDERER_PREFERREDMAXBYTES}
+        volumes:
+            - ../crypto-config/ordererOrganizations/example.com/orderers/orderer0.example.com/msp:/var/hyperledger/msp
+            - ../crypto-config/ordererOrganizations/example.com/orderers/orderer0.example.com/tls:/var/hyperledger/tls
+            - ../config/:/var/hyperledger/configs
+        depends_on:
+            - rabbitmq0
+            - kafka0
+            - kafka1
+            - kafka2
+            - kafka3
+        networks:
+          behave:
+             aliases:
+               - ${CORE_PEER_NETWORKID}
+        ports:
+          - 23550:7050
+
+    orderer34.example.com:
+        extends:
+            file: docker-compose-base.yml
+            service: orderer
+        container_name: orderer34.example.com
+        environment:
+            - ORDERER_HOST=orderer34.example.com
+            - CONFIGTX_ORDERER_ORDERERTYPE=kafka
+            - RABBITMQ_CONNECT=rabbitmq0:5672
+            - CONFIGTX_ORDERER_KAFKA_BROKERS=[kafka0:9092,kafka1:9092,kafka2:9092,kafka3:9092]
+            - ORDERER_KAFKA_RETRY_SHORTINTERVAL=1s
+            - ORDERER_KAFKA_RETRY_SHORTTOTAL=30s
+            - ORDERER_KAFKA_VERBOSE=true
+            - ORDERER_GENERAL_GENESISPROFILE=SampleInsecureKafka
+            - ORDERER_ABSOLUTEMAXBYTES=${ORDERER_ABSOLUTEMAXBYTES}
+            - ORDERER_PREFERREDMAXBYTES=${ORDERER_PREFERREDMAXBYTES}
+        volumes:
+            - ../crypto-config/ordererOrganizations/example.com/orderers/orderer0.example.com/msp:/var/hyperledger/msp
+            - ../crypto-config/ordererOrganizations/example.com/orderers/orderer0.example.com/tls:/var/hyperledger/tls
+            - ../config/:/var/hyperledger/configs
+        depends_on:
+            - rabbitmq0
+            - kafka0
+            - kafka1
+            - kafka2
+            - kafka3
+        networks:
+          behave:
+             aliases:
+               - ${CORE_PEER_NETWORKID}
+        ports:
+          - 24050:7050
+
+    orderer35.example.com:
+        extends:
+            file: docker-compose-base.yml
+            service: orderer
+        container_name: orderer35.example.com
+        environment:
+            - ORDERER_HOST=orderer35.example.com
+            - CONFIGTX_ORDERER_ORDERERTYPE=kafka
+            - RABBITMQ_CONNECT=rabbitmq0:5672
+            - CONFIGTX_ORDERER_KAFKA_BROKERS=[kafka0:9092,kafka1:9092,kafka2:9092,kafka3:9092]
+            - ORDERER_KAFKA_RETRY_SHORTINTERVAL=1s
+            - ORDERER_KAFKA_RETRY_SHORTTOTAL=30s
+            - ORDERER_KAFKA_VERBOSE=true
+            - ORDERER_GENERAL_GENESISPROFILE=SampleInsecureKafka
+            - ORDERER_ABSOLUTEMAXBYTES=${ORDERER_ABSOLUTEMAXBYTES}
+            - ORDERER_PREFERREDMAXBYTES=${ORDERER_PREFERREDMAXBYTES}
+        volumes:
+            - ../crypto-config/ordererOrganizations/example.com/orderers/orderer0.example.com/msp:/var/hyperledger/msp
+            - ../crypto-config/ordererOrganizations/example.com/orderers/orderer0.example.com/tls:/var/hyperledger/tls
+            - ../config/:/var/hyperledger/configs
+        depends_on:
+            - rabbitmq0
+            - kafka0
+            - kafka1
+            - kafka2
+            - kafka3
+        networks:
+          behave:
+             aliases:
+               - ${CORE_PEER_NETWORKID}
+        ports:
+          - 24550:7050
+
+    orderer36.example.com:
+        extends:
+            file: docker-compose-base.yml
+            service: orderer
+        container_name: orderer36.example.com
+        environment:
+            - ORDERER_HOST=orderer36.example.com
+            - CONFIGTX_ORDERER_ORDERERTYPE=kafka
+            - RABBITMQ_CONNECT=rabbitmq0:5672
+            - CONFIGTX_ORDERER_KAFKA_BROKERS=[kafka0:9092,kafka1:9092,kafka2:9092,kafka3:9092]
+            - ORDERER_KAFKA_RETRY_SHORTINTERVAL=1s
+            - ORDERER_KAFKA_RETRY_SHORTTOTAL=30s
+            - ORDERER_KAFKA_VERBOSE=true
+            - ORDERER_GENERAL_GENESISPROFILE=SampleInsecureKafka
+            - ORDERER_ABSOLUTEMAXBYTES=${ORDERER_ABSOLUTEMAXBYTES}
+            - ORDERER_PREFERREDMAXBYTES=${ORDERER_PREFERREDMAXBYTES}
+        volumes:
+            - ../crypto-config/ordererOrganizations/example.com/orderers/orderer0.example.com/msp:/var/hyperledger/msp
+            - ../crypto-config/ordererOrganizations/example.com/orderers/orderer0.example.com/tls:/var/hyperledger/tls
+            - ../config/:/var/hyperledger/configs
+        depends_on:
+            - rabbitmq0
+            - kafka0
+            - kafka1
+            - kafka2
+            - kafka3
+        networks:
+          behave:
+             aliases:
+               - ${CORE_PEER_NETWORKID}
+        ports:
+          - 25050:7050
+
+    orderer37.example.com:
+        extends:
+            file: docker-compose-base.yml
+            service: orderer
+        container_name: orderer37.example.com
+        environment:
+            - ORDERER_HOST=orderer37.example.com
+            - CONFIGTX_ORDERER_ORDERERTYPE=kafka
+            - RABBITMQ_CONNECT=rabbitmq0:5672
+            - CONFIGTX_ORDERER_KAFKA_BROKERS=[kafka0:9092,kafka1:9092,kafka2:9092,kafka3:9092]
+            - ORDERER_KAFKA_RETRY_SHORTINTERVAL=1s
+            - ORDERER_KAFKA_RETRY_SHORTTOTAL=30s
+            - ORDERER_KAFKA_VERBOSE=true
+            - ORDERER_GENERAL_GENESISPROFILE=SampleInsecureKafka
+            - ORDERER_ABSOLUTEMAXBYTES=${ORDERER_ABSOLUTEMAXBYTES}
+            - ORDERER_PREFERREDMAXBYTES=${ORDERER_PREFERREDMAXBYTES}
+        volumes:
+            - ../crypto-config/ordererOrganizations/example.com/orderers/orderer0.example.com/msp:/var/hyperledger/msp
+            - ../crypto-config/ordererOrganizations/example.com/orderers/orderer0.example.com/tls:/var/hyperledger/tls
+            - ../config/:/var/hyperledger/configs
+        depends_on:
+            - rabbitmq0
+            - kafka0
+            - kafka1
+            - kafka2
+            - kafka3
+        networks:
+          behave:
+             aliases:
+               - ${CORE_PEER_NETWORKID}
+        ports:
+          - 25550:7050
+
+    orderer38.example.com:
+        extends:
+            file: docker-compose-base.yml
+            service: orderer
+        container_name: orderer38.example.com
+        environment:
+            - ORDERER_HOST=orderer38.example.com
+            - CONFIGTX_ORDERER_ORDERERTYPE=kafka
+            - RABBITMQ_CONNECT=rabbitmq0:5672
+            - CONFIGTX_ORDERER_KAFKA_BROKERS=[kafka0:9092,kafka1:9092,kafka2:9092,kafka3:9092]
+            - ORDERER_KAFKA_RETRY_SHORTINTERVAL=1s
+            - ORDERER_KAFKA_RETRY_SHORTTOTAL=30s
+            - ORDERER_KAFKA_VERBOSE=true
+            - ORDERER_GENERAL_GENESISPROFILE=SampleInsecureKafka
+            - ORDERER_ABSOLUTEMAXBYTES=${ORDERER_ABSOLUTEMAXBYTES}
+            - ORDERER_PREFERREDMAXBYTES=${ORDERER_PREFERREDMAXBYTES}
+        volumes:
+            - ../crypto-config/ordererOrganizations/example.com/orderers/orderer0.example.com/msp:/var/hyperledger/msp
+            - ../crypto-config/ordererOrganizations/example.com/orderers/orderer0.example.com/tls:/var/hyperledger/tls
+            - ../config/:/var/hyperledger/configs
+        depends_on:
+            - rabbitmq0
+            - kafka0
+            - kafka1
+            - kafka2
+            - kafka3
+        networks:
+          behave:
+             aliases:
+               - ${CORE_PEER_NETWORKID}
+        ports:
+          - 26050:7050
+
+    orderer39.example.com:
+        extends:
+            file: docker-compose-base.yml
+            service: orderer
+        container_name: orderer39.example.com
+        environment:
+            - ORDERER_HOST=orderer39.example.com
+            - CONFIGTX_ORDERER_ORDERERTYPE=kafka
+            - RABBITMQ_CONNECT=rabbitmq0:5672
+            - CONFIGTX_ORDERER_KAFKA_BROKERS=[kafka0:9092,kafka1:9092,kafka2:9092,kafka3:9092]
+            - ORDERER_KAFKA_RETRY_SHORTINTERVAL=1s
+            - ORDERER_KAFKA_RETRY_SHORTTOTAL=30s
+            - ORDERER_KAFKA_VERBOSE=true
+            - ORDERER_GENERAL_GENESISPROFILE=SampleInsecureKafka
+            - ORDERER_ABSOLUTEMAXBYTES=${ORDERER_ABSOLUTEMAXBYTES}
+            - ORDERER_PREFERREDMAXBYTES=${ORDERER_PREFERREDMAXBYTES}
+        volumes:
+            - ../crypto-config/ordererOrganizations/example.com/orderers/orderer0.example.com/msp:/var/hyperledger/msp
+            - ../crypto-config/ordererOrganizations/example.com/orderers/orderer0.example.com/tls:/var/hyperledger/tls
+            - ../config/:/var/hyperledger/configs
+        depends_on:
+            - rabbitmq0
+            - kafka0
+            - kafka1
+            - kafka2
+            - kafka3
+        networks:
+          behave:
+             aliases:
+               - ${CORE_PEER_NETWORKID}
+        ports:
+          - 26550:7050
+
+    orderer40.example.com:
+        extends:
+            file: docker-compose-base.yml
+            service: orderer
+        container_name: orderer40.example.com
+        environment:
+            - ORDERER_HOST=orderer40.example.com
+            - CONFIGTX_ORDERER_ORDERERTYPE=kafka
+            - RABBITMQ_CONNECT=rabbitmq0:5672
+            - CONFIGTX_ORDERER_KAFKA_BROKERS=[kafka0:9092,kafka1:9092,kafka2:9092,kafka3:9092]
+            - ORDERER_KAFKA_RETRY_SHORTINTERVAL=1s
+            - ORDERER_KAFKA_RETRY_SHORTTOTAL=30s
+            - ORDERER_KAFKA_VERBOSE=true
+            - ORDERER_GENERAL_GENESISPROFILE=SampleInsecureKafka
+            - ORDERER_ABSOLUTEMAXBYTES=${ORDERER_ABSOLUTEMAXBYTES}
+            - ORDERER_PREFERREDMAXBYTES=${ORDERER_PREFERREDMAXBYTES}
+        volumes:
+            - ../crypto-config/ordererOrganizations/example.com/orderers/orderer0.example.com/msp:/var/hyperledger/msp
+            - ../crypto-config/ordererOrganizations/example.com/orderers/orderer0.example.com/tls:/var/hyperledger/tls
+            - ../config/:/var/hyperledger/configs
+        depends_on:
+            - rabbitmq0
+            - kafka0
+            - kafka1
+            - kafka2
+            - kafka3
+        networks:
+          behave:
+             aliases:
+               - ${CORE_PEER_NETWORKID}
+        ports:
+          - 27050:7050
+
+    orderer41.example.com:
+        extends:
+            file: docker-compose-base.yml
+            service: orderer
+        container_name: orderer41.example.com
+        environment:
+            - ORDERER_HOST=orderer41.example.com
+            - CONFIGTX_ORDERER_ORDERERTYPE=kafka
+            - RABBITMQ_CONNECT=rabbitmq0:5672
+            - CONFIGTX_ORDERER_KAFKA_BROKERS=[kafka0:9092,kafka1:9092,kafka2:9092,kafka3:9092]
+            - ORDERER_KAFKA_RETRY_SHORTINTERVAL=1s
+            - ORDERER_KAFKA_RETRY_SHORTTOTAL=30s
+            - ORDERER_KAFKA_VERBOSE=true
+            - ORDERER_GENERAL_GENESISPROFILE=SampleInsecureKafka
+            - ORDERER_ABSOLUTEMAXBYTES=${ORDERER_ABSOLUTEMAXBYTES}
+            - ORDERER_PREFERREDMAXBYTES=${ORDERER_PREFERREDMAXBYTES}
+        volumes:
+            - ../crypto-config/ordererOrganizations/example.com/orderers/orderer0.example.com/msp:/var/hyperledger/msp
+            - ../crypto-config/ordererOrganizations/example.com/orderers/orderer0.example.com/tls:/var/hyperledger/tls
+            - ../config/:/var/hyperledger/configs
+        depends_on:
+            - rabbitmq0
+            - kafka0
+            - kafka1
+            - kafka2
+            - kafka3
+        networks:
+          behave:
+             aliases:
+               - ${CORE_PEER_NETWORKID}
+        ports:
+          - 27550:7050
+
+    orderer42.example.com:
+        extends:
+            file: docker-compose-base.yml
+            service: orderer
+        container_name: orderer42.example.com
+        environment:
+            - ORDERER_HOST=orderer42.example.com
+            - CONFIGTX_ORDERER_ORDERERTYPE=kafka
+            - RABBITMQ_CONNECT=rabbitmq0:5672
+            - CONFIGTX_ORDERER_KAFKA_BROKERS=[kafka0:9092,kafka1:9092,kafka2:9092,kafka3:9092]
+            - ORDERER_KAFKA_RETRY_SHORTINTERVAL=1s
+            - ORDERER_KAFKA_RETRY_SHORTTOTAL=30s
+            - ORDERER_KAFKA_VERBOSE=true
+            - ORDERER_GENERAL_GENESISPROFILE=SampleInsecureKafka
+            - ORDERER_ABSOLUTEMAXBYTES=${ORDERER_ABSOLUTEMAXBYTES}
+            - ORDERER_PREFERREDMAXBYTES=${ORDERER_PREFERREDMAXBYTES}
+        volumes:
+            - ../crypto-config/ordererOrganizations/example.com/orderers/orderer0.example.com/msp:/var/hyperledger/msp
+            - ../crypto-config/ordererOrganizations/example.com/orderers/orderer0.example.com/tls:/var/hyperledger/tls
+            - ../config/:/var/hyperledger/configs
+        depends_on:
+            - rabbitmq0
+            - kafka0
+            - kafka1
+            - kafka2
+            - kafka3
+        networks:
+          behave:
+             aliases:
+               - ${CORE_PEER_NETWORKID}
+        ports:
+          - 28050:7050
+
+    orderer43.example.com:
+        extends:
+            file: docker-compose-base.yml
+            service: orderer
+        container_name: orderer43.example.com
+        environment:
+            - ORDERER_HOST=orderer43.example.com
+            - CONFIGTX_ORDERER_ORDERERTYPE=kafka
+            - RABBITMQ_CONNECT=rabbitmq0:5672
+            - CONFIGTX_ORDERER_KAFKA_BROKERS=[kafka0:9092,kafka1:9092,kafka2:9092,kafka3:9092]
+            - ORDERER_KAFKA_RETRY_SHORTINTERVAL=1s
+            - ORDERER_KAFKA_RETRY_SHORTTOTAL=30s
+            - ORDERER_KAFKA_VERBOSE=true
+            - ORDERER_GENERAL_GENESISPROFILE=SampleInsecureKafka
+            - ORDERER_ABSOLUTEMAXBYTES=${ORDERER_ABSOLUTEMAXBYTES}
+            - ORDERER_PREFERREDMAXBYTES=${ORDERER_PREFERREDMAXBYTES}
+        volumes:
+            - ../crypto-config/ordererOrganizations/example.com/orderers/orderer0.example.com/msp:/var/hyperledger/msp
+            - ../crypto-config/ordererOrganizations/example.com/orderers/orderer0.example.com/tls:/var/hyperledger/tls
+            - ../config/:/var/hyperledger/configs
+        depends_on:
+            - rabbitmq0
+            - kafka0
+            - kafka1
+            - kafka2
+            - kafka3
+        networks:
+          behave:
+             aliases:
+               - ${CORE_PEER_NETWORKID}
+        ports:
+          - 28550:7050
+
+    orderer44.example.com:
+        extends:
+            file: docker-compose-base.yml
+            service: orderer
+        container_name: orderer44.example.com
+        environment:
+            - ORDERER_HOST=orderer44.example.com
+            - CONFIGTX_ORDERER_ORDERERTYPE=kafka
+            - RABBITMQ_CONNECT=rabbitmq0:5672
+            - CONFIGTX_ORDERER_KAFKA_BROKERS=[kafka0:9092,kafka1:9092,kafka2:9092,kafka3:9092]
+            - ORDERER_KAFKA_RETRY_SHORTINTERVAL=1s
+            - ORDERER_KAFKA_RETRY_SHORTTOTAL=30s
+            - ORDERER_KAFKA_VERBOSE=true
+            - ORDERER_GENERAL_GENESISPROFILE=SampleInsecureKafka
+            - ORDERER_ABSOLUTEMAXBYTES=${ORDERER_ABSOLUTEMAXBYTES}
+            - ORDERER_PREFERREDMAXBYTES=${ORDERER_PREFERREDMAXBYTES}
+        volumes:
+            - ../crypto-config/ordererOrganizations/example.com/orderers/orderer0.example.com/msp:/var/hyperledger/msp
+            - ../crypto-config/ordererOrganizations/example.com/orderers/orderer0.example.com/tls:/var/hyperledger/tls
+            - ../config/:/var/hyperledger/configs
+        depends_on:
+            - rabbitmq0
+            - kafka0
+            - kafka1
+            - kafka2
+            - kafka3
+        networks:
+          behave:
+             aliases:
+               - ${CORE_PEER_NETWORKID}
+        ports:
+          - 29050:7050
+
+    orderer45.example.com:
+        extends:
+            file: docker-compose-base.yml
+            service: orderer
+        container_name: orderer45.example.com
+        environment:
+            - ORDERER_HOST=orderer45.example.com
+            - CONFIGTX_ORDERER_ORDERERTYPE=kafka
+            - RABBITMQ_CONNECT=rabbitmq0:5672
+            - CONFIGTX_ORDERER_KAFKA_BROKERS=[kafka0:9092,kafka1:9092,kafka2:9092,kafka3:9092]
+            - ORDERER_KAFKA_RETRY_SHORTINTERVAL=1s
+            - ORDERER_KAFKA_RETRY_SHORTTOTAL=30s
+            - ORDERER_KAFKA_VERBOSE=true
+            - ORDERER_GENERAL_GENESISPROFILE=SampleInsecureKafka
+            - ORDERER_ABSOLUTEMAXBYTES=${ORDERER_ABSOLUTEMAXBYTES}
+            - ORDERER_PREFERREDMAXBYTES=${ORDERER_PREFERREDMAXBYTES}
+        volumes:
+            - ../crypto-config/ordererOrganizations/example.com/orderers/orderer0.example.com/msp:/var/hyperledger/msp
+            - ../crypto-config/ordererOrganizations/example.com/orderers/orderer0.example.com/tls:/var/hyperledger/tls
+            - ../config/:/var/hyperledger/configs
+        depends_on:
+            - rabbitmq0
+            - kafka0
+            - kafka1
+            - kafka2
+            - kafka3
+        networks:
+          behave:
+             aliases:
+               - ${CORE_PEER_NETWORKID}
+        ports:
+          - 29550:7050
+
+    orderer46.example.com:
+        extends:
+            file: docker-compose-base.yml
+            service: orderer
+        container_name: orderer46.example.com
+        environment:
+            - ORDERER_HOST=orderer46.example.com
+            - CONFIGTX_ORDERER_ORDERERTYPE=kafka
+            - RABBITMQ_CONNECT=rabbitmq0:5672
+            - CONFIGTX_ORDERER_KAFKA_BROKERS=[kafka0:9092,kafka1:9092,kafka2:9092,kafka3:9092]
+            - ORDERER_KAFKA_RETRY_SHORTINTERVAL=1s
+            - ORDERER_KAFKA_RETRY_SHORTTOTAL=30s
+            - ORDERER_KAFKA_VERBOSE=true
+            - ORDERER_GENERAL_GENESISPROFILE=SampleInsecureKafka
+            - ORDERER_ABSOLUTEMAXBYTES=${ORDERER_ABSOLUTEMAXBYTES}
+            - ORDERER_PREFERREDMAXBYTES=${ORDERER_PREFERREDMAXBYTES}
+        volumes:
+            - ../crypto-config/ordererOrganizations/example.com/orderers/orderer0.example.com/msp:/var/hyperledger/msp
+            - ../crypto-config/ordererOrganizations/example.com/orderers/orderer0.example.com/tls:/var/hyperledger/tls
+            - ../config/:/var/hyperledger/configs
+        depends_on:
+            - rabbitmq0
+            - kafka0
+            - kafka1
+            - kafka2
+            - kafka3
+        networks:
+          behave:
+             aliases:
+               - ${CORE_PEER_NETWORKID}
+        ports:
+          - 30050:7050
+
+    orderer47.example.com:
+        extends:
+            file: docker-compose-base.yml
+            service: orderer
+        container_name: orderer47.example.com
+        environment:
+            - ORDERER_HOST=orderer47.example.com
+            - CONFIGTX_ORDERER_ORDERERTYPE=kafka
+            - RABBITMQ_CONNECT=rabbitmq0:5672
+            - CONFIGTX_ORDERER_KAFKA_BROKERS=[kafka0:9092,kafka1:9092,kafka2:9092,kafka3:9092]
+            - ORDERER_KAFKA_RETRY_SHORTINTERVAL=1s
+            - ORDERER_KAFKA_RETRY_SHORTTOTAL=30s
+            - ORDERER_KAFKA_VERBOSE=true
+            - ORDERER_GENERAL_GENESISPROFILE=SampleInsecureKafka
+            - ORDERER_ABSOLUTEMAXBYTES=${ORDERER_ABSOLUTEMAXBYTES}
+            - ORDERER_PREFERREDMAXBYTES=${ORDERER_PREFERREDMAXBYTES}
+        volumes:
+            - ../crypto-config/ordererOrganizations/example.com/orderers/orderer0.example.com/msp:/var/hyperledger/msp
+            - ../crypto-config/ordererOrganizations/example.com/orderers/orderer0.example.com/tls:/var/hyperledger/tls
+            - ../config/:/var/hyperledger/configs
+        depends_on:
+            - rabbitmq0
+            - kafka0
+            - kafka1
+            - kafka2
+            - kafka3
+        networks:
+          behave:
+             aliases:
+               - ${CORE_PEER_NETWORKID}
+        ports:
+          - 30550:7050
+
+    orderer48.example.com:
+        extends:
+            file: docker-compose-base.yml
+            service: orderer
+        container_name: orderer48.example.com
+        environment:
+            - ORDERER_HOST=orderer48.example.com
+            - CONFIGTX_ORDERER_ORDERERTYPE=kafka
+            - RABBITMQ_CONNECT=rabbitmq0:5672
+            - CONFIGTX_ORDERER_KAFKA_BROKERS=[kafka0:9092,kafka1:9092,kafka2:9092,kafka3:9092]
+            - ORDERER_KAFKA_RETRY_SHORTINTERVAL=1s
+            - ORDERER_KAFKA_RETRY_SHORTTOTAL=30s
+            - ORDERER_KAFKA_VERBOSE=true
+            - ORDERER_GENERAL_GENESISPROFILE=SampleInsecureKafka
+            - ORDERER_ABSOLUTEMAXBYTES=${ORDERER_ABSOLUTEMAXBYTES}
+            - ORDERER_PREFERREDMAXBYTES=${ORDERER_PREFERREDMAXBYTES}
+        volumes:
+            - ../crypto-config/ordererOrganizations/example.com/orderers/orderer0.example.com/msp:/var/hyperledger/msp
+            - ../crypto-config/ordererOrganizations/example.com/orderers/orderer0.example.com/tls:/var/hyperledger/tls
+            - ../config/:/var/hyperledger/configs
+        depends_on:
+            - rabbitmq0
+            - kafka0
+            - kafka1
+            - kafka2
+            - kafka3
+        networks:
+          behave:
+             aliases:
+               - ${CORE_PEER_NETWORKID}
+        ports:
+          - 31050:7050
+
+    orderer49.example.com:
+        extends:
+            file: docker-compose-base.yml
+            service: orderer
+        container_name: orderer49.example.com
+        environment:
+            - ORDERER_HOST=orderer49.example.com
+            - CONFIGTX_ORDERER_ORDERERTYPE=kafka
+            - RABBITMQ_CONNECT=rabbitmq0:5672
+            - CONFIGTX_ORDERER_KAFKA_BROKERS=[kafka0:9092,kafka1:9092,kafka2:9092,kafka3:9092]
+            - ORDERER_KAFKA_RETRY_SHORTINTERVAL=1s
+            - ORDERER_KAFKA_RETRY_SHORTTOTAL=30s
+            - ORDERER_KAFKA_VERBOSE=true
+            - ORDERER_GENERAL_GENESISPROFILE=SampleInsecureKafka
+            - ORDERER_ABSOLUTEMAXBYTES=${ORDERER_ABSOLUTEMAXBYTES}
+            - ORDERER_PREFERREDMAXBYTES=${ORDERER_PREFERREDMAXBYTES}
+        volumes:
+            - ../crypto-config/ordererOrganizations/example.com/orderers/orderer0.example.com/msp:/var/hyperledger/msp
+            - ../crypto-config/ordererOrganizations/example.com/orderers/orderer0.example.com/tls:/var/hyperledger/tls
+            - ../config/:/var/hyperledger/configs
+        depends_on:
+            - rabbitmq0
+            - kafka0
+            - kafka1
+            - kafka2
+            - kafka3
+        networks:
+          behave:
+             aliases:
+               - ${CORE_PEER_NETWORKID}
+        ports:
+          - 31550:7050
+
+    peer0.org1.example.com:
+        extends:
+            file: docker-compose-base.yml
+            service: peer
+        container_name: peer0.org1.example.com
+        environment:
+            - CORE_PEER_CHAINCODELISTENADDRESS=peer0.org1.example.com:7052
+            - CORE_PEER_ID=peer0.org1.example.com
+            - CORE_PEER_ADDRESS=peer0.org1.example.com:7051
+            - CORE_PEER_GOSSIP_BOOTSTRAP=peer1.org1.example.com:7051
+            - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.org1.example.com:7051
+            - CORE_PEER_GOSSIP_ORGLEADER=${CORE_PEER_GOSSIP_ORGLEADER_PEER0_ORG1}
+            - CORE_PEER_GOSSIP_USELEADERELECTION=${CORE_PEER_GOSSIP_USELEADERELECTION_PEER0_ORG1}
+            - CORE_PEER_LOCALMSPID=Org1MSP
+            - CORE_PEER_TLS_CLIENTROOTCAS_FILES=/var/hyperledger/users/Admin@org1.example.com/tls/ca.crt
+            - CORE_PEER_TLS_CLIENTCERT_FILE=/var/hyperledger/users/Admin@org1.example.com/tls/client.crt
+            - CORE_PEER_TLS_CLIENTKEY_FILE=/var/hyperledger/users/Admin@org1.example.com/tls/client.key
+        volumes:
+            - ../crypto-config/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/msp:/var/hyperledger/msp
+            - ../crypto-config/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls:/var/hyperledger/tls
+            - ../crypto-config/peerOrganizations/org1.example.com/users:/var/hyperledger/users
+            - ../config/:/var/hyperledger/configs
+
+        depends_on:
+            - orderer0.example.com
+            - orderer1.example.com
+            - orderer2.example.com
+        networks:
+          behave:
+             aliases:
+               - ${CORE_PEER_NETWORKID}
+        ports:
+          - 7051:7051
+          - 7053:7053
+
+    peer0.org2.example.com:
+        extends:
+            file: docker-compose-base.yml
+            service: peer
+        container_name: peer0.org2.example.com
+        environment:
+            - CORE_PEER_CHAINCODELISTENADDRESS=peer0.org2.example.com:7052
+            - CORE_PEER_ID=peer0.org2.example.com
+            - CORE_PEER_ADDRESS=peer0.org2.example.com:7051
+            - CORE_PEER_GOSSIP_BOOTSTRAP=peer1.org2.example.com:7051
+            - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.org2.example.com:7051
+            - CORE_PEER_GOSSIP_ORGLEADER=${CORE_PEER_GOSSIP_ORGLEADER_PEER0_ORG2}
+            - CORE_PEER_GOSSIP_USELEADERELECTION=${CORE_PEER_GOSSIP_USELEADERELECTION_PEER0_ORG2}
+            - CORE_PEER_LOCALMSPID=Org2MSP
+            - CORE_PEER_TLS_CLIENTROOTCAS_FILES=/var/hyperledger/users/Admin@org2.example.com/tls/ca.crt
+            - CORE_PEER_TLS_CLIENTCERT_FILE=/var/hyperledger/users/Admin@org2.example.com/tls/client.crt
+            - CORE_PEER_TLS_CLIENTKEY_FILE=/var/hyperledger/users/Admin@org2.example.com/tls/client.key
+        volumes:
+            - ../crypto-config/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/msp:/var/hyperledger/msp
+            - ../crypto-config/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/tls:/var/hyperledger/tls
+            - ../crypto-config/peerOrganizations/org2.example.com/users:/var/hyperledger/users
+            - ../config/:/var/hyperledger/configs
+        depends_on:
+            - orderer0.example.com
+            - orderer1.example.com
+            - orderer2.example.com
+        networks:
+          behave:
+             aliases:
+               - ${CORE_PEER_NETWORKID}
+        ports:
+          - 9051:7051
+          - 9053:7053
+
+    peer1.org1.example.com:
+        extends:
+            file: docker-compose-base.yml
+            service: peer
+        container_name: peer1.org1.example.com
+        environment:
+            - CORE_PEER_CHAINCODELISTENADDRESS=peer1.org1.example.com:7052
+            - CORE_PEER_ID=peer1.org1.example.com
+            - CORE_PEER_ADDRESS=peer1.org1.example.com:7051
+            - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.org1.example.com:7051
+            - CORE_PEER_GOSSIP_ORGLEADER=${CORE_PEER_GOSSIP_ORGLEADER_PEER1_ORG1}
+            - CORE_PEER_GOSSIP_USELEADERELECTION=${CORE_PEER_GOSSIP_USELEADERELECTION_PEER1_ORG1}
+            - CORE_PEER_LOCALMSPID=Org1MSP
+            - CORE_PEER_TLS_CLIENTROOTCAS_FILES=/var/hyperledger/users/Admin@org1.example.com/tls/ca.crt
+            - CORE_PEER_TLS_CLIENTCERT_FILE=/var/hyperledger/users/Admin@org1.example.com/tls/client.crt
+            - CORE_PEER_TLS_CLIENTKEY_FILE=/var/hyperledger/users/Admin@org1.example.com/tls/client.key
+        volumes:
+            - ../crypto-config/peerOrganizations/org1.example.com/peers/peer1.org1.example.com/msp:/var/hyperledger/msp
+            - ../crypto-config/peerOrganizations/org1.example.com/peers/peer1.org1.example.com/tls:/var/hyperledger/tls
+            - ../crypto-config/peerOrganizations/org1.example.com/users:/var/hyperledger/users
+            - ../config/:/var/hyperledger/configs
+        depends_on:
+            - orderer0.example.com
+            - orderer1.example.com
+            - orderer2.example.com
+            - peer0.org1.example.com
+        networks:
+          behave:
+             aliases:
+               - ${CORE_PEER_NETWORKID}
+        ports:
+          - 8051:7051
+          - 8053:7053
+
+    peer1.org2.example.com:
+        extends:
+            file: docker-compose-base.yml
+            service: peer
+        container_name: peer1.org2.example.com
+        environment:
+            - CORE_PEER_CHAINCODELISTENADDRESS=peer1.org2.example.com:7052
+            - CORE_PEER_ID=peer1.org2.example.com
+            - CORE_PEER_ADDRESS=peer1.org2.example.com:7051
+            - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.org2.example.com:7051
+            - CORE_PEER_GOSSIP_ORGLEADER=${CORE_PEER_GOSSIP_ORGLEADER_PEER1_ORG2}
+            - CORE_PEER_GOSSIP_USELEADERELECTION=${CORE_PEER_GOSSIP_USELEADERELECTION_PEER1_ORG2}
+            - CORE_PEER_LOCALMSPID=Org2MSP
+            - CORE_PEER_TLS_CLIENTROOTCAS_FILES=/var/hyperledger/users/Admin@org2.example.com/tls/ca.crt
+            - CORE_PEER_TLS_CLIENTCERT_FILE=/var/hyperledger/users/Admin@org2.example.com/tls/client.crt
+            - CORE_PEER_TLS_CLIENTKEY_FILE=/var/hyperledger/users/Admin@org2.example.com/tls/client.key
+        volumes:
+            - ../crypto-config/peerOrganizations/org2.example.com/peers/peer1.org2.example.com/msp:/var/hyperledger/msp
+            - ../crypto-config/peerOrganizations/org2.example.com/peers/peer1.org2.example.com/tls:/var/hyperledger/tls
+            - ../crypto-config/peerOrganizations/org2.example.com/users:/var/hyperledger/users
+            - ../config/:/var/hyperledger/configs
+        depends_on:
+            - orderer0.example.com
+            - orderer1.example.com
+            - orderer2.example.com
+            - peer0.org2.example.com
+        networks:
+          behave:
+             aliases:
+               - ${CORE_PEER_NETWORKID}
+        ports:
+          - 10051:7051
+          - 10053:7053
