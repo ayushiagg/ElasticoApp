@@ -19,125 +19,6 @@ services:
              aliases:
                - ${CORE_PEER_NETWORKID}
 
-    zookeeper0:
-        extends:
-            file: docker-compose-base.yml
-            service: zookeeper
-        container_name: zookeeper0
-        environment:
-            - ZOO_MY_ID=1
-            - ZOO_SERVERS=server.1=zookeeper0:2888:3888 server.2=zookeeper1:2888:3888 server.3=zookeeper2:2888:3888
-        networks:
-          behave:
-             aliases:
-               - ${CORE_PEER_NETWORKID}
-
-    zookeeper1:
-        extends:
-            file: docker-compose-base.yml
-            service: zookeeper
-        container_name: zookeeper1
-        environment:
-            - ZOO_MY_ID=2
-            - ZOO_SERVERS=server.1=zookeeper0:2888:3888 server.2=zookeeper1:2888:3888 server.3=zookeeper2:2888:3888
-        networks:
-          behave:
-             aliases:
-               - ${CORE_PEER_NETWORKID}
-
-    zookeeper2:
-        extends:
-            file: docker-compose-base.yml
-            service: zookeeper
-        container_name: zookeeper2
-        environment:
-            - ZOO_MY_ID=3
-            - ZOO_SERVERS=server.1=zookeeper0:2888:3888 server.2=zookeeper1:2888:3888 server.3=zookeeper2:2888:3888
-        networks:
-          behave:
-             aliases:
-               - ${CORE_PEER_NETWORKID}
-
-    kafka0:
-        extends:
-            file: docker-compose-base.yml
-            service: kafka
-        container_name: kafka0
-        environment:
-            - KAFKA_BROKER_ID=0
-            - KAFKA_ZOOKEEPER_CONNECT=zookeeper0:2181,zookeeper1:2181,zookeeper2:2181
-            - KAFKA_MESSAGE_MAX_BYTES=${KAFKA_MESSAGE_MAX_BYTES}
-            - KAFKA_REPLICA_FETCH_MAX_BYTES=${KAFKA_REPLICA_FETCH_MAX_BYTES}
-            - KAFKA_REPLICA_FETCH_RESPONSE_MAX_BYTES=${KAFKA_REPLICA_FETCH_RESPONSE_MAX_BYTES}
-        depends_on:
-            - zookeeper0
-            - zookeeper1
-            - zookeeper2
-        networks:
-          behave:
-             aliases:
-               - ${CORE_PEER_NETWORKID}
-
-    kafka1:
-        extends:
-            file: docker-compose-base.yml
-            service: kafka
-        container_name: kafka1
-        environment:
-            - KAFKA_BROKER_ID=1
-            - KAFKA_ZOOKEEPER_CONNECT=zookeeper0:2181,zookeeper1:2181,zookeeper2:2181
-            - KAFKA_MESSAGE_MAX_BYTES=${KAFKA_MESSAGE_MAX_BYTES}
-            - KAFKA_REPLICA_FETCH_MAX_BYTES=${KAFKA_REPLICA_FETCH_MAX_BYTES}
-            - KAFKA_REPLICA_FETCH_RESPONSE_MAX_BYTES=${KAFKA_REPLICA_FETCH_RESPONSE_MAX_BYTES}
-        depends_on:
-            - zookeeper0
-            - zookeeper1
-            - zookeeper2
-        networks:
-          behave:
-             aliases:
-               - ${CORE_PEER_NETWORKID}
-
-    kafka2:
-        extends:
-            file: docker-compose-base.yml
-            service: kafka
-        container_name: kafka2
-        environment:
-            - KAFKA_BROKER_ID=2
-            - KAFKA_ZOOKEEPER_CONNECT=zookeeper0:2181,zookeeper1:2181,zookeeper2:2181
-            - KAFKA_MESSAGE_MAX_BYTES=${KAFKA_MESSAGE_MAX_BYTES}
-            - KAFKA_REPLICA_FETCH_MAX_BYTES=${KAFKA_REPLICA_FETCH_MAX_BYTES}
-            - KAFKA_REPLICA_FETCH_RESPONSE_MAX_BYTES=${KAFKA_REPLICA_FETCH_RESPONSE_MAX_BYTES}
-        depends_on:
-            - zookeeper0
-            - zookeeper1
-            - zookeeper2
-        networks:
-          behave:
-             aliases:
-               - ${CORE_PEER_NETWORKID}
-
-    kafka3:
-        extends:
-            file: docker-compose-base.yml
-            service: kafka
-        container_name: kafka3
-        environment:
-            - KAFKA_BROKER_ID=3
-            - KAFKA_ZOOKEEPER_CONNECT=zookeeper0:2181,zookeeper1:2181,zookeeper2:2181
-            - KAFKA_MESSAGE_MAX_BYTES=${KAFKA_MESSAGE_MAX_BYTES}
-            - KAFKA_REPLICA_FETCH_MAX_BYTES=${KAFKA_REPLICA_FETCH_MAX_BYTES}
-            - KAFKA_REPLICA_FETCH_RESPONSE_MAX_BYTES=${KAFKA_REPLICA_FETCH_RESPONSE_MAX_BYTES}
-        depends_on:
-            - zookeeper0
-            - zookeeper1
-            - zookeeper2
-        networks:
-          behave:
-             aliases:
-               - ${CORE_PEER_NETWORKID}
-
     orderer0.example.com:
         extends:
             file: docker-compose-base.yml
@@ -145,13 +26,8 @@ services:
         container_name: orderer0.example.com
         environment:
             - ORDERER_HOST=orderer0.example.com
-            - CONFIGTX_ORDERER_ORDERERTYPE=kafka
+            - CONFIGTX_ORDERER_ORDERERTYPE=solo
             - RABBITMQ_CONNECT=rabbitmq0:5672
-            - CONFIGTX_ORDERER_KAFKA_BROKERS=[kafka0:9092,kafka1:9092,kafka2:9092,kafka3:9092]
-            - ORDERER_KAFKA_RETRY_SHORTINTERVAL=1s
-            - ORDERER_KAFKA_RETRY_SHORTTOTAL=30s
-            - ORDERER_KAFKA_VERBOSE=true
-            - ORDERER_GENERAL_GENESISPROFILE=SampleInsecureKafka
             - ORDERER_ABSOLUTEMAXBYTES=${ORDERER_ABSOLUTEMAXBYTES}
             - ORDERER_PREFERREDMAXBYTES=${ORDERER_PREFERREDMAXBYTES}
         volumes:
@@ -160,10 +36,6 @@ services:
             - ../config/:/var/hyperledger/configs
         depends_on:
             - rabbitmq0
-            - kafka0
-            - kafka1
-            - kafka2
-            - kafka3
         networks:
           behave:
              aliases:
@@ -178,13 +50,8 @@ services:
         container_name: orderer1.example.com
         environment:
             - ORDERER_HOST=orderer1.example.com
-            - CONFIGTX_ORDERER_ORDERERTYPE=kafka
+            - CONFIGTX_ORDERER_ORDERERTYPE=solo
             - RABBITMQ_CONNECT=rabbitmq0:5672
-            - CONFIGTX_ORDERER_KAFKA_BROKERS=[kafka0:9092,kafka1:9092,kafka2:9092,kafka3:9092]
-            - ORDERER_KAFKA_RETRY_SHORTINTERVAL=1s
-            - ORDERER_KAFKA_RETRY_SHORTTOTAL=30s
-            - ORDERER_KAFKA_VERBOSE=true
-            - ORDERER_GENERAL_GENESISPROFILE=SampleInsecureKafka
             - ORDERER_ABSOLUTEMAXBYTES=${ORDERER_ABSOLUTEMAXBYTES}
             - ORDERER_PREFERREDMAXBYTES=${ORDERER_PREFERREDMAXBYTES}
         volumes:
@@ -193,10 +60,6 @@ services:
             - ../config/:/var/hyperledger/configs
         depends_on:
             - rabbitmq0
-            - kafka0
-            - kafka1
-            - kafka2
-            - kafka3
         networks:
           behave:
              aliases:
@@ -211,13 +74,8 @@ services:
         container_name: orderer2.example.com
         environment:
             - ORDERER_HOST=orderer2.example.com
-            - CONFIGTX_ORDERER_ORDERERTYPE=kafka
+            - CONFIGTX_ORDERER_ORDERERTYPE=solo
             - RABBITMQ_CONNECT=rabbitmq0:5672
-            - CONFIGTX_ORDERER_KAFKA_BROKERS=[kafka0:9092,kafka1:9092,kafka2:9092,kafka3:9092]
-            - ORDERER_KAFKA_RETRY_SHORTINTERVAL=1s
-            - ORDERER_KAFKA_RETRY_SHORTTOTAL=30s
-            - ORDERER_KAFKA_VERBOSE=true
-            - ORDERER_GENERAL_GENESISPROFILE=SampleInsecureKafka
             - ORDERER_ABSOLUTEMAXBYTES=${ORDERER_ABSOLUTEMAXBYTES}
             - ORDERER_PREFERREDMAXBYTES=${ORDERER_PREFERREDMAXBYTES}
         volumes:
@@ -226,10 +84,6 @@ services:
             - ../config/:/var/hyperledger/configs
         depends_on:
             - rabbitmq0
-            - kafka0
-            - kafka1
-            - kafka2
-            - kafka3
         networks:
           behave:
              aliases:
@@ -244,13 +98,8 @@ services:
         container_name: orderer3.example.com
         environment:
             - ORDERER_HOST=orderer3.example.com
-            - CONFIGTX_ORDERER_ORDERERTYPE=kafka
+            - CONFIGTX_ORDERER_ORDERERTYPE=solo
             - RABBITMQ_CONNECT=rabbitmq0:5672
-            - CONFIGTX_ORDERER_KAFKA_BROKERS=[kafka0:9092,kafka1:9092,kafka2:9092,kafka3:9092]
-            - ORDERER_KAFKA_RETRY_SHORTINTERVAL=1s
-            - ORDERER_KAFKA_RETRY_SHORTTOTAL=30s
-            - ORDERER_KAFKA_VERBOSE=true
-            - ORDERER_GENERAL_GENESISPROFILE=SampleInsecureKafka
             - ORDERER_ABSOLUTEMAXBYTES=${ORDERER_ABSOLUTEMAXBYTES}
             - ORDERER_PREFERREDMAXBYTES=${ORDERER_PREFERREDMAXBYTES}
         volumes:
@@ -259,10 +108,6 @@ services:
             - ../config/:/var/hyperledger/configs
         depends_on:
             - rabbitmq0
-            - kafka0
-            - kafka1
-            - kafka2
-            - kafka3
         networks:
           behave:
              aliases:
@@ -277,13 +122,8 @@ services:
         container_name: orderer4.example.com
         environment:
             - ORDERER_HOST=orderer4.example.com
-            - CONFIGTX_ORDERER_ORDERERTYPE=kafka
+            - CONFIGTX_ORDERER_ORDERERTYPE=solo
             - RABBITMQ_CONNECT=rabbitmq0:5672
-            - CONFIGTX_ORDERER_KAFKA_BROKERS=[kafka0:9092,kafka1:9092,kafka2:9092,kafka3:9092]
-            - ORDERER_KAFKA_RETRY_SHORTINTERVAL=1s
-            - ORDERER_KAFKA_RETRY_SHORTTOTAL=30s
-            - ORDERER_KAFKA_VERBOSE=true
-            - ORDERER_GENERAL_GENESISPROFILE=SampleInsecureKafka
             - ORDERER_ABSOLUTEMAXBYTES=${ORDERER_ABSOLUTEMAXBYTES}
             - ORDERER_PREFERREDMAXBYTES=${ORDERER_PREFERREDMAXBYTES}
         volumes:
@@ -292,10 +132,6 @@ services:
             - ../config/:/var/hyperledger/configs
         depends_on:
             - rabbitmq0
-            - kafka0
-            - kafka1
-            - kafka2
-            - kafka3
         networks:
           behave:
              aliases:
@@ -310,13 +146,8 @@ services:
         container_name: orderer5.example.com
         environment:
             - ORDERER_HOST=orderer5.example.com
-            - CONFIGTX_ORDERER_ORDERERTYPE=kafka
+            - CONFIGTX_ORDERER_ORDERERTYPE=solo
             - RABBITMQ_CONNECT=rabbitmq0:5672
-            - CONFIGTX_ORDERER_KAFKA_BROKERS=[kafka0:9092,kafka1:9092,kafka2:9092,kafka3:9092]
-            - ORDERER_KAFKA_RETRY_SHORTINTERVAL=1s
-            - ORDERER_KAFKA_RETRY_SHORTTOTAL=30s
-            - ORDERER_KAFKA_VERBOSE=true
-            - ORDERER_GENERAL_GENESISPROFILE=SampleInsecureKafka
             - ORDERER_ABSOLUTEMAXBYTES=${ORDERER_ABSOLUTEMAXBYTES}
             - ORDERER_PREFERREDMAXBYTES=${ORDERER_PREFERREDMAXBYTES}
         volumes:
@@ -325,10 +156,6 @@ services:
             - ../config/:/var/hyperledger/configs
         depends_on:
             - rabbitmq0
-            - kafka0
-            - kafka1
-            - kafka2
-            - kafka3
         networks:
           behave:
              aliases:
@@ -343,13 +170,8 @@ services:
         container_name: orderer6.example.com
         environment:
             - ORDERER_HOST=orderer6.example.com
-            - CONFIGTX_ORDERER_ORDERERTYPE=kafka
+            - CONFIGTX_ORDERER_ORDERERTYPE=solo
             - RABBITMQ_CONNECT=rabbitmq0:5672
-            - CONFIGTX_ORDERER_KAFKA_BROKERS=[kafka0:9092,kafka1:9092,kafka2:9092,kafka3:9092]
-            - ORDERER_KAFKA_RETRY_SHORTINTERVAL=1s
-            - ORDERER_KAFKA_RETRY_SHORTTOTAL=30s
-            - ORDERER_KAFKA_VERBOSE=true
-            - ORDERER_GENERAL_GENESISPROFILE=SampleInsecureKafka
             - ORDERER_ABSOLUTEMAXBYTES=${ORDERER_ABSOLUTEMAXBYTES}
             - ORDERER_PREFERREDMAXBYTES=${ORDERER_PREFERREDMAXBYTES}
         volumes:
@@ -358,10 +180,6 @@ services:
             - ../config/:/var/hyperledger/configs
         depends_on:
             - rabbitmq0
-            - kafka0
-            - kafka1
-            - kafka2
-            - kafka3
         networks:
           behave:
              aliases:
@@ -376,13 +194,8 @@ services:
         container_name: orderer7.example.com
         environment:
             - ORDERER_HOST=orderer7.example.com
-            - CONFIGTX_ORDERER_ORDERERTYPE=kafka
+            - CONFIGTX_ORDERER_ORDERERTYPE=solo
             - RABBITMQ_CONNECT=rabbitmq0:5672
-            - CONFIGTX_ORDERER_KAFKA_BROKERS=[kafka0:9092,kafka1:9092,kafka2:9092,kafka3:9092]
-            - ORDERER_KAFKA_RETRY_SHORTINTERVAL=1s
-            - ORDERER_KAFKA_RETRY_SHORTTOTAL=30s
-            - ORDERER_KAFKA_VERBOSE=true
-            - ORDERER_GENERAL_GENESISPROFILE=SampleInsecureKafka
             - ORDERER_ABSOLUTEMAXBYTES=${ORDERER_ABSOLUTEMAXBYTES}
             - ORDERER_PREFERREDMAXBYTES=${ORDERER_PREFERREDMAXBYTES}
         volumes:
@@ -391,10 +204,6 @@ services:
             - ../config/:/var/hyperledger/configs
         depends_on:
             - rabbitmq0
-            - kafka0
-            - kafka1
-            - kafka2
-            - kafka3
         networks:
           behave:
              aliases:
@@ -409,13 +218,8 @@ services:
         container_name: orderer8.example.com
         environment:
             - ORDERER_HOST=orderer8.example.com
-            - CONFIGTX_ORDERER_ORDERERTYPE=kafka
+            - CONFIGTX_ORDERER_ORDERERTYPE=solo
             - RABBITMQ_CONNECT=rabbitmq0:5672
-            - CONFIGTX_ORDERER_KAFKA_BROKERS=[kafka0:9092,kafka1:9092,kafka2:9092,kafka3:9092]
-            - ORDERER_KAFKA_RETRY_SHORTINTERVAL=1s
-            - ORDERER_KAFKA_RETRY_SHORTTOTAL=30s
-            - ORDERER_KAFKA_VERBOSE=true
-            - ORDERER_GENERAL_GENESISPROFILE=SampleInsecureKafka
             - ORDERER_ABSOLUTEMAXBYTES=${ORDERER_ABSOLUTEMAXBYTES}
             - ORDERER_PREFERREDMAXBYTES=${ORDERER_PREFERREDMAXBYTES}
         volumes:
@@ -424,10 +228,6 @@ services:
             - ../config/:/var/hyperledger/configs
         depends_on:
             - rabbitmq0
-            - kafka0
-            - kafka1
-            - kafka2
-            - kafka3
         networks:
           behave:
              aliases:
@@ -442,13 +242,8 @@ services:
         container_name: orderer9.example.com
         environment:
             - ORDERER_HOST=orderer9.example.com
-            - CONFIGTX_ORDERER_ORDERERTYPE=kafka
+            - CONFIGTX_ORDERER_ORDERERTYPE=solo
             - RABBITMQ_CONNECT=rabbitmq0:5672
-            - CONFIGTX_ORDERER_KAFKA_BROKERS=[kafka0:9092,kafka1:9092,kafka2:9092,kafka3:9092]
-            - ORDERER_KAFKA_RETRY_SHORTINTERVAL=1s
-            - ORDERER_KAFKA_RETRY_SHORTTOTAL=30s
-            - ORDERER_KAFKA_VERBOSE=true
-            - ORDERER_GENERAL_GENESISPROFILE=SampleInsecureKafka
             - ORDERER_ABSOLUTEMAXBYTES=${ORDERER_ABSOLUTEMAXBYTES}
             - ORDERER_PREFERREDMAXBYTES=${ORDERER_PREFERREDMAXBYTES}
         volumes:
@@ -457,10 +252,6 @@ services:
             - ../config/:/var/hyperledger/configs
         depends_on:
             - rabbitmq0
-            - kafka0
-            - kafka1
-            - kafka2
-            - kafka3
         networks:
           behave:
              aliases:
@@ -475,13 +266,8 @@ services:
         container_name: orderer10.example.com
         environment:
             - ORDERER_HOST=orderer10.example.com
-            - CONFIGTX_ORDERER_ORDERERTYPE=kafka
+            - CONFIGTX_ORDERER_ORDERERTYPE=solo
             - RABBITMQ_CONNECT=rabbitmq0:5672
-            - CONFIGTX_ORDERER_KAFKA_BROKERS=[kafka0:9092,kafka1:9092,kafka2:9092,kafka3:9092]
-            - ORDERER_KAFKA_RETRY_SHORTINTERVAL=1s
-            - ORDERER_KAFKA_RETRY_SHORTTOTAL=30s
-            - ORDERER_KAFKA_VERBOSE=true
-            - ORDERER_GENERAL_GENESISPROFILE=SampleInsecureKafka
             - ORDERER_ABSOLUTEMAXBYTES=${ORDERER_ABSOLUTEMAXBYTES}
             - ORDERER_PREFERREDMAXBYTES=${ORDERER_PREFERREDMAXBYTES}
         volumes:
@@ -490,10 +276,6 @@ services:
             - ../config/:/var/hyperledger/configs
         depends_on:
             - rabbitmq0
-            - kafka0
-            - kafka1
-            - kafka2
-            - kafka3
         networks:
           behave:
              aliases:
@@ -508,13 +290,8 @@ services:
         container_name: orderer11.example.com
         environment:
             - ORDERER_HOST=orderer11.example.com
-            - CONFIGTX_ORDERER_ORDERERTYPE=kafka
+            - CONFIGTX_ORDERER_ORDERERTYPE=solo
             - RABBITMQ_CONNECT=rabbitmq0:5672
-            - CONFIGTX_ORDERER_KAFKA_BROKERS=[kafka0:9092,kafka1:9092,kafka2:9092,kafka3:9092]
-            - ORDERER_KAFKA_RETRY_SHORTINTERVAL=1s
-            - ORDERER_KAFKA_RETRY_SHORTTOTAL=30s
-            - ORDERER_KAFKA_VERBOSE=true
-            - ORDERER_GENERAL_GENESISPROFILE=SampleInsecureKafka
             - ORDERER_ABSOLUTEMAXBYTES=${ORDERER_ABSOLUTEMAXBYTES}
             - ORDERER_PREFERREDMAXBYTES=${ORDERER_PREFERREDMAXBYTES}
         volumes:
@@ -523,10 +300,6 @@ services:
             - ../config/:/var/hyperledger/configs
         depends_on:
             - rabbitmq0
-            - kafka0
-            - kafka1
-            - kafka2
-            - kafka3
         networks:
           behave:
              aliases:
@@ -541,13 +314,8 @@ services:
         container_name: orderer12.example.com
         environment:
             - ORDERER_HOST=orderer12.example.com
-            - CONFIGTX_ORDERER_ORDERERTYPE=kafka
+            - CONFIGTX_ORDERER_ORDERERTYPE=solo
             - RABBITMQ_CONNECT=rabbitmq0:5672
-            - CONFIGTX_ORDERER_KAFKA_BROKERS=[kafka0:9092,kafka1:9092,kafka2:9092,kafka3:9092]
-            - ORDERER_KAFKA_RETRY_SHORTINTERVAL=1s
-            - ORDERER_KAFKA_RETRY_SHORTTOTAL=30s
-            - ORDERER_KAFKA_VERBOSE=true
-            - ORDERER_GENERAL_GENESISPROFILE=SampleInsecureKafka
             - ORDERER_ABSOLUTEMAXBYTES=${ORDERER_ABSOLUTEMAXBYTES}
             - ORDERER_PREFERREDMAXBYTES=${ORDERER_PREFERREDMAXBYTES}
         volumes:
@@ -556,10 +324,6 @@ services:
             - ../config/:/var/hyperledger/configs
         depends_on:
             - rabbitmq0
-            - kafka0
-            - kafka1
-            - kafka2
-            - kafka3
         networks:
           behave:
              aliases:
@@ -574,13 +338,8 @@ services:
         container_name: orderer13.example.com
         environment:
             - ORDERER_HOST=orderer13.example.com
-            - CONFIGTX_ORDERER_ORDERERTYPE=kafka
+            - CONFIGTX_ORDERER_ORDERERTYPE=solo
             - RABBITMQ_CONNECT=rabbitmq0:5672
-            - CONFIGTX_ORDERER_KAFKA_BROKERS=[kafka0:9092,kafka1:9092,kafka2:9092,kafka3:9092]
-            - ORDERER_KAFKA_RETRY_SHORTINTERVAL=1s
-            - ORDERER_KAFKA_RETRY_SHORTTOTAL=30s
-            - ORDERER_KAFKA_VERBOSE=true
-            - ORDERER_GENERAL_GENESISPROFILE=SampleInsecureKafka
             - ORDERER_ABSOLUTEMAXBYTES=${ORDERER_ABSOLUTEMAXBYTES}
             - ORDERER_PREFERREDMAXBYTES=${ORDERER_PREFERREDMAXBYTES}
         volumes:
@@ -589,10 +348,6 @@ services:
             - ../config/:/var/hyperledger/configs
         depends_on:
             - rabbitmq0
-            - kafka0
-            - kafka1
-            - kafka2
-            - kafka3
         networks:
           behave:
              aliases:
@@ -607,13 +362,8 @@ services:
         container_name: orderer14.example.com
         environment:
             - ORDERER_HOST=orderer14.example.com
-            - CONFIGTX_ORDERER_ORDERERTYPE=kafka
+            - CONFIGTX_ORDERER_ORDERERTYPE=solo
             - RABBITMQ_CONNECT=rabbitmq0:5672
-            - CONFIGTX_ORDERER_KAFKA_BROKERS=[kafka0:9092,kafka1:9092,kafka2:9092,kafka3:9092]
-            - ORDERER_KAFKA_RETRY_SHORTINTERVAL=1s
-            - ORDERER_KAFKA_RETRY_SHORTTOTAL=30s
-            - ORDERER_KAFKA_VERBOSE=true
-            - ORDERER_GENERAL_GENESISPROFILE=SampleInsecureKafka
             - ORDERER_ABSOLUTEMAXBYTES=${ORDERER_ABSOLUTEMAXBYTES}
             - ORDERER_PREFERREDMAXBYTES=${ORDERER_PREFERREDMAXBYTES}
         volumes:
@@ -622,10 +372,6 @@ services:
             - ../config/:/var/hyperledger/configs
         depends_on:
             - rabbitmq0
-            - kafka0
-            - kafka1
-            - kafka2
-            - kafka3
         networks:
           behave:
              aliases:
@@ -640,13 +386,8 @@ services:
         container_name: orderer15.example.com
         environment:
             - ORDERER_HOST=orderer15.example.com
-            - CONFIGTX_ORDERER_ORDERERTYPE=kafka
+            - CONFIGTX_ORDERER_ORDERERTYPE=solo
             - RABBITMQ_CONNECT=rabbitmq0:5672
-            - CONFIGTX_ORDERER_KAFKA_BROKERS=[kafka0:9092,kafka1:9092,kafka2:9092,kafka3:9092]
-            - ORDERER_KAFKA_RETRY_SHORTINTERVAL=1s
-            - ORDERER_KAFKA_RETRY_SHORTTOTAL=30s
-            - ORDERER_KAFKA_VERBOSE=true
-            - ORDERER_GENERAL_GENESISPROFILE=SampleInsecureKafka
             - ORDERER_ABSOLUTEMAXBYTES=${ORDERER_ABSOLUTEMAXBYTES}
             - ORDERER_PREFERREDMAXBYTES=${ORDERER_PREFERREDMAXBYTES}
         volumes:
@@ -655,10 +396,6 @@ services:
             - ../config/:/var/hyperledger/configs
         depends_on:
             - rabbitmq0
-            - kafka0
-            - kafka1
-            - kafka2
-            - kafka3
         networks:
           behave:
              aliases:
@@ -673,13 +410,8 @@ services:
         container_name: orderer16.example.com
         environment:
             - ORDERER_HOST=orderer16.example.com
-            - CONFIGTX_ORDERER_ORDERERTYPE=kafka
+            - CONFIGTX_ORDERER_ORDERERTYPE=solo
             - RABBITMQ_CONNECT=rabbitmq0:5672
-            - CONFIGTX_ORDERER_KAFKA_BROKERS=[kafka0:9092,kafka1:9092,kafka2:9092,kafka3:9092]
-            - ORDERER_KAFKA_RETRY_SHORTINTERVAL=1s
-            - ORDERER_KAFKA_RETRY_SHORTTOTAL=30s
-            - ORDERER_KAFKA_VERBOSE=true
-            - ORDERER_GENERAL_GENESISPROFILE=SampleInsecureKafka
             - ORDERER_ABSOLUTEMAXBYTES=${ORDERER_ABSOLUTEMAXBYTES}
             - ORDERER_PREFERREDMAXBYTES=${ORDERER_PREFERREDMAXBYTES}
         volumes:
@@ -688,10 +420,6 @@ services:
             - ../config/:/var/hyperledger/configs
         depends_on:
             - rabbitmq0
-            - kafka0
-            - kafka1
-            - kafka2
-            - kafka3
         networks:
           behave:
              aliases:
@@ -706,13 +434,8 @@ services:
         container_name: orderer17.example.com
         environment:
             - ORDERER_HOST=orderer17.example.com
-            - CONFIGTX_ORDERER_ORDERERTYPE=kafka
+            - CONFIGTX_ORDERER_ORDERERTYPE=solo
             - RABBITMQ_CONNECT=rabbitmq0:5672
-            - CONFIGTX_ORDERER_KAFKA_BROKERS=[kafka0:9092,kafka1:9092,kafka2:9092,kafka3:9092]
-            - ORDERER_KAFKA_RETRY_SHORTINTERVAL=1s
-            - ORDERER_KAFKA_RETRY_SHORTTOTAL=30s
-            - ORDERER_KAFKA_VERBOSE=true
-            - ORDERER_GENERAL_GENESISPROFILE=SampleInsecureKafka
             - ORDERER_ABSOLUTEMAXBYTES=${ORDERER_ABSOLUTEMAXBYTES}
             - ORDERER_PREFERREDMAXBYTES=${ORDERER_PREFERREDMAXBYTES}
         volumes:
@@ -721,10 +444,6 @@ services:
             - ../config/:/var/hyperledger/configs
         depends_on:
             - rabbitmq0
-            - kafka0
-            - kafka1
-            - kafka2
-            - kafka3
         networks:
           behave:
              aliases:
@@ -739,13 +458,8 @@ services:
         container_name: orderer18.example.com
         environment:
             - ORDERER_HOST=orderer18.example.com
-            - CONFIGTX_ORDERER_ORDERERTYPE=kafka
+            - CONFIGTX_ORDERER_ORDERERTYPE=solo
             - RABBITMQ_CONNECT=rabbitmq0:5672
-            - CONFIGTX_ORDERER_KAFKA_BROKERS=[kafka0:9092,kafka1:9092,kafka2:9092,kafka3:9092]
-            - ORDERER_KAFKA_RETRY_SHORTINTERVAL=1s
-            - ORDERER_KAFKA_RETRY_SHORTTOTAL=30s
-            - ORDERER_KAFKA_VERBOSE=true
-            - ORDERER_GENERAL_GENESISPROFILE=SampleInsecureKafka
             - ORDERER_ABSOLUTEMAXBYTES=${ORDERER_ABSOLUTEMAXBYTES}
             - ORDERER_PREFERREDMAXBYTES=${ORDERER_PREFERREDMAXBYTES}
         volumes:
@@ -754,10 +468,6 @@ services:
             - ../config/:/var/hyperledger/configs
         depends_on:
             - rabbitmq0
-            - kafka0
-            - kafka1
-            - kafka2
-            - kafka3
         networks:
           behave:
              aliases:
@@ -772,13 +482,8 @@ services:
         container_name: orderer19.example.com
         environment:
             - ORDERER_HOST=orderer19.example.com
-            - CONFIGTX_ORDERER_ORDERERTYPE=kafka
+            - CONFIGTX_ORDERER_ORDERERTYPE=solo
             - RABBITMQ_CONNECT=rabbitmq0:5672
-            - CONFIGTX_ORDERER_KAFKA_BROKERS=[kafka0:9092,kafka1:9092,kafka2:9092,kafka3:9092]
-            - ORDERER_KAFKA_RETRY_SHORTINTERVAL=1s
-            - ORDERER_KAFKA_RETRY_SHORTTOTAL=30s
-            - ORDERER_KAFKA_VERBOSE=true
-            - ORDERER_GENERAL_GENESISPROFILE=SampleInsecureKafka
             - ORDERER_ABSOLUTEMAXBYTES=${ORDERER_ABSOLUTEMAXBYTES}
             - ORDERER_PREFERREDMAXBYTES=${ORDERER_PREFERREDMAXBYTES}
         volumes:
@@ -787,10 +492,6 @@ services:
             - ../config/:/var/hyperledger/configs
         depends_on:
             - rabbitmq0
-            - kafka0
-            - kafka1
-            - kafka2
-            - kafka3
         networks:
           behave:
              aliases:
@@ -805,13 +506,8 @@ services:
         container_name: orderer20.example.com
         environment:
             - ORDERER_HOST=orderer20.example.com
-            - CONFIGTX_ORDERER_ORDERERTYPE=kafka
+            - CONFIGTX_ORDERER_ORDERERTYPE=solo
             - RABBITMQ_CONNECT=rabbitmq0:5672
-            - CONFIGTX_ORDERER_KAFKA_BROKERS=[kafka0:9092,kafka1:9092,kafka2:9092,kafka3:9092]
-            - ORDERER_KAFKA_RETRY_SHORTINTERVAL=1s
-            - ORDERER_KAFKA_RETRY_SHORTTOTAL=30s
-            - ORDERER_KAFKA_VERBOSE=true
-            - ORDERER_GENERAL_GENESISPROFILE=SampleInsecureKafka
             - ORDERER_ABSOLUTEMAXBYTES=${ORDERER_ABSOLUTEMAXBYTES}
             - ORDERER_PREFERREDMAXBYTES=${ORDERER_PREFERREDMAXBYTES}
         volumes:
@@ -820,10 +516,6 @@ services:
             - ../config/:/var/hyperledger/configs
         depends_on:
             - rabbitmq0
-            - kafka0
-            - kafka1
-            - kafka2
-            - kafka3
         networks:
           behave:
              aliases:
@@ -838,13 +530,8 @@ services:
         container_name: orderer21.example.com
         environment:
             - ORDERER_HOST=orderer21.example.com
-            - CONFIGTX_ORDERER_ORDERERTYPE=kafka
+            - CONFIGTX_ORDERER_ORDERERTYPE=solo
             - RABBITMQ_CONNECT=rabbitmq0:5672
-            - CONFIGTX_ORDERER_KAFKA_BROKERS=[kafka0:9092,kafka1:9092,kafka2:9092,kafka3:9092]
-            - ORDERER_KAFKA_RETRY_SHORTINTERVAL=1s
-            - ORDERER_KAFKA_RETRY_SHORTTOTAL=30s
-            - ORDERER_KAFKA_VERBOSE=true
-            - ORDERER_GENERAL_GENESISPROFILE=SampleInsecureKafka
             - ORDERER_ABSOLUTEMAXBYTES=${ORDERER_ABSOLUTEMAXBYTES}
             - ORDERER_PREFERREDMAXBYTES=${ORDERER_PREFERREDMAXBYTES}
         volumes:
@@ -853,10 +540,6 @@ services:
             - ../config/:/var/hyperledger/configs
         depends_on:
             - rabbitmq0
-            - kafka0
-            - kafka1
-            - kafka2
-            - kafka3
         networks:
           behave:
              aliases:
@@ -871,13 +554,8 @@ services:
         container_name: orderer22.example.com
         environment:
             - ORDERER_HOST=orderer22.example.com
-            - CONFIGTX_ORDERER_ORDERERTYPE=kafka
+            - CONFIGTX_ORDERER_ORDERERTYPE=solo
             - RABBITMQ_CONNECT=rabbitmq0:5672
-            - CONFIGTX_ORDERER_KAFKA_BROKERS=[kafka0:9092,kafka1:9092,kafka2:9092,kafka3:9092]
-            - ORDERER_KAFKA_RETRY_SHORTINTERVAL=1s
-            - ORDERER_KAFKA_RETRY_SHORTTOTAL=30s
-            - ORDERER_KAFKA_VERBOSE=true
-            - ORDERER_GENERAL_GENESISPROFILE=SampleInsecureKafka
             - ORDERER_ABSOLUTEMAXBYTES=${ORDERER_ABSOLUTEMAXBYTES}
             - ORDERER_PREFERREDMAXBYTES=${ORDERER_PREFERREDMAXBYTES}
         volumes:
@@ -886,10 +564,6 @@ services:
             - ../config/:/var/hyperledger/configs
         depends_on:
             - rabbitmq0
-            - kafka0
-            - kafka1
-            - kafka2
-            - kafka3
         networks:
           behave:
              aliases:
@@ -904,13 +578,8 @@ services:
         container_name: orderer23.example.com
         environment:
             - ORDERER_HOST=orderer23.example.com
-            - CONFIGTX_ORDERER_ORDERERTYPE=kafka
+            - CONFIGTX_ORDERER_ORDERERTYPE=solo
             - RABBITMQ_CONNECT=rabbitmq0:5672
-            - CONFIGTX_ORDERER_KAFKA_BROKERS=[kafka0:9092,kafka1:9092,kafka2:9092,kafka3:9092]
-            - ORDERER_KAFKA_RETRY_SHORTINTERVAL=1s
-            - ORDERER_KAFKA_RETRY_SHORTTOTAL=30s
-            - ORDERER_KAFKA_VERBOSE=true
-            - ORDERER_GENERAL_GENESISPROFILE=SampleInsecureKafka
             - ORDERER_ABSOLUTEMAXBYTES=${ORDERER_ABSOLUTEMAXBYTES}
             - ORDERER_PREFERREDMAXBYTES=${ORDERER_PREFERREDMAXBYTES}
         volumes:
@@ -919,10 +588,6 @@ services:
             - ../config/:/var/hyperledger/configs
         depends_on:
             - rabbitmq0
-            - kafka0
-            - kafka1
-            - kafka2
-            - kafka3
         networks:
           behave:
              aliases:
@@ -937,13 +602,8 @@ services:
         container_name: orderer24.example.com
         environment:
             - ORDERER_HOST=orderer24.example.com
-            - CONFIGTX_ORDERER_ORDERERTYPE=kafka
+            - CONFIGTX_ORDERER_ORDERERTYPE=solo
             - RABBITMQ_CONNECT=rabbitmq0:5672
-            - CONFIGTX_ORDERER_KAFKA_BROKERS=[kafka0:9092,kafka1:9092,kafka2:9092,kafka3:9092]
-            - ORDERER_KAFKA_RETRY_SHORTINTERVAL=1s
-            - ORDERER_KAFKA_RETRY_SHORTTOTAL=30s
-            - ORDERER_KAFKA_VERBOSE=true
-            - ORDERER_GENERAL_GENESISPROFILE=SampleInsecureKafka
             - ORDERER_ABSOLUTEMAXBYTES=${ORDERER_ABSOLUTEMAXBYTES}
             - ORDERER_PREFERREDMAXBYTES=${ORDERER_PREFERREDMAXBYTES}
         volumes:
@@ -952,10 +612,6 @@ services:
             - ../config/:/var/hyperledger/configs
         depends_on:
             - rabbitmq0
-            - kafka0
-            - kafka1
-            - kafka2
-            - kafka3
         networks:
           behave:
              aliases:
@@ -970,13 +626,8 @@ services:
         container_name: orderer25.example.com
         environment:
             - ORDERER_HOST=orderer25.example.com
-            - CONFIGTX_ORDERER_ORDERERTYPE=kafka
+            - CONFIGTX_ORDERER_ORDERERTYPE=solo
             - RABBITMQ_CONNECT=rabbitmq0:5672
-            - CONFIGTX_ORDERER_KAFKA_BROKERS=[kafka0:9092,kafka1:9092,kafka2:9092,kafka3:9092]
-            - ORDERER_KAFKA_RETRY_SHORTINTERVAL=1s
-            - ORDERER_KAFKA_RETRY_SHORTTOTAL=30s
-            - ORDERER_KAFKA_VERBOSE=true
-            - ORDERER_GENERAL_GENESISPROFILE=SampleInsecureKafka
             - ORDERER_ABSOLUTEMAXBYTES=${ORDERER_ABSOLUTEMAXBYTES}
             - ORDERER_PREFERREDMAXBYTES=${ORDERER_PREFERREDMAXBYTES}
         volumes:
@@ -985,10 +636,6 @@ services:
             - ../config/:/var/hyperledger/configs
         depends_on:
             - rabbitmq0
-            - kafka0
-            - kafka1
-            - kafka2
-            - kafka3
         networks:
           behave:
              aliases:
@@ -1003,13 +650,8 @@ services:
         container_name: orderer26.example.com
         environment:
             - ORDERER_HOST=orderer26.example.com
-            - CONFIGTX_ORDERER_ORDERERTYPE=kafka
+            - CONFIGTX_ORDERER_ORDERERTYPE=solo
             - RABBITMQ_CONNECT=rabbitmq0:5672
-            - CONFIGTX_ORDERER_KAFKA_BROKERS=[kafka0:9092,kafka1:9092,kafka2:9092,kafka3:9092]
-            - ORDERER_KAFKA_RETRY_SHORTINTERVAL=1s
-            - ORDERER_KAFKA_RETRY_SHORTTOTAL=30s
-            - ORDERER_KAFKA_VERBOSE=true
-            - ORDERER_GENERAL_GENESISPROFILE=SampleInsecureKafka
             - ORDERER_ABSOLUTEMAXBYTES=${ORDERER_ABSOLUTEMAXBYTES}
             - ORDERER_PREFERREDMAXBYTES=${ORDERER_PREFERREDMAXBYTES}
         volumes:
@@ -1018,10 +660,6 @@ services:
             - ../config/:/var/hyperledger/configs
         depends_on:
             - rabbitmq0
-            - kafka0
-            - kafka1
-            - kafka2
-            - kafka3
         networks:
           behave:
              aliases:
@@ -1036,13 +674,8 @@ services:
         container_name: orderer27.example.com
         environment:
             - ORDERER_HOST=orderer27.example.com
-            - CONFIGTX_ORDERER_ORDERERTYPE=kafka
+            - CONFIGTX_ORDERER_ORDERERTYPE=solo
             - RABBITMQ_CONNECT=rabbitmq0:5672
-            - CONFIGTX_ORDERER_KAFKA_BROKERS=[kafka0:9092,kafka1:9092,kafka2:9092,kafka3:9092]
-            - ORDERER_KAFKA_RETRY_SHORTINTERVAL=1s
-            - ORDERER_KAFKA_RETRY_SHORTTOTAL=30s
-            - ORDERER_KAFKA_VERBOSE=true
-            - ORDERER_GENERAL_GENESISPROFILE=SampleInsecureKafka
             - ORDERER_ABSOLUTEMAXBYTES=${ORDERER_ABSOLUTEMAXBYTES}
             - ORDERER_PREFERREDMAXBYTES=${ORDERER_PREFERREDMAXBYTES}
         volumes:
@@ -1051,10 +684,6 @@ services:
             - ../config/:/var/hyperledger/configs
         depends_on:
             - rabbitmq0
-            - kafka0
-            - kafka1
-            - kafka2
-            - kafka3
         networks:
           behave:
              aliases:
@@ -1069,13 +698,8 @@ services:
         container_name: orderer28.example.com
         environment:
             - ORDERER_HOST=orderer28.example.com
-            - CONFIGTX_ORDERER_ORDERERTYPE=kafka
+            - CONFIGTX_ORDERER_ORDERERTYPE=solo
             - RABBITMQ_CONNECT=rabbitmq0:5672
-            - CONFIGTX_ORDERER_KAFKA_BROKERS=[kafka0:9092,kafka1:9092,kafka2:9092,kafka3:9092]
-            - ORDERER_KAFKA_RETRY_SHORTINTERVAL=1s
-            - ORDERER_KAFKA_RETRY_SHORTTOTAL=30s
-            - ORDERER_KAFKA_VERBOSE=true
-            - ORDERER_GENERAL_GENESISPROFILE=SampleInsecureKafka
             - ORDERER_ABSOLUTEMAXBYTES=${ORDERER_ABSOLUTEMAXBYTES}
             - ORDERER_PREFERREDMAXBYTES=${ORDERER_PREFERREDMAXBYTES}
         volumes:
@@ -1084,10 +708,6 @@ services:
             - ../config/:/var/hyperledger/configs
         depends_on:
             - rabbitmq0
-            - kafka0
-            - kafka1
-            - kafka2
-            - kafka3
         networks:
           behave:
              aliases:
@@ -1102,13 +722,8 @@ services:
         container_name: orderer29.example.com
         environment:
             - ORDERER_HOST=orderer29.example.com
-            - CONFIGTX_ORDERER_ORDERERTYPE=kafka
+            - CONFIGTX_ORDERER_ORDERERTYPE=solo
             - RABBITMQ_CONNECT=rabbitmq0:5672
-            - CONFIGTX_ORDERER_KAFKA_BROKERS=[kafka0:9092,kafka1:9092,kafka2:9092,kafka3:9092]
-            - ORDERER_KAFKA_RETRY_SHORTINTERVAL=1s
-            - ORDERER_KAFKA_RETRY_SHORTTOTAL=30s
-            - ORDERER_KAFKA_VERBOSE=true
-            - ORDERER_GENERAL_GENESISPROFILE=SampleInsecureKafka
             - ORDERER_ABSOLUTEMAXBYTES=${ORDERER_ABSOLUTEMAXBYTES}
             - ORDERER_PREFERREDMAXBYTES=${ORDERER_PREFERREDMAXBYTES}
         volumes:
@@ -1117,10 +732,6 @@ services:
             - ../config/:/var/hyperledger/configs
         depends_on:
             - rabbitmq0
-            - kafka0
-            - kafka1
-            - kafka2
-            - kafka3
         networks:
           behave:
              aliases:
@@ -1135,13 +746,8 @@ services:
         container_name: orderer30.example.com
         environment:
             - ORDERER_HOST=orderer30.example.com
-            - CONFIGTX_ORDERER_ORDERERTYPE=kafka
+            - CONFIGTX_ORDERER_ORDERERTYPE=solo
             - RABBITMQ_CONNECT=rabbitmq0:5672
-            - CONFIGTX_ORDERER_KAFKA_BROKERS=[kafka0:9092,kafka1:9092,kafka2:9092,kafka3:9092]
-            - ORDERER_KAFKA_RETRY_SHORTINTERVAL=1s
-            - ORDERER_KAFKA_RETRY_SHORTTOTAL=30s
-            - ORDERER_KAFKA_VERBOSE=true
-            - ORDERER_GENERAL_GENESISPROFILE=SampleInsecureKafka
             - ORDERER_ABSOLUTEMAXBYTES=${ORDERER_ABSOLUTEMAXBYTES}
             - ORDERER_PREFERREDMAXBYTES=${ORDERER_PREFERREDMAXBYTES}
         volumes:
@@ -1150,10 +756,6 @@ services:
             - ../config/:/var/hyperledger/configs
         depends_on:
             - rabbitmq0
-            - kafka0
-            - kafka1
-            - kafka2
-            - kafka3
         networks:
           behave:
              aliases:
@@ -1168,13 +770,8 @@ services:
         container_name: orderer31.example.com
         environment:
             - ORDERER_HOST=orderer31.example.com
-            - CONFIGTX_ORDERER_ORDERERTYPE=kafka
+            - CONFIGTX_ORDERER_ORDERERTYPE=solo
             - RABBITMQ_CONNECT=rabbitmq0:5672
-            - CONFIGTX_ORDERER_KAFKA_BROKERS=[kafka0:9092,kafka1:9092,kafka2:9092,kafka3:9092]
-            - ORDERER_KAFKA_RETRY_SHORTINTERVAL=1s
-            - ORDERER_KAFKA_RETRY_SHORTTOTAL=30s
-            - ORDERER_KAFKA_VERBOSE=true
-            - ORDERER_GENERAL_GENESISPROFILE=SampleInsecureKafka
             - ORDERER_ABSOLUTEMAXBYTES=${ORDERER_ABSOLUTEMAXBYTES}
             - ORDERER_PREFERREDMAXBYTES=${ORDERER_PREFERREDMAXBYTES}
         volumes:
@@ -1183,10 +780,6 @@ services:
             - ../config/:/var/hyperledger/configs
         depends_on:
             - rabbitmq0
-            - kafka0
-            - kafka1
-            - kafka2
-            - kafka3
         networks:
           behave:
              aliases:
@@ -1201,13 +794,8 @@ services:
         container_name: orderer32.example.com
         environment:
             - ORDERER_HOST=orderer32.example.com
-            - CONFIGTX_ORDERER_ORDERERTYPE=kafka
+            - CONFIGTX_ORDERER_ORDERERTYPE=solo
             - RABBITMQ_CONNECT=rabbitmq0:5672
-            - CONFIGTX_ORDERER_KAFKA_BROKERS=[kafka0:9092,kafka1:9092,kafka2:9092,kafka3:9092]
-            - ORDERER_KAFKA_RETRY_SHORTINTERVAL=1s
-            - ORDERER_KAFKA_RETRY_SHORTTOTAL=30s
-            - ORDERER_KAFKA_VERBOSE=true
-            - ORDERER_GENERAL_GENESISPROFILE=SampleInsecureKafka
             - ORDERER_ABSOLUTEMAXBYTES=${ORDERER_ABSOLUTEMAXBYTES}
             - ORDERER_PREFERREDMAXBYTES=${ORDERER_PREFERREDMAXBYTES}
         volumes:
@@ -1216,10 +804,6 @@ services:
             - ../config/:/var/hyperledger/configs
         depends_on:
             - rabbitmq0
-            - kafka0
-            - kafka1
-            - kafka2
-            - kafka3
         networks:
           behave:
              aliases:
@@ -1234,13 +818,8 @@ services:
         container_name: orderer33.example.com
         environment:
             - ORDERER_HOST=orderer33.example.com
-            - CONFIGTX_ORDERER_ORDERERTYPE=kafka
+            - CONFIGTX_ORDERER_ORDERERTYPE=solo
             - RABBITMQ_CONNECT=rabbitmq0:5672
-            - CONFIGTX_ORDERER_KAFKA_BROKERS=[kafka0:9092,kafka1:9092,kafka2:9092,kafka3:9092]
-            - ORDERER_KAFKA_RETRY_SHORTINTERVAL=1s
-            - ORDERER_KAFKA_RETRY_SHORTTOTAL=30s
-            - ORDERER_KAFKA_VERBOSE=true
-            - ORDERER_GENERAL_GENESISPROFILE=SampleInsecureKafka
             - ORDERER_ABSOLUTEMAXBYTES=${ORDERER_ABSOLUTEMAXBYTES}
             - ORDERER_PREFERREDMAXBYTES=${ORDERER_PREFERREDMAXBYTES}
         volumes:
@@ -1249,10 +828,6 @@ services:
             - ../config/:/var/hyperledger/configs
         depends_on:
             - rabbitmq0
-            - kafka0
-            - kafka1
-            - kafka2
-            - kafka3
         networks:
           behave:
              aliases:
@@ -1267,13 +842,8 @@ services:
         container_name: orderer34.example.com
         environment:
             - ORDERER_HOST=orderer34.example.com
-            - CONFIGTX_ORDERER_ORDERERTYPE=kafka
+            - CONFIGTX_ORDERER_ORDERERTYPE=solo
             - RABBITMQ_CONNECT=rabbitmq0:5672
-            - CONFIGTX_ORDERER_KAFKA_BROKERS=[kafka0:9092,kafka1:9092,kafka2:9092,kafka3:9092]
-            - ORDERER_KAFKA_RETRY_SHORTINTERVAL=1s
-            - ORDERER_KAFKA_RETRY_SHORTTOTAL=30s
-            - ORDERER_KAFKA_VERBOSE=true
-            - ORDERER_GENERAL_GENESISPROFILE=SampleInsecureKafka
             - ORDERER_ABSOLUTEMAXBYTES=${ORDERER_ABSOLUTEMAXBYTES}
             - ORDERER_PREFERREDMAXBYTES=${ORDERER_PREFERREDMAXBYTES}
         volumes:
@@ -1282,10 +852,6 @@ services:
             - ../config/:/var/hyperledger/configs
         depends_on:
             - rabbitmq0
-            - kafka0
-            - kafka1
-            - kafka2
-            - kafka3
         networks:
           behave:
              aliases:
@@ -1300,13 +866,8 @@ services:
         container_name: orderer35.example.com
         environment:
             - ORDERER_HOST=orderer35.example.com
-            - CONFIGTX_ORDERER_ORDERERTYPE=kafka
+            - CONFIGTX_ORDERER_ORDERERTYPE=solo
             - RABBITMQ_CONNECT=rabbitmq0:5672
-            - CONFIGTX_ORDERER_KAFKA_BROKERS=[kafka0:9092,kafka1:9092,kafka2:9092,kafka3:9092]
-            - ORDERER_KAFKA_RETRY_SHORTINTERVAL=1s
-            - ORDERER_KAFKA_RETRY_SHORTTOTAL=30s
-            - ORDERER_KAFKA_VERBOSE=true
-            - ORDERER_GENERAL_GENESISPROFILE=SampleInsecureKafka
             - ORDERER_ABSOLUTEMAXBYTES=${ORDERER_ABSOLUTEMAXBYTES}
             - ORDERER_PREFERREDMAXBYTES=${ORDERER_PREFERREDMAXBYTES}
         volumes:
@@ -1315,10 +876,6 @@ services:
             - ../config/:/var/hyperledger/configs
         depends_on:
             - rabbitmq0
-            - kafka0
-            - kafka1
-            - kafka2
-            - kafka3
         networks:
           behave:
              aliases:
@@ -1333,13 +890,8 @@ services:
         container_name: orderer36.example.com
         environment:
             - ORDERER_HOST=orderer36.example.com
-            - CONFIGTX_ORDERER_ORDERERTYPE=kafka
+            - CONFIGTX_ORDERER_ORDERERTYPE=solo
             - RABBITMQ_CONNECT=rabbitmq0:5672
-            - CONFIGTX_ORDERER_KAFKA_BROKERS=[kafka0:9092,kafka1:9092,kafka2:9092,kafka3:9092]
-            - ORDERER_KAFKA_RETRY_SHORTINTERVAL=1s
-            - ORDERER_KAFKA_RETRY_SHORTTOTAL=30s
-            - ORDERER_KAFKA_VERBOSE=true
-            - ORDERER_GENERAL_GENESISPROFILE=SampleInsecureKafka
             - ORDERER_ABSOLUTEMAXBYTES=${ORDERER_ABSOLUTEMAXBYTES}
             - ORDERER_PREFERREDMAXBYTES=${ORDERER_PREFERREDMAXBYTES}
         volumes:
@@ -1348,10 +900,6 @@ services:
             - ../config/:/var/hyperledger/configs
         depends_on:
             - rabbitmq0
-            - kafka0
-            - kafka1
-            - kafka2
-            - kafka3
         networks:
           behave:
              aliases:
@@ -1366,13 +914,8 @@ services:
         container_name: orderer37.example.com
         environment:
             - ORDERER_HOST=orderer37.example.com
-            - CONFIGTX_ORDERER_ORDERERTYPE=kafka
+            - CONFIGTX_ORDERER_ORDERERTYPE=solo
             - RABBITMQ_CONNECT=rabbitmq0:5672
-            - CONFIGTX_ORDERER_KAFKA_BROKERS=[kafka0:9092,kafka1:9092,kafka2:9092,kafka3:9092]
-            - ORDERER_KAFKA_RETRY_SHORTINTERVAL=1s
-            - ORDERER_KAFKA_RETRY_SHORTTOTAL=30s
-            - ORDERER_KAFKA_VERBOSE=true
-            - ORDERER_GENERAL_GENESISPROFILE=SampleInsecureKafka
             - ORDERER_ABSOLUTEMAXBYTES=${ORDERER_ABSOLUTEMAXBYTES}
             - ORDERER_PREFERREDMAXBYTES=${ORDERER_PREFERREDMAXBYTES}
         volumes:
@@ -1381,10 +924,6 @@ services:
             - ../config/:/var/hyperledger/configs
         depends_on:
             - rabbitmq0
-            - kafka0
-            - kafka1
-            - kafka2
-            - kafka3
         networks:
           behave:
              aliases:
@@ -1399,13 +938,8 @@ services:
         container_name: orderer38.example.com
         environment:
             - ORDERER_HOST=orderer38.example.com
-            - CONFIGTX_ORDERER_ORDERERTYPE=kafka
+            - CONFIGTX_ORDERER_ORDERERTYPE=solo
             - RABBITMQ_CONNECT=rabbitmq0:5672
-            - CONFIGTX_ORDERER_KAFKA_BROKERS=[kafka0:9092,kafka1:9092,kafka2:9092,kafka3:9092]
-            - ORDERER_KAFKA_RETRY_SHORTINTERVAL=1s
-            - ORDERER_KAFKA_RETRY_SHORTTOTAL=30s
-            - ORDERER_KAFKA_VERBOSE=true
-            - ORDERER_GENERAL_GENESISPROFILE=SampleInsecureKafka
             - ORDERER_ABSOLUTEMAXBYTES=${ORDERER_ABSOLUTEMAXBYTES}
             - ORDERER_PREFERREDMAXBYTES=${ORDERER_PREFERREDMAXBYTES}
         volumes:
@@ -1414,10 +948,6 @@ services:
             - ../config/:/var/hyperledger/configs
         depends_on:
             - rabbitmq0
-            - kafka0
-            - kafka1
-            - kafka2
-            - kafka3
         networks:
           behave:
              aliases:
@@ -1432,13 +962,8 @@ services:
         container_name: orderer39.example.com
         environment:
             - ORDERER_HOST=orderer39.example.com
-            - CONFIGTX_ORDERER_ORDERERTYPE=kafka
+            - CONFIGTX_ORDERER_ORDERERTYPE=solo
             - RABBITMQ_CONNECT=rabbitmq0:5672
-            - CONFIGTX_ORDERER_KAFKA_BROKERS=[kafka0:9092,kafka1:9092,kafka2:9092,kafka3:9092]
-            - ORDERER_KAFKA_RETRY_SHORTINTERVAL=1s
-            - ORDERER_KAFKA_RETRY_SHORTTOTAL=30s
-            - ORDERER_KAFKA_VERBOSE=true
-            - ORDERER_GENERAL_GENESISPROFILE=SampleInsecureKafka
             - ORDERER_ABSOLUTEMAXBYTES=${ORDERER_ABSOLUTEMAXBYTES}
             - ORDERER_PREFERREDMAXBYTES=${ORDERER_PREFERREDMAXBYTES}
         volumes:
@@ -1447,10 +972,6 @@ services:
             - ../config/:/var/hyperledger/configs
         depends_on:
             - rabbitmq0
-            - kafka0
-            - kafka1
-            - kafka2
-            - kafka3
         networks:
           behave:
              aliases:
@@ -1465,13 +986,8 @@ services:
         container_name: orderer40.example.com
         environment:
             - ORDERER_HOST=orderer40.example.com
-            - CONFIGTX_ORDERER_ORDERERTYPE=kafka
+            - CONFIGTX_ORDERER_ORDERERTYPE=solo
             - RABBITMQ_CONNECT=rabbitmq0:5672
-            - CONFIGTX_ORDERER_KAFKA_BROKERS=[kafka0:9092,kafka1:9092,kafka2:9092,kafka3:9092]
-            - ORDERER_KAFKA_RETRY_SHORTINTERVAL=1s
-            - ORDERER_KAFKA_RETRY_SHORTTOTAL=30s
-            - ORDERER_KAFKA_VERBOSE=true
-            - ORDERER_GENERAL_GENESISPROFILE=SampleInsecureKafka
             - ORDERER_ABSOLUTEMAXBYTES=${ORDERER_ABSOLUTEMAXBYTES}
             - ORDERER_PREFERREDMAXBYTES=${ORDERER_PREFERREDMAXBYTES}
         volumes:
@@ -1480,10 +996,6 @@ services:
             - ../config/:/var/hyperledger/configs
         depends_on:
             - rabbitmq0
-            - kafka0
-            - kafka1
-            - kafka2
-            - kafka3
         networks:
           behave:
              aliases:
@@ -1498,13 +1010,8 @@ services:
         container_name: orderer41.example.com
         environment:
             - ORDERER_HOST=orderer41.example.com
-            - CONFIGTX_ORDERER_ORDERERTYPE=kafka
+            - CONFIGTX_ORDERER_ORDERERTYPE=solo
             - RABBITMQ_CONNECT=rabbitmq0:5672
-            - CONFIGTX_ORDERER_KAFKA_BROKERS=[kafka0:9092,kafka1:9092,kafka2:9092,kafka3:9092]
-            - ORDERER_KAFKA_RETRY_SHORTINTERVAL=1s
-            - ORDERER_KAFKA_RETRY_SHORTTOTAL=30s
-            - ORDERER_KAFKA_VERBOSE=true
-            - ORDERER_GENERAL_GENESISPROFILE=SampleInsecureKafka
             - ORDERER_ABSOLUTEMAXBYTES=${ORDERER_ABSOLUTEMAXBYTES}
             - ORDERER_PREFERREDMAXBYTES=${ORDERER_PREFERREDMAXBYTES}
         volumes:
@@ -1513,10 +1020,6 @@ services:
             - ../config/:/var/hyperledger/configs
         depends_on:
             - rabbitmq0
-            - kafka0
-            - kafka1
-            - kafka2
-            - kafka3
         networks:
           behave:
              aliases:
@@ -1531,13 +1034,8 @@ services:
         container_name: orderer42.example.com
         environment:
             - ORDERER_HOST=orderer42.example.com
-            - CONFIGTX_ORDERER_ORDERERTYPE=kafka
+            - CONFIGTX_ORDERER_ORDERERTYPE=solo
             - RABBITMQ_CONNECT=rabbitmq0:5672
-            - CONFIGTX_ORDERER_KAFKA_BROKERS=[kafka0:9092,kafka1:9092,kafka2:9092,kafka3:9092]
-            - ORDERER_KAFKA_RETRY_SHORTINTERVAL=1s
-            - ORDERER_KAFKA_RETRY_SHORTTOTAL=30s
-            - ORDERER_KAFKA_VERBOSE=true
-            - ORDERER_GENERAL_GENESISPROFILE=SampleInsecureKafka
             - ORDERER_ABSOLUTEMAXBYTES=${ORDERER_ABSOLUTEMAXBYTES}
             - ORDERER_PREFERREDMAXBYTES=${ORDERER_PREFERREDMAXBYTES}
         volumes:
@@ -1546,10 +1044,6 @@ services:
             - ../config/:/var/hyperledger/configs
         depends_on:
             - rabbitmq0
-            - kafka0
-            - kafka1
-            - kafka2
-            - kafka3
         networks:
           behave:
              aliases:
@@ -1564,13 +1058,8 @@ services:
         container_name: orderer43.example.com
         environment:
             - ORDERER_HOST=orderer43.example.com
-            - CONFIGTX_ORDERER_ORDERERTYPE=kafka
+            - CONFIGTX_ORDERER_ORDERERTYPE=solo
             - RABBITMQ_CONNECT=rabbitmq0:5672
-            - CONFIGTX_ORDERER_KAFKA_BROKERS=[kafka0:9092,kafka1:9092,kafka2:9092,kafka3:9092]
-            - ORDERER_KAFKA_RETRY_SHORTINTERVAL=1s
-            - ORDERER_KAFKA_RETRY_SHORTTOTAL=30s
-            - ORDERER_KAFKA_VERBOSE=true
-            - ORDERER_GENERAL_GENESISPROFILE=SampleInsecureKafka
             - ORDERER_ABSOLUTEMAXBYTES=${ORDERER_ABSOLUTEMAXBYTES}
             - ORDERER_PREFERREDMAXBYTES=${ORDERER_PREFERREDMAXBYTES}
         volumes:
@@ -1579,10 +1068,6 @@ services:
             - ../config/:/var/hyperledger/configs
         depends_on:
             - rabbitmq0
-            - kafka0
-            - kafka1
-            - kafka2
-            - kafka3
         networks:
           behave:
              aliases:
@@ -1597,13 +1082,8 @@ services:
         container_name: orderer44.example.com
         environment:
             - ORDERER_HOST=orderer44.example.com
-            - CONFIGTX_ORDERER_ORDERERTYPE=kafka
+            - CONFIGTX_ORDERER_ORDERERTYPE=solo
             - RABBITMQ_CONNECT=rabbitmq0:5672
-            - CONFIGTX_ORDERER_KAFKA_BROKERS=[kafka0:9092,kafka1:9092,kafka2:9092,kafka3:9092]
-            - ORDERER_KAFKA_RETRY_SHORTINTERVAL=1s
-            - ORDERER_KAFKA_RETRY_SHORTTOTAL=30s
-            - ORDERER_KAFKA_VERBOSE=true
-            - ORDERER_GENERAL_GENESISPROFILE=SampleInsecureKafka
             - ORDERER_ABSOLUTEMAXBYTES=${ORDERER_ABSOLUTEMAXBYTES}
             - ORDERER_PREFERREDMAXBYTES=${ORDERER_PREFERREDMAXBYTES}
         volumes:
@@ -1612,10 +1092,6 @@ services:
             - ../config/:/var/hyperledger/configs
         depends_on:
             - rabbitmq0
-            - kafka0
-            - kafka1
-            - kafka2
-            - kafka3
         networks:
           behave:
              aliases:
@@ -1630,13 +1106,8 @@ services:
         container_name: orderer45.example.com
         environment:
             - ORDERER_HOST=orderer45.example.com
-            - CONFIGTX_ORDERER_ORDERERTYPE=kafka
+            - CONFIGTX_ORDERER_ORDERERTYPE=solo
             - RABBITMQ_CONNECT=rabbitmq0:5672
-            - CONFIGTX_ORDERER_KAFKA_BROKERS=[kafka0:9092,kafka1:9092,kafka2:9092,kafka3:9092]
-            - ORDERER_KAFKA_RETRY_SHORTINTERVAL=1s
-            - ORDERER_KAFKA_RETRY_SHORTTOTAL=30s
-            - ORDERER_KAFKA_VERBOSE=true
-            - ORDERER_GENERAL_GENESISPROFILE=SampleInsecureKafka
             - ORDERER_ABSOLUTEMAXBYTES=${ORDERER_ABSOLUTEMAXBYTES}
             - ORDERER_PREFERREDMAXBYTES=${ORDERER_PREFERREDMAXBYTES}
         volumes:
@@ -1645,10 +1116,6 @@ services:
             - ../config/:/var/hyperledger/configs
         depends_on:
             - rabbitmq0
-            - kafka0
-            - kafka1
-            - kafka2
-            - kafka3
         networks:
           behave:
              aliases:
@@ -1663,13 +1130,8 @@ services:
         container_name: orderer46.example.com
         environment:
             - ORDERER_HOST=orderer46.example.com
-            - CONFIGTX_ORDERER_ORDERERTYPE=kafka
+            - CONFIGTX_ORDERER_ORDERERTYPE=solo
             - RABBITMQ_CONNECT=rabbitmq0:5672
-            - CONFIGTX_ORDERER_KAFKA_BROKERS=[kafka0:9092,kafka1:9092,kafka2:9092,kafka3:9092]
-            - ORDERER_KAFKA_RETRY_SHORTINTERVAL=1s
-            - ORDERER_KAFKA_RETRY_SHORTTOTAL=30s
-            - ORDERER_KAFKA_VERBOSE=true
-            - ORDERER_GENERAL_GENESISPROFILE=SampleInsecureKafka
             - ORDERER_ABSOLUTEMAXBYTES=${ORDERER_ABSOLUTEMAXBYTES}
             - ORDERER_PREFERREDMAXBYTES=${ORDERER_PREFERREDMAXBYTES}
         volumes:
@@ -1678,10 +1140,6 @@ services:
             - ../config/:/var/hyperledger/configs
         depends_on:
             - rabbitmq0
-            - kafka0
-            - kafka1
-            - kafka2
-            - kafka3
         networks:
           behave:
              aliases:
@@ -1696,13 +1154,8 @@ services:
         container_name: orderer47.example.com
         environment:
             - ORDERER_HOST=orderer47.example.com
-            - CONFIGTX_ORDERER_ORDERERTYPE=kafka
+            - CONFIGTX_ORDERER_ORDERERTYPE=solo
             - RABBITMQ_CONNECT=rabbitmq0:5672
-            - CONFIGTX_ORDERER_KAFKA_BROKERS=[kafka0:9092,kafka1:9092,kafka2:9092,kafka3:9092]
-            - ORDERER_KAFKA_RETRY_SHORTINTERVAL=1s
-            - ORDERER_KAFKA_RETRY_SHORTTOTAL=30s
-            - ORDERER_KAFKA_VERBOSE=true
-            - ORDERER_GENERAL_GENESISPROFILE=SampleInsecureKafka
             - ORDERER_ABSOLUTEMAXBYTES=${ORDERER_ABSOLUTEMAXBYTES}
             - ORDERER_PREFERREDMAXBYTES=${ORDERER_PREFERREDMAXBYTES}
         volumes:
@@ -1711,10 +1164,6 @@ services:
             - ../config/:/var/hyperledger/configs
         depends_on:
             - rabbitmq0
-            - kafka0
-            - kafka1
-            - kafka2
-            - kafka3
         networks:
           behave:
              aliases:
@@ -1729,13 +1178,8 @@ services:
         container_name: orderer48.example.com
         environment:
             - ORDERER_HOST=orderer48.example.com
-            - CONFIGTX_ORDERER_ORDERERTYPE=kafka
+            - CONFIGTX_ORDERER_ORDERERTYPE=solo
             - RABBITMQ_CONNECT=rabbitmq0:5672
-            - CONFIGTX_ORDERER_KAFKA_BROKERS=[kafka0:9092,kafka1:9092,kafka2:9092,kafka3:9092]
-            - ORDERER_KAFKA_RETRY_SHORTINTERVAL=1s
-            - ORDERER_KAFKA_RETRY_SHORTTOTAL=30s
-            - ORDERER_KAFKA_VERBOSE=true
-            - ORDERER_GENERAL_GENESISPROFILE=SampleInsecureKafka
             - ORDERER_ABSOLUTEMAXBYTES=${ORDERER_ABSOLUTEMAXBYTES}
             - ORDERER_PREFERREDMAXBYTES=${ORDERER_PREFERREDMAXBYTES}
         volumes:
@@ -1744,10 +1188,6 @@ services:
             - ../config/:/var/hyperledger/configs
         depends_on:
             - rabbitmq0
-            - kafka0
-            - kafka1
-            - kafka2
-            - kafka3
         networks:
           behave:
              aliases:
@@ -1762,13 +1202,8 @@ services:
         container_name: orderer49.example.com
         environment:
             - ORDERER_HOST=orderer49.example.com
-            - CONFIGTX_ORDERER_ORDERERTYPE=kafka
+            - CONFIGTX_ORDERER_ORDERERTYPE=solo
             - RABBITMQ_CONNECT=rabbitmq0:5672
-            - CONFIGTX_ORDERER_KAFKA_BROKERS=[kafka0:9092,kafka1:9092,kafka2:9092,kafka3:9092]
-            - ORDERER_KAFKA_RETRY_SHORTINTERVAL=1s
-            - ORDERER_KAFKA_RETRY_SHORTTOTAL=30s
-            - ORDERER_KAFKA_VERBOSE=true
-            - ORDERER_GENERAL_GENESISPROFILE=SampleInsecureKafka
             - ORDERER_ABSOLUTEMAXBYTES=${ORDERER_ABSOLUTEMAXBYTES}
             - ORDERER_PREFERREDMAXBYTES=${ORDERER_PREFERREDMAXBYTES}
         volumes:
@@ -1777,10 +1212,6 @@ services:
             - ../config/:/var/hyperledger/configs
         depends_on:
             - rabbitmq0
-            - kafka0
-            - kafka1
-            - kafka2
-            - kafka3
         networks:
           behave:
              aliases:
@@ -1816,6 +1247,53 @@ services:
             - orderer0.example.com
             - orderer1.example.com
             - orderer2.example.com
+            - orderer3.example.com
+            - orderer4.example.com
+            - orderer5.example.com
+            - orderer6.example.com
+            - orderer7.example.com
+            - orderer8.example.com
+            - orderer9.example.com
+            - orderer10.example.com
+            - orderer11.example.com
+            - orderer12.example.com
+            - orderer13.example.com
+            - orderer14.example.com
+            - orderer15.example.com
+            - orderer16.example.com
+            - orderer17.example.com
+            - orderer18.example.com
+            - orderer19.example.com
+            - orderer20.example.com
+            - orderer21.example.com
+            - orderer22.example.com
+            - orderer23.example.com
+            - orderer24.example.com
+            - orderer25.example.com
+            - orderer26.example.com
+            - orderer27.example.com
+            - orderer28.example.com
+            - orderer29.example.com
+            - orderer30.example.com
+            - orderer31.example.com
+            - orderer32.example.com
+            - orderer33.example.com
+            - orderer34.example.com
+            - orderer35.example.com
+            - orderer36.example.com
+            - orderer37.example.com
+            - orderer38.example.com
+            - orderer39.example.com
+            - orderer40.example.com
+            - orderer41.example.com
+            - orderer42.example.com
+            - orderer43.example.com
+            - orderer44.example.com
+            - orderer45.example.com
+            - orderer46.example.com
+            - orderer47.example.com
+            - orderer48.example.com
+            - orderer49.example.com
         networks:
           behave:
              aliases:
@@ -1851,6 +1329,53 @@ services:
             - orderer0.example.com
             - orderer1.example.com
             - orderer2.example.com
+            - orderer3.example.com
+            - orderer4.example.com
+            - orderer5.example.com
+            - orderer6.example.com
+            - orderer7.example.com
+            - orderer8.example.com
+            - orderer9.example.com
+            - orderer10.example.com
+            - orderer11.example.com
+            - orderer12.example.com
+            - orderer13.example.com
+            - orderer14.example.com
+            - orderer15.example.com
+            - orderer16.example.com
+            - orderer17.example.com
+            - orderer18.example.com
+            - orderer19.example.com
+            - orderer20.example.com
+            - orderer21.example.com
+            - orderer22.example.com
+            - orderer23.example.com
+            - orderer24.example.com
+            - orderer25.example.com
+            - orderer26.example.com
+            - orderer27.example.com
+            - orderer28.example.com
+            - orderer29.example.com
+            - orderer30.example.com
+            - orderer31.example.com
+            - orderer32.example.com
+            - orderer33.example.com
+            - orderer34.example.com
+            - orderer35.example.com
+            - orderer36.example.com
+            - orderer37.example.com
+            - orderer38.example.com
+            - orderer39.example.com
+            - orderer40.example.com
+            - orderer41.example.com
+            - orderer42.example.com
+            - orderer43.example.com
+            - orderer44.example.com
+            - orderer45.example.com
+            - orderer46.example.com
+            - orderer47.example.com
+            - orderer48.example.com
+            - orderer49.example.com
         networks:
           behave:
              aliases:
@@ -1885,6 +1410,53 @@ services:
             - orderer0.example.com
             - orderer1.example.com
             - orderer2.example.com
+            - orderer3.example.com
+            - orderer4.example.com
+            - orderer5.example.com
+            - orderer6.example.com
+            - orderer7.example.com
+            - orderer8.example.com
+            - orderer9.example.com
+            - orderer10.example.com
+            - orderer11.example.com
+            - orderer12.example.com
+            - orderer13.example.com
+            - orderer14.example.com
+            - orderer15.example.com
+            - orderer16.example.com
+            - orderer17.example.com
+            - orderer18.example.com
+            - orderer19.example.com
+            - orderer20.example.com
+            - orderer21.example.com
+            - orderer22.example.com
+            - orderer23.example.com
+            - orderer24.example.com
+            - orderer25.example.com
+            - orderer26.example.com
+            - orderer27.example.com
+            - orderer28.example.com
+            - orderer29.example.com
+            - orderer30.example.com
+            - orderer31.example.com
+            - orderer32.example.com
+            - orderer33.example.com
+            - orderer34.example.com
+            - orderer35.example.com
+            - orderer36.example.com
+            - orderer37.example.com
+            - orderer38.example.com
+            - orderer39.example.com
+            - orderer40.example.com
+            - orderer41.example.com
+            - orderer42.example.com
+            - orderer43.example.com
+            - orderer44.example.com
+            - orderer45.example.com
+            - orderer46.example.com
+            - orderer47.example.com
+            - orderer48.example.com
+            - orderer49.example.com
             - peer0.org1.example.com
         networks:
           behave:
@@ -1920,6 +1492,53 @@ services:
             - orderer0.example.com
             - orderer1.example.com
             - orderer2.example.com
+            - orderer3.example.com
+            - orderer4.example.com
+            - orderer5.example.com
+            - orderer6.example.com
+            - orderer7.example.com
+            - orderer8.example.com
+            - orderer9.example.com
+            - orderer10.example.com
+            - orderer11.example.com
+            - orderer12.example.com
+            - orderer13.example.com
+            - orderer14.example.com
+            - orderer15.example.com
+            - orderer16.example.com
+            - orderer17.example.com
+            - orderer18.example.com
+            - orderer19.example.com
+            - orderer20.example.com
+            - orderer21.example.com
+            - orderer22.example.com
+            - orderer23.example.com
+            - orderer24.example.com
+            - orderer25.example.com
+            - orderer26.example.com
+            - orderer27.example.com
+            - orderer28.example.com
+            - orderer29.example.com
+            - orderer30.example.com
+            - orderer31.example.com
+            - orderer32.example.com
+            - orderer33.example.com
+            - orderer34.example.com
+            - orderer35.example.com
+            - orderer36.example.com
+            - orderer37.example.com
+            - orderer38.example.com
+            - orderer39.example.com
+            - orderer40.example.com
+            - orderer41.example.com
+            - orderer42.example.com
+            - orderer43.example.com
+            - orderer44.example.com
+            - orderer45.example.com
+            - orderer46.example.com
+            - orderer47.example.com
+            - orderer48.example.com
+            - orderer49.example.com
             - peer0.org2.example.com
         networks:
           behave:
